@@ -2,7 +2,7 @@
 CLI tools for bfast-ee cloud.
 
 ## Get stated
-install package from npm by `npm i -g bfast` or clone project and then run `npm i -g ./`
+install package from npm by `npm i -g bfast-tools` or clone project and then run `npm i -g ./`
 
 ## BFast Cloud Functions
 
