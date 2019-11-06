@@ -1,5 +1,5 @@
 {
-  "name": "bfast",
+  "name": "bfast-tools",
   "version": "0.0.1",
   "description": "bfast-ee CLI tools",
   "main": "src/index.js",
