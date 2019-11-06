@@ -17,6 +17,7 @@ program
     .option('--create', 'create a new workspace')
     .option('--deploy', 'deploy functions to bfast cloud')
     .option('--serve', 'run functions locally for debug')
+    .option('--port <port>', 'port to host functions', 3000)
     .action((name, program) => {
         const folder = `${process.cwd()}/${name}`;
         if (program.create && program.deploy || program.create && program.serve) {
@@ -27,7 +28,7 @@ program
             } else if (program.deploy) {
                 console.log('we will deploy a function');
             } else if (program.serve) {
-                functionController.serve(process.cwd());
+                functionController.serve(process.cwd(), program.port);
             } else {
                 console.log('specify what you want to do');
             }

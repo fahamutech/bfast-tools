@@ -1,3 +1,6 @@
+const glob = require('glob');
+const ExpressApp = require('./ExpressAppController');
+
 class FunctionController {
 
     /**
@@ -8,9 +11,30 @@ class FunctionController {
     constructor({resourceFactory, authController}) {
         this._resourceFactory = resourceFactory;
         this._authController = authController;
-
-        this._serve = (projectDir) => {
-
+        this._getFunctions = (projectDir) => {
+            let bfastJSON = require(`${projectDir}/bfast.json`);
+            const bfastStringfied = JSON.stringify(bfastJSON);
+            bfastJSON = JSON.parse(bfastStringfied);
+            const files = glob.sync(`${projectDir}/**/*.js`, {
+                absolute: true,
+                ignore: bfastJSON.ignore
+            });
+            let functions = {
+                mambo: function (req, response) {
+                    response.json({message: 'Powa!'});
+                }
+            };
+            files.forEach(file => {
+                const fileModule = require(file);
+                const functionNames = Object.keys(fileModule);
+                functionNames.forEach(name => {
+                    functions[name] = fileModule[name];
+                });
+            });
+            return functions;
+        };
+        this._serveFunctions = (functions, port) => {
+            new ExpressApp({functions, port}).start();
         }
     }
 
@@ -23,18 +47,23 @@ class FunctionController {
         this._resourceFactory.createProjectFolder(projectDir)
     }
 
-    serve(projectDir) {
+    /**
+     * serve cloud functions locally
+     * @param projectDir
+     * @param port
+     */
+    serve(projectDir, port) {
         try {
             const bfastFile = require(`${projectDir}/bfast.json`);
-            console.log(bfastFile);
-            console.log(bfastFile.projectId);
             if (bfastFile && bfastFile.projectId !== undefined || bfastFile.projectId !== null) {
-                console.log('serve project');
+                const functions = this._getFunctions(projectDir);
+                this._serveFunctions(functions, port);
             } else {
                 console.log('project file is invalid');
             }
         } catch (e) {
-            console.log('not in bfast project folder : ' + e.toString());
+            console.log(e);
+            console.log('can not serve project, error : ' + e.toString());
         }
     }
 
