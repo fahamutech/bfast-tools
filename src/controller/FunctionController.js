@@ -73,9 +73,7 @@ class FunctionController {
     deploy(projectDir, force = true) {
         try {
             const bfastFile = require(`${projectDir}/bfast.json`);
-            console.log(projectDir);
-            console.log(force);
-            console.log(bfastFile.projectId);
+            console.log(`current project is : ${bfastFile.projectId}`);
             if (bfastFile && bfastFile.projectId && bfastFile.projectId !== '' &&
                 bfastFile.projectId !== undefined && bfastFile.projectId !== null) {
                 console.log('please wait, functions deployed...');
