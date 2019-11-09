@@ -1,4 +1,5 @@
 const glob = require('glob');
+const https = require('https');
 const ExpressApp = require('./ExpressAppController');
 
 class FunctionController {
@@ -69,8 +70,33 @@ class FunctionController {
         }
     }
 
-    deploy() {
-
+    deploy(projectDir, force = true) {
+        try {
+            const bfastFile = require(`${projectDir}/bfast.json`);
+            console.log(projectDir);
+            console.log(force);
+            console.log(bfastFile.projectId);
+            if (bfastFile && bfastFile.projectId && bfastFile.projectId !== '' &&
+                bfastFile.projectId !== undefined && bfastFile.projectId !== null) {
+                console.log('please wait, functions deployed...');
+                const req = https.request(`https://cloud.bfast.fahamutech.com/deploy/functions/${bfastFile.projectId}?force=${force}`, (res => {
+                    res.setEncoding('utf8');
+                    res.on('data', (_ => {
+                        console.log('functions deployed');
+                    }));
+                    res.on('error', err => {
+                        console.error(err);
+                    });
+                }));
+                req.end();
+            } else {
+                console.log('projectId can not be determined, ' +
+                    'check if your current directory is bfast project bfast.json file exist');
+            }
+        } catch (e) {
+            console.log(e);
+            console.log('can not serve project, error : ' + e.toString());
+        }
     }
 }
 
