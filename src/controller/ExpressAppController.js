@@ -29,7 +29,14 @@ class ExpressAppController {
     start() {
         if (typeof this._functions === 'object') {
             _app.use('/names', (request, response) => {
-                response.json({names: Object.keys(this._functions)})
+                let functionsNames = [];
+                Object.keys(this._functions).forEach(functionName => {
+                    if (this._functions[functionName] && typeof this._functions[functionName] === "object"
+                        && this._functions[functionName].onRequest) {
+                        functionsNames.push(functionName)
+                    }
+                });
+                response.json({names: functionsNames});
             });
             Object.keys(this._functions).forEach(functionName => {
                 if (this._functions[functionName] && typeof this._functions[functionName] === "object"
