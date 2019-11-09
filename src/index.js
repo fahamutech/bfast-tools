@@ -17,6 +17,7 @@ program
     .option('--create', 'create a new workspace')
     .option('--deploy', 'deploy functions to bfast cloud')
     .option('--serve', 'run functions locally for debug')
+    .option('--force', 'force update of container when deploy functions')
     .option('--port <port>', 'port to host functions', 3000)
     .action((name, program) => {
         const folder = `${process.cwd()}/${name}`;
@@ -26,7 +27,7 @@ program
             if (program.create && name && name !== '' && name !== '.') {
                 functionController.initiateFunctionsFolder(folder);
             } else if (program.deploy) {
-                console.log('we will deploy a function');
+                functionController.deploy(process.cwd(), !!program.force)
             } else if (program.serve) {
                 functionController.serve(process.cwd(), program.port);
             } else {
