@@ -1,3 +1,15 @@
+# v0.1.2 
+
+Remove un wanted printed logs
+
+# v0.1.1
+
+* Now you can deploy function ( this function is under test )
+
+```shell script
+~$ bfast functions --deploy
+```
+
 # v0.1.0
  * change function structure, now we can write functions in the following format
  ```javascript
