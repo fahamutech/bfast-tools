@@ -20,8 +20,10 @@ class FunctionController {
                 ignore: bfastJSON.ignore
             });
             let functions = {
-                mambo: function (req, response) {
-                    response.json({message: 'Powa!'});
+                mambo: {
+                    onRequest: function (req, response) {
+                        response.json({message: 'Powa!'});
+                    }
                 }
             };
             files.forEach(file => {
