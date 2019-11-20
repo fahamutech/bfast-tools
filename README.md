@@ -1,8 +1,11 @@
 # bfast-tools
-CLI tools for manage your project(s) in (BFast::Cloud)[https://cloud.bfast.fahamutech.com].
+CLI tools for manage your project(s) in [BFast::Cloud](https://cloud.bfast.fahamutech.com).
 
 ## Get stated
 Install package from npm by `npm i -g bfast-tools`
+
+## Pre request
+Download and install NodeJs in your local PC. If you have it your good to go
 
 ## BFast::Cloud Functions
 
