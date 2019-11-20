@@ -62,7 +62,7 @@ class FunctionController {
                 const functions = this._getFunctions(projectDir);
                 this._serveFunctions(functions, port);
             } else {
-                console.log('project file is invalid');
+                console.log('not in project folder or project file is invalid');
             }
         } catch (e) {
             console.log(e);
@@ -77,16 +77,18 @@ class FunctionController {
             if (bfastFile && bfastFile.projectId && bfastFile.projectId !== '' &&
                 bfastFile.projectId !== undefined && bfastFile.projectId !== null) {
                 console.log('please wait, functions deployed...');
-                const req = https.request(`https://cloud.bfast.fahamutech.com/deploy/functions/${bfastFile.projectId}?force=${force}`, (res => {
+                https.request(`https://cloud.bfast.fahamutech.com/deploy/functions/${bfastFile.projectId}?force=${force}`, res => {
                     res.setEncoding('utf8');
-                    res.on('data', (_ => {
-                        console.log('functions deployed');
-                    }));
+                    res.on('data', chunk => {
+                        console.log(chunk);
+                    });
                     res.on('error', err => {
                         console.error(err);
                     });
-                }));
-                req.end();
+                    res.on('end', (_)=>{
+                        console.log('functions deployed');
+                    });
+                }).end();
             } else {
                 console.log('projectId can not be determined, ' +
                     'check if your current directory is bfast project bfast.json file exist');
