@@ -1,3 +1,25 @@
+# v0.2.0
+
+Add more detail in documentation
+
+Change command api.
+
+* To deploy a function now run 
+```shell script
+~$ bfast functions deploy
+```
+
+* To create a new workspace
+```shell script
+~$ bfast functions create <name>
+```
+
+* To serve a functions run 
+```shell script
+~$ bfast functions serve --port 3000
+```
+when port option omitted, 3000 will be a default port number
+
 # v0.1.2 
 
 Remove un wanted printed logs

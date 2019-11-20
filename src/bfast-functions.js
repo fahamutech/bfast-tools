@@ -15,7 +15,7 @@ program
     if (name && name !== '' && name !== '.' && !name.startsWith('.')) {
         const folder = `${process.cwd()}/${name}`;
         functionController.initiateFunctionsFolder(folder);
-        console.log('create is called with name: ' + name);
+       // console.log('create is called with name: ' + name);
     }else{
         console.log('name format error')
     }
