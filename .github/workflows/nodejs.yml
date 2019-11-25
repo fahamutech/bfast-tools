@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - joshua
+#      - joshua
 
 jobs:
   build-on-ubuntu:
