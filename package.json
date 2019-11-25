@@ -1,11 +1,11 @@
 {
   "name": "bfast-tools",
-  "version": "0.2.0",
-  "description": "bfast-ee CLI tools",
-  "main": "src/index.js",
+  "version": "0.2.1",
+  "description": "tools to manage bfast cloud projects",
+  "private": true,
   "preferGlobal": true,
   "bin": {
-    "bfast": "./src/index.js"
+    "bfast": "src/bfast.js"
   },
   "scripts": {
     "test": "echo \\\"no test\\\""

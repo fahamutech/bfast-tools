@@ -1,3 +1,7 @@
+# v0.2.1
+
+Start fixing issue on window system
+
 # v0.2.0
 
 Add more detail in documentation
