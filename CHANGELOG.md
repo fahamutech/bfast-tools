@@ -1,6 +1,18 @@
 # v0.2.1
 
-Start fixing issue on window system
+Now you can add environment variable to bfast cloud functions instance and remove it
+
+* Add environment to bfast cloud functions
+```shell script
+~$ bfast functions env-add name=john age=10
+```
+
+* Remove environment
+```shell script
+~$ bfast functions env-rm name
+```
+
+For more details run `bfast functions help`
 
 # v0.2.0
 

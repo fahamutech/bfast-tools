@@ -37,17 +37,17 @@ program
     });
 
 program
-    .command('add-env <env...>')
+    .command('env-add <env...>')
     .description('add environment(s) to bfast cloud functions instance(s)')
     .action((env, cmd) => {
-        console.log(env);
+        functionController.addEnv(process.cwd(), env, !!cmd.force);
     });
 
 program
-    .command('rm-env <env...>')
+    .command('env-rm <env...>')
     .description('remove environment(s) to bfast cloud functions instance(s)')
     .action((env, cmd) => {
-        console.log(env);
+        functionController.removeEnv(process.cwd(), env, !!cmd.force);
     });
 
 // error on unknown commands

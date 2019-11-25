@@ -126,24 +126,55 @@ class FunctionController {
     addEnv(projectDir, envs, force = false) {
         if (envs && Array.isArray(envs)) {
             this._getProjectCredential(projectDir).then(bfastProject => {
-                // const https.request(
-                //     `https://cloud.bfast.fahamutech.com/functions/update/addEnv/${bfastProject.projectId}?force=${force}`,
-                //     {
-                //         method: 'POST'
-                //     },
-                //     res => {
-                //         res.setEncoding('utf8');
-                //         // res.on('data', chunk => {
-                //         //     console.log(chunk);
-                //         // });
-                //         res.on('error', err => {
-                //             console.error(err);
-                //         });
-                //         res.on('end', (_) => {
-                //             console.log('functions deployed');
-                //         });
-                //     })
-                //     .end();
+                console.log('start update faas environments');
+                const httpsReq = https.request(
+                    `https://cloud.bfast.fahamutech.com/functions/${bfastProject.projectId}/env?force=${force}`,
+                    {
+                        method: 'POST'
+                    }, res => {
+                        res.setEncoding('utf8');
+                        // res.on('data', chunk => {
+                        //     console.log(chunk);
+                        // });
+                        res.on('error', err => {
+                            console.error(err);
+                        });
+                        res.on('end', (_) => {
+                            console.log('env(s) added');
+                        });
+                    });
+                httpsReq.write(JSON.stringify({envs: envs}));
+                httpsReq.end();
+            }).catch(reason => {
+                console.log(reason);
+            });
+        } else {
+            console.log('No env(s) to update');
+        }
+    }
+
+    removeEnv(projectDir, envs, force = false) {
+        if (envs && Array.isArray(envs)) {
+            this._getProjectCredential(projectDir).then(bfastProject => {
+                console.log('start remove faas environments');
+                const httpsReq = https.request(
+                    `https://cloud.bfast.fahamutech.com/functions/${bfastProject.projectId}/env?force=${force}`,
+                    {
+                        method: 'DELETE'
+                    }, res => {
+                        res.setEncoding('utf8');
+                        // res.on('data', chunk => {
+                        //     console.log(chunk);
+                        // });
+                        res.on('error', err => {
+                            console.error(err);
+                        });
+                        res.on('end', (_) => {
+                            console.log('env(s) removed');
+                        });
+                    });
+                httpsReq.write(JSON.stringify({envs: envs}));
+                httpsReq.end();
             }).catch(reason => {
                 console.log(reason);
             });
