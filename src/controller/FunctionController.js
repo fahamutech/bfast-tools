@@ -38,12 +38,37 @@ class FunctionController {
         };
         this._serveFunctions = (functions, port) => {
             new ExpressApp({functions, port}).start();
+        };
+
+        /**
+         * Get bfast credentials of a current project
+         * @param projectDir {String} path of a bfast functions working directory where <code>bfast</code> command run
+         * @returns {Promise<{projectId}>}. Promise rejected when <code>bfast.json</code> is no found.
+         * @private
+         */
+        this._getProjectCredential = (projectDir) => {
+            return new Promise((resolve, reject) => {
+                try {
+                    const projectCredential = require(`${projectDir}/bfast.json`);
+                    // console.log(`current project is : ${projectCredential.projectId}`);
+                    if (projectCredential && projectCredential.projectId && projectCredential.projectId !== '' &&
+                        projectCredential.projectId !== undefined && projectCredential.projectId !== null) {
+                        resolve(projectCredential);
+                    } else {
+                        reject('projectId can not be determined, ' +
+                            'check if your current directory is bfast project and bfast.json file exist');
+                    }
+                } catch (e) {
+                    // console.log(e);
+                    reject('can not serve project, error : not in bfast project folder');
+                }
+            });
         }
     }
 
     /**
      * create a bootstrap project for bfast cloud functions
-     * @param projectDir {path} a workspace
+     * @param projectDir {string} a workspace
      */
     initiateFunctionsFolder(projectDir) {
         if (!this._authController.isAuthenticated()) throw Error('login first');
@@ -55,6 +80,7 @@ class FunctionController {
      * @param projectDir
      * @param port
      */
+    // need to auto reload when file changes
     serve(projectDir, port) {
         try {
             const bfastFile = require(`${projectDir}/bfast.json`);
@@ -65,37 +91,64 @@ class FunctionController {
                 console.log('not in project folder or project file is invalid');
             }
         } catch (e) {
-            console.log(e);
-            console.log('can not serve project, error : ' + e.toString());
+            //  console.log(e);
+            console.log('can not serve project, error : not in bfast project folder');
         }
     }
 
-    deploy(projectDir, force = true) {
-        try {
-            const bfastFile = require(`${projectDir}/bfast.json`);
-            console.log(`current project is : ${bfastFile.projectId}`);
-            if (bfastFile && bfastFile.projectId && bfastFile.projectId !== '' &&
-                bfastFile.projectId !== undefined && bfastFile.projectId !== null) {
-                console.log('please wait, functions deployed...');
-                https.request(`https://cloud.bfast.fahamutech.com/deploy/functions/${bfastFile.projectId}?force=${force}`, res => {
+    /**
+     * Deploy project to bfast cloud
+     * @param projectDir
+     * @param force
+     */
+    // need to check if user is log in bfast project
+    deploy(projectDir, force = false) {
+        this._getProjectCredential(projectDir).then(bfastProject => {
+            https.request(
+                `https://cloud.bfast.fahamutech.com/deploy/functions/${bfastProject.projectId}?force=${force}`,
+                res => {
                     res.setEncoding('utf8');
-                    res.on('data', chunk => {
-                        console.log(chunk);
-                    });
+                    // res.on('data', chunk => {
+                    //     console.log(chunk);
+                    // });
                     res.on('error', err => {
                         console.error(err);
                     });
-                    res.on('end', (_)=>{
+                    res.on('end', (_) => {
                         console.log('functions deployed');
                     });
                 }).end();
-            } else {
-                console.log('projectId can not be determined, ' +
-                    'check if your current directory is bfast project bfast.json file exist');
-            }
-        } catch (e) {
-            console.log(e);
-            console.log('can not serve project, error : ' + e.toString());
+        }).catch(reason => {
+            console.log(reason);
+        });
+    }
+
+    addEnv(projectDir, envs, force = false) {
+        if (envs && Array.isArray(envs)) {
+            this._getProjectCredential(projectDir).then(bfastProject => {
+                // const https.request(
+                //     `https://cloud.bfast.fahamutech.com/functions/update/addEnv/${bfastProject.projectId}?force=${force}`,
+                //     {
+                //         method: 'POST'
+                //     },
+                //     res => {
+                //         res.setEncoding('utf8');
+                //         // res.on('data', chunk => {
+                //         //     console.log(chunk);
+                //         // });
+                //         res.on('error', err => {
+                //             console.error(err);
+                //         });
+                //         res.on('end', (_) => {
+                //             console.log('functions deployed');
+                //         });
+                //     })
+                //     .end();
+            }).catch(reason => {
+                console.log(reason);
+            });
+        } else {
+            console.log('No env(s) to update');
         }
     }
 }
