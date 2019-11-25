@@ -130,17 +130,20 @@ class FunctionController {
                 const httpsReq = https.request(
                     `https://cloud.bfast.fahamutech.com/functions/${bfastProject.projectId}/env?force=${force}`,
                     {
-                        method: 'POST'
+                        method: 'POST',
+                        headers: {
+                            "content-type": "application/json"
+                        }
                     }, res => {
                         res.setEncoding('utf8');
-                        // res.on('data', chunk => {
-                        //     console.log(chunk);
-                        // });
+                        res.on('data', chunk => {
+                            console.log(chunk);
+                        });
                         res.on('error', err => {
                             console.error(err);
                         });
                         res.on('end', (_) => {
-                            console.log('env(s) added');
+                            // console.log('env(s) added');
                         });
                     });
                 httpsReq.write(JSON.stringify({envs: envs}));
@@ -158,19 +161,22 @@ class FunctionController {
             this._getProjectCredential(projectDir).then(bfastProject => {
                 console.log('start remove faas environments');
                 const httpsReq = https.request(
-                    `https://cloud.bfast.fahamutech.com/functions/${bfastProject.projectId}/env?force=${force}`,
+                    `https://cloud.bfast.fahamutech.com/functions/${bfastProject.projectId}/env/delete?force=${force}`,
                     {
-                        method: 'DELETE'
+                        method: 'POST',
+                        headers: {
+                            "content-type": "application/json"
+                        }
                     }, res => {
                         res.setEncoding('utf8');
-                        // res.on('data', chunk => {
-                        //     console.log(chunk);
-                        // });
+                        res.on('data', chunk => {
+                            console.log(chunk);
+                        });
                         res.on('error', err => {
                             console.error(err);
                         });
                         res.on('end', (_) => {
-                            console.log('env(s) removed');
+                            // console.log('env(s) removed');
                         });
                     });
                 httpsReq.write(JSON.stringify({envs: envs}));
