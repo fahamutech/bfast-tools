@@ -1,3 +1,61 @@
+# v0.2.2
+
+Bug fixes and improvement like project linking and show progress for long process and custom path for your function
+
+### Whats new
+
+* Now dev server restart when you changes happens in your workspace directory. 
+To start dev server
+```shell script
+~$ bfast functions serve
+```
+You can use no restart dev server by running
+```shell script
+~$ bfast functions serve --static
+```
+* `user` command is added to manege your bfast cloud account
+Now you can authenticate your self with bfast cloud account
+```shell script
+~$ bfast user login --username <YOUR_EMAIL_USED_TO_OPEN_BFAST_ACCOUNT>
+```
+
+To log out you can run 
+```shell script
+~$ bfast user logout
+```
+
+To get token to login in CI mode you run
+
+```shell script
+~$ bfast user login:ci --username <YOUR_EMAIL_USED_TO_OPEN_BFAST_ACCOUNT>
+```
+
+* `project` command is added manage linking of your local project to bfast cloud project
+To link your local project to remote project run
+```shell script
+~$ bfast project link
+```
+
+To remove link between you local project with a remote project run
+```shell script
+~$ bfast project unlink
+```
+
+* Functions can be given a custom path 
+```javascript
+exports.helloWorld = {
+    path: '/hello',
+    onRequest: (request, response)=>{
+        response.send('Hello from custom path');
+    }   
+}
+```
+The above functions will be available at `yourhost/hello` instead of `yourhost/functions/helloWorld`. if `path` field 
+is not specified addressing will fall to the default one.
+
+### Bug fixed
+* deploy of functions fixed
+
 # v0.2.1
 
 Now you can add environment variable to bfast cloud functions instance and remove it
