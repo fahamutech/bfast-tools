@@ -15,7 +15,7 @@ class ResourceFactory {
     createProjectFolder(projectDir) {
         if (this._checkIfFileExist(projectDir)) throw Error('project folder already exist at: ' + projectDir);
         this._fse.copySync(this._path.join(__dirname, `/../res`), projectDir);
-        console.log('done create project folder');
+        return `done create project folder, now "cd ${projectDir}" to start hacking`;
     }
 
 }

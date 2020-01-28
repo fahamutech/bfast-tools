@@ -2,6 +2,7 @@
 
 
 // exports.helloWorld = {
+//     path: '/helloWorld',
 //     onRequest: (request, response) => {
 //         response.send("Hello from BFast!");
 //     }
