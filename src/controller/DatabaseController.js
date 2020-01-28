@@ -1,5 +1,7 @@
 const NeDb = require('nedb');
 const storage = new NeDb({filename: `${__dirname}/../../nedb`, autoload: true});
+const ResourceController = require('./ResourceController');
+const _resource = new ResourceController();
 
 class DatabaseController {
 
@@ -51,63 +53,36 @@ class DatabaseController {
      *
      * @returns {Promise<{projectId: string}>}
      */
-    getCurrentProject() {
-        return new Promise((resolve, reject) => {
+    getCurrentProject(projectDir) {
+        return new Promise(async (resolve, reject) => {
             try {
-                storage.findOne({_id: 'project'}, function (error, value) {
-                    if (error) {
-                        reject({message: 'Fail to get current project'});
-                    } else if (value) {
-                        resolve(value);
-                    } else {
-                        reject('Please choose your ' +
-                            'remote bfast project to work with, run "bfast project link"');
-                    }
-                });
+                let bfastJson = await _resource.getProjectIdFromBfastFJSON(projectDir);
+                bfastJson = JSON.parse(JSON.stringify(bfastJson));
+                if (bfastJson && bfastJson.projectId && bfastJson.projectId !== '') {
+                    delete bfastJson.ignore;
+                    resolve(bfastJson);
+                } else {
+                    throw 'Please choose your remote bfast project to work with, run "bfast project link"'
+                }
             } catch (e) {
-                reject({message: 'Fails to get current project', reason: e.toString()});
+                reject({message: e.toString()});
             }
         });
     }
 
-    saveCurrentProject(project) {
-        try {
-            delete project.user;
-            delete project.members;
-            delete project.parse.masterKey;
-        } catch (e) {
-        }
-        project._id = 'project';
+    saveCurrentProject(project, projectDir) {
         return new Promise(async (resolve, reject) => {
             try {
-                await this._deleteCurrentProject();
-                storage.insert(project, function (error) {
-                    if (error) {
-                        reject({
-                            message: 'Fails to save your remote bfast cloud project locally',
-                            reason: error.toString()
-                        });
-                    } else {
-                        resolve({message: 'Project saved'});
-                    }
-                })
+                await _resource.saveProjectIdInBFastJSON({
+                    projectId: project.projectId,
+                    projectDir: projectDir
+                });
+                resolve({message: 'Project linked'});
             } catch (e) {
                 reject({message: 'Fails to link your remote bfast cloud project', reason: e.toString()});
             }
         })
     }
-
-    _deleteCurrentProject() {
-        return new Promise((resolve, reject) => {
-            storage.remove({_id: 'project'}, {multi: true}, function (err, numRemoved) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(numRemoved);
-                }
-            });
-        });
-    };
 
     _deleteCurrentUser() {
         return new Promise((resolve, reject) => {

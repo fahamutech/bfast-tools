@@ -2,7 +2,7 @@ const glob = require('glob');
 const axios = require('axios');
 const ExpressApp = require('./ExpressAppController');
 const DatabaseController = require('./DatabaseController');
-const ResourceFactory = require('../factory/ResourceFactory');
+const ResourceFactory = require('./ResourceController');
 
 const _storage = new DatabaseController();
 const _resourceFactory = new ResourceFactory();
@@ -108,7 +108,7 @@ class FunctionController {
                 projectId = options.projectId;
             } else {
                 const user = await _storage.getUser();
-                const project = await _storage.getCurrentProject();
+                const project = await _storage.getCurrentProject(projectDir);
                 projectId = project.projectId;
                 token = user.token;
             }
@@ -141,7 +141,7 @@ class FunctionController {
             try {
                 await this._checkIsBFastProjectFolder(projectDir);
                 const user = await _storage.getUser();
-                const project = await _storage.getCurrentProject();
+                const project = await _storage.getCurrentProject(projectDir);
                 const projectId = project.projectId;
                 const token = user.token;
                 console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
@@ -176,7 +176,7 @@ class FunctionController {
             if (envs && Array.isArray(envs)) {
                 await this._checkIsBFastProjectFolder(projectDir);
                 const user = await _storage.getUser();
-                const project = await _storage.getCurrentProject();
+                const project = await _storage.getCurrentProject(projectDir);
                 const projectId = project.projectId;
                 const token = user.token;
                 console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);

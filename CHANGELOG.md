@@ -1,4 +1,11 @@
-#v0.2.3
+# v0.2.4
+
+Remove `bfast project unlink` since it has no meaning anymore all projectId will be written to bfast.json file
+on a specific working directory of a bfast project to make sure linking is on a specific project and work space locally
+
+Fix some documentations regard update envs
+
+# v0.2.3
 
 Remove unused dependencies
 

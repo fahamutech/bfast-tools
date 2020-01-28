@@ -39,7 +39,7 @@ program
                 console.log("Please go to http://bfast.fahamutech.com to create new project");
                 return;
             }
-            await _storage.saveCurrentProject(answer.project);
+            await _storage.saveCurrentProject(answer.project, process.cwd());
             console.log('Project linked, happy coding.');
         } catch (e) {
             spinner.stop(true);
@@ -51,25 +51,25 @@ program
         }
     });
 
-program
-    .command('unlink')
-    .description('remove your your remote bfast cloud project form local machine')
-    .action(async (cdm) => {
-        try {
-            spinner.start();
-            await _storage.getUser();
-            await _storage._deleteCurrentProject();
-            spinner.stop(true);
-            console.log('bfast cloud project link destroyed.');
-        } catch (e) {
-            spinner.stop(true);
-            if (e && e.message) {
-                console.log(e.message);
-            } else {
-                console.log(e);
-            }
-        }
-    });
+// program
+//     .command('unlink')
+//     .description('remove your your remote bfast cloud project form local machine')
+//     .action(async (cdm) => {
+//         try {
+//             spinner.start();
+//             await _storage.getUser();
+//             await _storage._deleteCurrentProject();
+//             spinner.stop(true);
+//             console.log('bfast cloud project link destroyed.');
+//         } catch (e) {
+//             spinner.stop(true);
+//             if (e && e.message) {
+//                 console.log(e.message);
+//             } else {
+//                 console.log(e);
+//             }
+//         }
+//     });
 
 
 // error on unknown commands

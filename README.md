@@ -181,7 +181,7 @@ josh@xps:~/Desktop/bfastDemoFaas$ bfast project link
 
 We use git to deploy your functions to bfast cloud function instance(s). Run thr following to set up git environments
 ```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ bfast functions env-add GIT_USERNAME yourUsername GIT_TOKEN personalAccessToken GIT_CLONE_URL repositoryUrlForYourProject
+josh@xps:~/Desktop/bfastDemoFaas$ bfast functions env-add GIT_USERNAME=yourUsername GIT_TOKEN=personalAccessToken GIT_CLONE_URL=repositoryUrlForYourProject
 ```
 
 #### To publish your functions
