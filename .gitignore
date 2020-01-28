@@ -3,3 +3,4 @@ logs
 /src/controller/db.kv
 leveldb
 /leveldb
+/nedb
