@@ -1,5 +1,7 @@
 const NeDb = require('nedb');
-const storage = new NeDb({filename: `${__dirname}/../../nedb`, autoload: true});
+const os = require('os');
+const path = require('path');
+const storage = new NeDb({filename: path.join(os.homedir(),'/.bfastdb'), autoload: true});
 const ResourceController = require('./ResourceController');
 const _resource = new ResourceController();
 

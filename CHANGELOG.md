@@ -1,3 +1,7 @@
+# v0.2.5
+
+Move database file to user home directory to fix permission issues
+
 # v0.2.4
 
 Remove `bfast project unlink` since it has no meaning anymore all projectId will be written to bfast.json file
