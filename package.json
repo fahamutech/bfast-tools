@@ -1,6 +1,6 @@
 {
   "name": "bfast-tools",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "tools to manage bfast cloud projects",
   "private": false,
   "preferGlobal": true,
@@ -35,7 +35,6 @@
     "fs-extra": "^8.1.0",
     "glob": "^7.1.5",
     "inquirer": "^7.0.4",
-    "level": "^6.0.0",
     "morgan": "^1.9.1",
     "nedb": "^1.8.0",
     "nodemon": "^2.0.2"

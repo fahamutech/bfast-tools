@@ -1,3 +1,7 @@
+#v0.2.3
+
+Remove unused dependencies
+
 # v0.2.2
 
 Bug fixes and improvement like project linking and show progress for long process and custom path for your function
@@ -54,6 +58,7 @@ The above functions will be available at `yourhost/hello` instead of `yourhost/f
 is not specified addressing will fall to the default one.
 
 ### Bug fixed
+
 * deploy of functions fixed
 
 # v0.2.1
