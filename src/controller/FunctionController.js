@@ -20,9 +20,6 @@ class FunctionController {
             });
             let functions = {
                 _init: {
-                    // onRequest: function (req, response) {
-                    //     response.json({message: 'Powa!'});
-                    // }
                 }
             };
             files.forEach(file => {
@@ -197,6 +194,94 @@ class FunctionController {
             } else {
                 throw 'Please specify env(s) to remove';
             }
+        } catch (reason) {
+            if (reason && reason.response) {
+                throw reason.response.data;
+            } else {
+                throw reason.toString();
+            }
+        }
+    }
+
+    async switch(projectDir, mode = 1, force = false) {
+        try {
+            await this._checkIsBFastProjectFolder(projectDir);
+            const user = await _storage.getUser();
+            const project = await _storage.getCurrentProject(projectDir);
+            const projectId = project.projectId;
+            const token = user.token;
+            console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
+            console.log(`start switching ${mode === 1 ? 'on' : 'off'}`);
+            const response = await axios.post(
+                `https://api.bfast.fahamutech.com/functions/${projectId}/switch/${mode}?force=${force}`,
+                {},
+                {
+                    headers: {
+                        'content-type': 'application/json',
+                        'authorization': `Bearer ${token}`
+                    }
+                }
+            );
+            return response.data;
+        } catch (reason) {
+            if (reason && reason.response) {
+                throw reason.response.data;
+            } else {
+                throw reason.toString();
+            }
+        }
+    }
+
+    async addDomain(projectDir, domain, force = false) {
+        try {
+            await this._checkIsBFastProjectFolder(projectDir);
+            const user = await _storage.getUser();
+            const project = await _storage.getCurrentProject(projectDir);
+            const projectId = project.projectId;
+            const token = user.token;
+            console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
+            console.log(`start adding custom domain`);
+            const response = await axios.post(
+                `https://api.bfast.fahamutech.com/functions/${projectId}/domain?force=${force}`,
+                {
+                    domain: domain
+                },
+                {
+                    headers: {
+                        'content-type': 'application/json',
+                        'authorization': `Bearer ${token}`
+                    }
+                }
+            );
+            return response.data;
+        } catch (reason) {
+            if (reason && reason.response) {
+                throw reason.response.data;
+            } else {
+                throw reason.toString();
+            }
+        }
+    }
+
+    async clearCustomDomain(projectDir, force = false) {
+        try {
+            await this._checkIsBFastProjectFolder(projectDir);
+            const user = await _storage.getUser();
+            const project = await _storage.getCurrentProject(projectDir);
+            const projectId = project.projectId;
+            const token = user.token;
+            console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
+            console.log(`start clear all custom domain(s)`);
+            const response = await axios.delete(
+                `https://api.bfast.fahamutech.com/functions/${projectId}/domain?force=${force}`,
+                {
+                    headers: {
+                        'content-type': 'application/json',
+                        'authorization': `Bearer ${token}`
+                    }
+                }
+            );
+            return response.data;
         } catch (reason) {
             if (reason && reason.response) {
                 throw reason.response.data;

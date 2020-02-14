@@ -46,6 +46,7 @@ program
 
 program
     .command('serve')
+    .option('-f, --force', "force update of cloud function immediately")
     .option('-p, --port <port>', "port to serve cloud functions local", 3000)
     .option('--static', 'start in static mode without auto restart when files changes')
     .description('host functions local for test and development')
@@ -73,6 +74,7 @@ program
 
 program
     .command('env-add <env...>')
+    .option('-f, --force', "force update of cloud function immediately")
     .description('add environment(s) to bfast cloud functions instance(s)')
     .action(async (env, cmd) => {
         try {
@@ -88,6 +90,7 @@ program
 
 program
     .command('env-rm <env...>')
+    .option('-f, --force', "force update of cloud function immediately")
     .description('remove environment(s) to bfast cloud functions instance(s)')
     .action(async (env, cmd) => {
         try {
@@ -100,6 +103,71 @@ program
             console.log(e);
         }
     });
+
+program
+    .command('switch-off')
+    .option('-f, --force', "force update of cloud function immediately")
+    .description('switch bfast cloud function instance(s) off')
+    .action(async (cmd) => {
+        try {
+            spinner.start();
+            const response = await functionController.switch(process.cwd(), 0, !!cmd.force);
+            spinner.stop(true);
+            console.log(response);
+        } catch (e) {
+            spinner.stop(true);
+            console.log(e);
+        }
+    });
+
+program
+    .command('switch-on')
+    .option('-f, --force', "force update of cloud function immediately")
+    .description('switch bfast cloud function instance(s) on')
+    .action(async (cmd) => {
+        try {
+            spinner.start();
+            const response = await functionController.switch(process.cwd(), 1, !!cmd.force);
+            spinner.stop(true);
+            console.log(response);
+        } catch (e) {
+            spinner.stop(true);
+            console.log(e);
+        }
+    });
+
+program
+    .command('domain-add <domain>')
+    .option('-f, --force', "force update of cloud function immediately")
+    .description('add custom domain to bfast cloud function instance(s) on')
+    .action(async (domain, cmd) => {
+        try {
+            spinner.start();
+            const response = await functionController.addDomain(process.cwd(), domain, !!cmd.force);
+            spinner.stop(true);
+            console.log(response);
+        } catch (e) {
+            spinner.stop(true);
+            console.log(e);
+        }
+    });
+
+program
+    .command('domain-clear')
+    .option('-f, --force', "force update of cloud function immediately")
+    .description('remove all custom domain(s) to bfast cloud function instance(s) on')
+    .action(async (cmd) => {
+        try {
+            spinner.start();
+            const response = await functionController.clearCustomDomain(process.cwd(), !!cmd.force);
+            spinner.stop(true);
+            console.log(response);
+        } catch (e) {
+            spinner.stop(true);
+            console.log(e);
+        }
+    });
+
 
 program.on('command:*', function () {
     console.error('Invalid command: %s\n', program.args.join(' ')); // See --help" for a list of available commands.

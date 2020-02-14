@@ -1,3 +1,13 @@
+# v0.3.0
+
+Now you can add custom domain to functions and 
+switch function instance on or off.
+
+To add custom domain for example: 'isquare.co.tz'
+```shell script
+~$:bfast functions domain-add isquare.co.tz
+```
+
 # v0.2.5
 
 Move database file to user home directory to fix permission issues
