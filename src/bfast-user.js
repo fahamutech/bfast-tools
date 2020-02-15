@@ -1,6 +1,6 @@
 const program = require('commander');
 const UserController = require('./controller/UserController');
-const DatabaseController = require('./controller/DatabaseController');
+const DatabaseController = require('./controller/LocalStorageController');
 const inquirer = require('inquirer');
 const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');
@@ -10,7 +10,7 @@ const _userController = new UserController();
 
 program
     .command('login')
-    .option('-u, --username <username>',
+    .option('-u, --username',
         'Username you used open bfast cloud account, possible the email you use')
     .option('-p, --password', 'Password for your username')
     .description('login to your remote bfast cloud account')
@@ -30,7 +30,29 @@ program
                 spinner.stop();
             }
         } else {
-            console.log('Please tell me your username by add -u or --username option, like "bfast user login --username doe@john.com');
+            try {
+                const answer = await inquirer.prompt([
+                    {
+                        name: "username",
+                        type: 'text',
+                        message: 'Please enter your username ( email )',
+                    },
+                    {
+                        name: "password",
+                        type: 'password',
+                        message: 'Please enter your password',
+                        mask: '*'
+                    },
+                ]);
+                spinner.start();
+                await _database.saveUser(await _userController.login(answer.username, answer.password));
+                console.log('\nSuccessful login');
+                spinner.stop();
+            } catch (e) {
+                console.log('\nLogin fails');
+                console.log(e);
+                spinner.stop();
+            }
         }
     });
 
@@ -78,7 +100,32 @@ program
                 spinner.stop();
             }
         } else {
-            console.log('Please tell me your username by add -u or --username option, like "bfast user login --username doe@john.com');
+            try {
+                const answer = await inquirer.prompt([
+                    {
+                        name: "username",
+                        type: 'text',
+                        message: 'Please enter your username ( email )',
+                    },
+                    {
+                        name: "password",
+                        type: 'password',
+                        message: 'Please enter your password',
+                        mask: '*'
+                    },
+                ]);
+                spinner.start();
+                const user = await _userController.login(answer.username, answer.password);
+                console.log('\nNow in your favorite CI environment' +
+                    ' run "bfast functions deploy --token ${BFAST_TOKEN}' +
+                    ' --projectId ${PROJECT_ID}" to deploy functions, copy token below');
+                console.log(`\n\t${user.token}\n`);
+                spinner.stop();
+            } catch (e) {
+                console.log('\nLogin fails');
+                console.log(e);
+                spinner.stop();
+            }
         }
     });
 

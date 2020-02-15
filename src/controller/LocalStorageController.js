@@ -5,7 +5,7 @@ const storage = new NeDb({filename: path.join(os.homedir(),'/.bfastdb'), autoloa
 const ResourceController = require('./ResourceController');
 const _resource = new ResourceController();
 
-class DatabaseController {
+class LocalStorageController {
 
     constructor() {
     }
@@ -100,4 +100,4 @@ class DatabaseController {
 
 }
 
-module.exports = DatabaseController;
+module.exports = LocalStorageController;

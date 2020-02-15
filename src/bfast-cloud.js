@@ -53,32 +53,10 @@ program
         }
     });
 
-// program
-//     .command('unlink')
-//     .description('remove your your remote bfast cloud project form local machine')
-//     .action(async (cdm) => {
-//         try {
-//             spinner.start();
-//             await _storage.getUser();
-//             await _storage._deleteCurrentProject();
-//             spinner.stop(true);
-//             console.log('bfast cloud project link destroyed.');
-//         } catch (e) {
-//             spinner.stop(true);
-//             if (e && e.message) {
-//                 console.log(e.message);
-//             } else {
-//                 console.log(e);
-//             }
-//         }
-//     });
-
-
-// error on unknown commands
 program.on('command:*', function () {
-    console.error('Invalid command: %s\n', program.args.join(' ')); // See --help" for a list of available commands.
+    console.error('Invalid command: %s\n', program.args.join(' '));
     program.help(help => {
-        return help.replace('bfast-project', 'bfast project');
+        return help.replace('bfast-cloud', 'bfast cloud');
     });
 });
 
@@ -86,7 +64,7 @@ program.parse(process.argv);
 
 if (process.argv.length === 2) {
     program.help(help => {
-        return help.replace('bfast-project', 'bfast project');
+        return help.replace('bfast-cloud', 'bfast cloud');
     });
 }
 

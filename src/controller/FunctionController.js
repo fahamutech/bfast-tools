@@ -1,10 +1,10 @@
 const glob = require('glob');
 const axios = require('axios');
 const ExpressApp = require('./ExpressAppController');
-const DatabaseController = require('./DatabaseController');
+const LocalStorage = require('./LocalStorageController');
 const ResourceFactory = require('./ResourceController');
 
-const _storage = new DatabaseController();
+const _storage = new LocalStorage();
 const _resourceFactory = new ResourceFactory();
 
 class FunctionController {
