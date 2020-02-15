@@ -159,9 +159,9 @@ program
     .action(async (cmd) => {
         try {
             spinner.start();
-            const response = await functionController.clearCustomDomain(process.cwd(), !!cmd.force);
+            await functionController.clearCustomDomain(process.cwd(), !!cmd.force);
             spinner.stop(true);
-            console.log(response);
+            console.log({message: 'Domain(s) removed'});
         } catch (e) {
             spinner.stop(true);
             console.log(e);

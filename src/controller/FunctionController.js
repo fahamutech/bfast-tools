@@ -19,8 +19,7 @@ class FunctionController {
                 ignore: bfastJSON.ignore
             });
             let functions = {
-                _init: {
-                }
+                _init: {}
             };
             files.forEach(file => {
                 const fileModule = require(file);
@@ -270,7 +269,7 @@ class FunctionController {
             const project = await _storage.getCurrentProject(projectDir);
             const projectId = project.projectId;
             const token = user.token;
-            console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
+            console.log(`\nCurrent linked bfast project ( projectId: ${projectId} )`);
             console.log(`start clear all custom domain(s)`);
             const response = await axios.delete(
                 `https://api.bfast.fahamutech.com/functions/${projectId}/domain?force=${force}`,
