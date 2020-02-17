@@ -11,6 +11,115 @@ const _projectController = new ProjectController();
 const _storage = new Database();
 
 program
+    .command('create')
+    .description('Create a new bfast cloud project')
+    .action(async (cmd) => {
+        try {
+            let lastMasterKey = '';
+            const user = await _storage.getUser();
+            let answer = await inquirer.prompt([
+                {
+                    type: 'text',
+                    validate: (value) => {
+                        if (value && value.toString().length >= 6) {
+                            return true;
+                        } else {
+                            return 'Project name required and must be at least 6 characters'
+                        }
+                    }, name: 'name', message: 'Enter project name :'
+                },
+                {
+                    type: 'text',
+                    validate: (value) => {
+                        if (value && value.toString().length >= 6) {
+                            return true;
+                        } else {
+                            return 'Project description required and must be at least 6 characters'
+                        }
+                    }, name: 'description', message: 'Enter project description :'
+                },
+                {
+                    type: 'text', validate: (value) => {
+                        if (value && value.toString().length >= 6) {
+                            const response = value.toString().search(new RegExp('^[0-9A-Za-z]+$'));
+                            if (response === -1) {
+                                return 'Project Id must be at least 6 characters and must be alphanumeric';
+                            }
+                            return true;
+                        } else {
+                            return 'Project Id is required and must be at least 6 characters';
+                        }
+                    }, name: 'projectId', message: 'Enter project ID :'
+                },
+                {
+                    type: 'text',
+                    validate: (value) => {
+                        if (value && value.toString().length >= 8) {
+                            return true;
+                        } else {
+                            return 'Application Id required and must be at least 8 characters'
+                        }
+                    },
+                    name: 'appId',
+                    message: 'Enter application Id :'
+                },
+                {
+                    type: 'password',
+                    validate: (value) => {
+                        if (value && value.toString().length >= 8) {
+                            lastMasterKey = value;
+                            return true;
+                        } else {
+                            return 'Application password required and must be at least 8 characters'
+                        }
+                    },
+                    mask: '*',
+                    name: 'masterKey',
+                    message: 'Enter application password :'
+                },
+                {
+                    type: 'password', validate: (value) => {
+                        if (value && value.toString().length >= 8) {
+                            if (value !== lastMasterKey) {
+                                return 'Application password does not match';
+                            } else {
+                                return true;
+                            }
+                        } else {
+                            return 'Application password required and must be at least 8 characters'
+                        }
+                    }, mask: '*', name: 'masterKey', message: 'Enter application password again :'
+                },
+            ]);
+            if (answer) {
+                lastMasterKey = undefined;
+                spinner.start();
+                await _projectController.create({
+                    name: answer.name,
+                    description: answer.description,
+                    projectId: answer.projectId,
+                    parse: {
+                        appId: answer.appId,
+                        masterKey: answer.masterKey
+                    }
+                }, user.token);
+                spinner.stop(true);
+                console.log("Project created.");
+                answer = undefined;
+            } else {
+                console.log('General failure, i can find your answers');
+            }
+        } catch (e) {
+            spinner.stop(true);
+            if (e && e.message) {
+                console.log(e.message);
+            } else {
+                console.log(e);
+            }
+        }
+    });
+
+program
     .command('link')
     .description('link your remote bfast cloud project with your local project')
     .action(async (cdm) => {
@@ -18,7 +127,7 @@ program
             spinner.start();
             await Utils.isBFastProject(process.cwd());
             const user = await _storage.getUser();
-            const projects = await _projectController.getMyProjects(user.token);
+            const projects = await _projectController.getMyProjects(user.token, 'bfast');
             let _projects = [];
             projects.forEach(project => {
                 const _p = {};
@@ -43,6 +152,45 @@ program
             }
             await _storage.saveCurrentProject(answer.project, process.cwd());
             console.log('Project linked, happy coding.');
+        } catch (e) {
+            spinner.stop(true);
+            if (e && e.message) {
+                console.log(e.message);
+            } else {
+                console.log(e);
+            }
+        }
+    });
+
+program
+    .command('delete')
+    .alias('rm')
+    .description('delete your remote bfast::cloud project')
+    .option('-t,--type <type>', 'specify project type either "bfast" or "ssm"')
+    .action(async (cdm) => {
+        try {
+            const user = await _storage.getUser();
+            spinner.start();
+            const projects = await _projectController.getMyProjects(user.token, cdm.type ? cdm.type : 'bfast');
+            let _projects = [];
+            projects.forEach(project => {
+                const _p = {};
+                _p.name = `${project.name} ( projectId: ${project.projectId} )`;
+                _p.value = project;
+                _projects.push(_p);
+            });
+            spinner.stop(true);
+            const answer = await inquirer.prompt({
+                type: 'list',
+                choices: _projects,
+                name: 'project',
+                message: 'Choose your bfast::cloud project'
+            });
+            spinner.start();
+            const response = await _projectController.deleteProject(answer.project.projectId, user.token);
+            spinner.stop(true);
+            console.log(response);
+
         } catch (e) {
             spinner.stop(true);
             if (e && e.message) {

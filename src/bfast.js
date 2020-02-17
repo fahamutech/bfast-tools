@@ -17,11 +17,11 @@ program
     .command('database', 'manage bfast::cloud database instance(s)', {executableFile: 'bfast-database'})
     .alias('db');
 
-/**
- * @deprecated will be removed in v0.4.x use `cloud` command instead
- */
-program
-    .command('project', 'manage user bfast projects ( deprecated )', {executableFile: 'bfast-project'});
+// /**
+//  * @deprecated will be removed in v0.4.x use `cloud` command instead
+//  */
+// program
+//     .command('project', 'manage user bfast projects ( deprecated )', {executableFile: 'bfast-project'});
 
 program
     .command('cloud', 'manage your bfast::cloud projects', {executableFile: 'bfast-cloud'});
