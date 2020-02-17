@@ -147,7 +147,7 @@ program
                 message: 'Choose your bfast cloud project to work with'
             });
             if (answer.project === '_new_') {
-                console.log("Please go to http://bfast.fahamutech.com to create new project");
+                console.log("Please run 'bfast cloud create'");
                 return;
             }
             await _storage.saveCurrentProject(answer.project, process.cwd());
@@ -171,7 +171,8 @@ program
         try {
             const user = await _storage.getUser();
             spinner.start();
-            const projects = await _projectController.getMyProjects(user.token, cdm.type ? cdm.type : 'bfast');
+            const projects = await _projectController.getMyProjects(user.token, cdm.type ? cdm.type : 'bfast' +
+                '');
             let _projects = [];
             projects.forEach(project => {
                 const _p = {};
