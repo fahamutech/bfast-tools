@@ -44,7 +44,6 @@ class ResourceController {
         }
     }
 
-
 }
 
 module.exports = ResourceController;

@@ -4,6 +4,7 @@ const nodemon = require("nodemon");
 const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');
+const inquirer = require('inquirer');
 
 const functionController = new FunctionController();
 
@@ -20,6 +21,58 @@ program
         } else {
             console.log('\nname format error');
             spinner.stop();
+        }
+    });
+
+program
+    .command('config')
+    .description('set up git integration for deployment in bfast::cloud')
+    .action(async (cmd) => {
+        try {
+            const answer = await inquirer.prompt([
+                {
+                    name: 'username',
+                    message: 'remote github/bitbucket username',
+                    type: 'text',
+                    validate: (username) => {
+                        if (username) {
+                            return true;
+                        } else {
+                            return 'username required'
+                        }
+                    }
+                },
+                {
+                    name: 'token',
+                    message: 'personal access token ( if repo is private )',
+                    type: 'text'
+                },
+                {
+                    name: 'url',
+                    message: 'remote repository url',
+                    type: 'text',
+                    validate: (url) => {
+                        if (url) {
+                            if (url.toString().startsWith('http') && url.toString().search('://') !== -1 && url.toString().endsWith('.git')) {
+                                return true;
+                            } else {
+                                return 'must be a url and must start with http or https and ends with .git';
+                            }
+                        } else {
+                            return 'repository url required'
+                        }
+                    }
+                },
+            ]);
+            spinner.start();
+            const envs = [];
+            envs.push(`GIT_USERNAME=${answer.username}`, answer.token ? `GIT_TOKEN=${answer.token}` : '', `GIT_CLONE_URL=${answer.url}`);
+            const response = await functionController.addEnv(process.cwd(), envs, !!cmd.force);
+            spinner.stop(true);
+            console.log(response);
+        } catch (e) {
+            spinner.stop(true);
+            console.log(e);
         }
     });
 
@@ -168,7 +221,6 @@ program
         }
     });
 
-
 program.on('command:*', function () {
     console.error('Invalid command: %s\n', program.args.join(' ')); // See --help" for a list of available commands.
     program.help(help => {
@@ -183,4 +235,3 @@ if (process.argv.length === 2) {
         return help.replace('bfast-functions', 'bfast functions');
     });
 }
-

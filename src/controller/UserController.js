@@ -1,9 +1,11 @@
 const axios = require('axios');
+const BFastJs = require("../bfast");
 
 class UserController {
+
     async login(email, password) {
         try {
-            const response = await axios.post('https://api.bfast.fahamutech.com/users/login', {
+            const response = await axios.post(`${BFastJs.clusterApiUrl()}/users/login`, {
                 email: email,
                 password: password
             }, {
@@ -23,7 +25,7 @@ class UserController {
 
     async logout(token) {
         try {
-            const response = await axios.post('https://api.bfast.fahamutech.com/users/logout', {
+            const response = await axios.post(`${BFastJs.clusterApiUrl()}/users/logout`, {
                 token: token
             }, {
                 headers: {

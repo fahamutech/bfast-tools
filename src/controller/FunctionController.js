@@ -3,6 +3,7 @@ const axios = require('axios');
 const ExpressApp = require('./ExpressAppController');
 const LocalStorage = require('./LocalStorageController');
 const ResourceFactory = require('./ResourceController');
+const BFastJs = require("../bfast");
 
 const _storage = new LocalStorage();
 const _resourceFactory = new ResourceFactory();
@@ -51,7 +52,7 @@ class FunctionController {
                             'check if your current directory is bfast project and bfast.json file exist');
                     }
                 } catch (e) {
-                    reject('can not serve project, error : not in bfast project folder');
+                    reject('Not in bfast project folder');
                 }
             });
         }
@@ -63,16 +64,17 @@ class FunctionController {
 
     /**
      * create a bootstrap project for bfast cloud functions
-     * @param projectDir {string} a workspace
+     * @param projectDir {string} absolute path to create a workspace
      */
     initiateFunctionsFolder(projectDir) {
         return _resourceFactory.createProjectFolder(projectDir)
     }
 
     /**
-     * serve cloud functions locally
-     * @param projectDir
+     * start development server locally to host your cloud functions
+     * @param projectDir {string} absolute path to your functions
      * @param port
+     * @return {void}
      */
     serve(projectDir, port) {
         try {
@@ -84,15 +86,16 @@ class FunctionController {
                 console.log('not in project folder or project file is invalid');
             }
         } catch (e) {
-            console.log('can not serve project, error : not in bfast project folder');
+            console.log(e);
         }
     }
 
     /**
-     * Deploy project to bfast cloud
-     * @param projectDir
-     * @param force
+     * Deploy your functions to bfast cloud instance
+     * @param projectDir {string} absolute path to your functions workspace
+     * @param force {boolean} if true will restart functions instance immediately
      * @param options {{token: string, projectId: string}}
+     * @return {Promise}
      */
     async deploy(projectDir, force = false, options) {
         try {
@@ -110,7 +113,7 @@ class FunctionController {
             }
             console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
             const response = await axios.post(
-                `https://api.bfast.fahamutech.com/functions/${projectId}?force=${force}`,
+                `${BFastJs.clusterApiUrl()}/functions/${projectId}?force=${force}`,
                 {},
                 {
                     headers: {
@@ -132,6 +135,13 @@ class FunctionController {
         }
     }
 
+    /**
+     * Add environment(s) variable to bfast cloud function instance
+     * @param projectDir {string} absolute path to functions workspace
+     * @param envs {string[]} env(s) to add
+     * @param force {boolean} should restart cloud functions instance immediately
+     * @return {Promise}
+     */
     async addEnv(projectDir, envs, force = false) {
         if (envs && Array.isArray(envs)) {
             try {
@@ -143,7 +153,7 @@ class FunctionController {
                 console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
                 console.log('start add cloud functions environment(s)');
                 const response = await axios.post(
-                    `https://api.bfast.fahamutech.com/functions/${projectId}/env?force=${force}`,
+                    `${BFastJs.clusterApiUrl()}/functions/${projectId}/env?force=${force}`,
                     {
                         envs: envs
                     },
@@ -167,6 +177,13 @@ class FunctionController {
         }
     }
 
+    /**
+     * Remove environment(s) variable from bfast cloud function instance
+     * @param projectDir {string} absolute path to your bfast functions workspace locally
+     * @param envs {string[]} env(s) to remove
+     * @param force {boolean} should restart cloud functions instance immediately
+     * @return {Promise}
+     */
     async removeEnv(projectDir, envs, force = false) {
         try {
             if (envs && Array.isArray(envs)) {
@@ -178,7 +195,7 @@ class FunctionController {
                 console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
                 console.log('start removing cloud functions environment(s)');
                 const response = await axios.delete(
-                    `https://api.bfast.fahamutech.com/functions/${projectId}/env?force=${force}`,
+                    `${BFastJs.clusterApiUrl()}/functions/${projectId}/env?force=${force}`,
                     {
                         headers: {
                             'content-type': 'application/json',
@@ -202,6 +219,13 @@ class FunctionController {
         }
     }
 
+    /**
+     * Switch on and off cloud function instance. NOTE: If switch on it will reset your cloud functions instance to 1
+     * @param projectDir {string} absolute path to your bfast functions workspace
+     * @param mode {number} 1=on, 0=off
+     * @param force {boolean}
+     * @return {Promise}
+     */
     async switch(projectDir, mode = 1, force = false) {
         try {
             await this._checkIsBFastProjectFolder(projectDir);
@@ -212,7 +236,7 @@ class FunctionController {
             console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
             console.log(`start switching ${mode === 1 ? 'on' : 'off'}`);
             const response = await axios.post(
-                `https://api.bfast.fahamutech.com/functions/${projectId}/switch/${mode}?force=${force}`,
+                `${BFastJs.clusterApiUrl()}/functions/${projectId}/switch/${mode}?force=${force}`,
                 {},
                 {
                     headers: {
@@ -241,7 +265,7 @@ class FunctionController {
             console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
             console.log(`start adding custom domain`);
             const response = await axios.post(
-                `https://api.bfast.fahamutech.com/functions/${projectId}/domain?force=${force}`,
+                `${BFastJs.clusterApiUrl()}/functions/${projectId}/domain?force=${force}`,
                 {
                     domain: domain
                 },
@@ -272,7 +296,7 @@ class FunctionController {
             console.log(`\nCurrent linked bfast project ( projectId: ${projectId} )`);
             console.log(`start clear all custom domain(s)`);
             const response = await axios.delete(
-                `https://api.bfast.fahamutech.com/functions/${projectId}/domain?force=${force}`,
+                `${BFastJs.clusterApiUrl()}/functions/${projectId}/domain?force=${force}`,
                 {
                     headers: {
                         'content-type': 'application/json',

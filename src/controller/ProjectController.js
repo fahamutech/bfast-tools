@@ -1,4 +1,5 @@
 const axios = require('axios');
+const BFastJs = require("../bfast");
 
 class ProjectController {
 
@@ -10,7 +11,7 @@ class ProjectController {
      */
     async deleteProject(projectId, token) {
         try {
-            const response = await axios.delete(`https://api.bfast.fahamutech.com/projects/${projectId}`, {
+            const response = await axios.delete(`${BFastJs.clusterApiUrl()}/projects/${projectId}`, {
                 headers: {
                     'authorization': `Bearer ${token}`
                 }
@@ -45,7 +46,7 @@ class ProjectController {
      */
     async create(project, token) {
         try {
-            const response = await axios.post('https://api.bfast.fahamutech.com/projects/bfast', project, {
+            const response = await axios.post(`${BFastJs.clusterApiUrl()}/projects/bfast`, project, {
                 headers: {
                     'authorization': `Bearer ${token}`
                 }
@@ -66,15 +67,18 @@ class ProjectController {
 
     /**
      * @param token {string}
-     * @param type {'ssm' | 'bfast'}
+     * @param type {'ssm' | 'bfast' | null}
      */
     async getMyProjects(token, type) {
         try {
-            const response = await axios.get('https://api.bfast.fahamutech.com/projects', {
+            const response = await axios.get(`${BFastJs.clusterApiUrl()}/projects`, {
                 headers: {
                     'authorization': `Bearer ${token}`
                 }
             });
+            if (!type) {
+                return response.data;
+            }
             return response.data.filter(value => (value.type && value.type === type));
         } catch (reason) {
             if (reason && reason.response) {

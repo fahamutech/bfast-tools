@@ -1,11 +1,11 @@
 {
   "name": "bfast-tools",
-  "version": "0.3.3",
-  "description": "tools to manage bfast cloud projects",
+  "version": "0.4.1",
+  "description": "Tools to manage bfast cloud projects",
   "private": false,
   "preferGlobal": true,
   "bin": {
-    "bfast": "src/bfast.js"
+    "bfast": "src/cli.js"
   },
   "scripts": {
     "test": "echo \\\"no test\\\""
@@ -19,7 +19,7 @@
     "cloud",
     "functions"
   ],
-  "author": "Joshua (mama27j@gmail.com)",
+  "author": "FahamuTech (fahamutechdevelopers@gmail.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/fahamutech/bfast-tools/issues"
