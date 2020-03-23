@@ -28,19 +28,19 @@
   "dependencies": {
     "axios": "^0.19.2",
     "cli-spinner": "^0.2.10",
-    "commander": "^4.0.0",
-    "cookie-parser": "^1.4.4",
+    "commander": "^4.1.1",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs-extra": "^8.1.0",
-    "glob": "^7.1.5",
-    "inquirer": "^7.0.4",
-    "morgan": "^1.9.1",
+    "glob": "^7.1.6",
+    "inquirer": "^7.1.0",
+    "morgan": "^1.10.0",
     "nedb": "^1.8.0",
     "nodemon": "^2.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.2.2"
+    "mocha": "^7.1.1"
   }
 }
