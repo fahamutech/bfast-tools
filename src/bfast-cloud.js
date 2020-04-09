@@ -12,6 +12,7 @@ const _storage = new Database();
 
 program
     .command('create')
+    .alias('new')
     .description('Create a new bfast cloud project')
     .action(async (cmd) => {
         try {
@@ -121,6 +122,7 @@ program
 
 program
     .command('link')
+    .alias('ln')
     .description('link your remote bfast cloud project with your local project')
     .action(async (cdm) => {
         try {
@@ -163,6 +165,41 @@ program
     });
 
 program
+    .command('list')
+    .alias('ls')
+    .option('-t,--type <type>', 'specify project type either e.g bfast')
+    .description('list your remote bfast cloud projects')
+    .action(async (cdm) => {
+        try {
+            spinner.start();
+            const user = await _storage.getUser();
+            const projects = await _projectController.getMyProjects(user.token, cdm.type);
+            let _projects = [];
+            projects.forEach(project => {
+                const _p = {};
+                _p.name = `${project.name} ( projectId: ${project.projectId} )`;
+                _p.value = project;
+                _projects.push(_p);
+            });
+            spinner.stop(true);
+            const answer = await inquirer.prompt({
+                type: 'list',
+                choices: _projects,
+                name: 'project',
+                message: 'Choose your bfast cloud project to work with'
+            });
+            console.log(answer.project);
+        } catch (e) {
+            spinner.stop(true);
+            if (e && e.message) {
+                console.log(e.message);
+            } else {
+                console.log(e);
+            }
+        }
+    });
+
+program
     .command('delete')
     .alias('rm')
     .description('delete your remote bfast::cloud project')
@@ -171,8 +208,7 @@ program
         try {
             const user = await _storage.getUser();
             spinner.start();
-            const projects = await _projectController.getMyProjects(user.token, cdm.type ? cdm.type : 'bfast' +
-                '');
+            const projects = await _projectController.getMyProjects(user.token, cdm.type ? cdm.type : null);
             let _projects = [];
             projects.forEach(project => {
                 const _p = {};
@@ -202,6 +238,70 @@ program
         }
     });
 
+program
+    .command('add-member')
+    .description('add member to your cloud project')
+    .action(async (cdm) => {
+        try {
+            const user = await _storage.getUser();
+            let userModel = await inquirer.prompt([
+                {
+                    type: 'text',
+                    validate: (value) => {
+                        if (value) {
+                            const response = value.toString().search(
+                                new RegExp('^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$'));
+                            if (response === -1) {
+                                console.log('\nPlease enter a valid email');
+                                return false;
+                            }
+                            return true;
+                        } else {
+                            return 'email required'
+                        }
+                    }, name: 'email', message: 'Enter user email :'
+                },
+                {
+                    type: 'text',
+                    validate: (value) => {
+                        if (value && value.toString().length >= 4) {
+                            return true;
+                        } else {
+                            return 'User display name required and must be at least 4 characters'
+                        }
+                    }, name: 'displayName', message: 'Enter user display name :'
+                },
+            ]);
+            spinner.start();
+            const projects = await _projectController.getMyProjects(user.token, null);
+            let _projects = [];
+            projects.forEach(project => {
+                const _p = {};
+                _p.name = `${project.name} ( projectId: ${project.projectId} )`;
+                _p.value = project;
+                _projects.push(_p);
+            });
+            spinner.stop(true);
+            const answer = await inquirer.prompt({
+                type: 'list',
+                choices: _projects,
+                name: 'project',
+                message: 'Choose your bfast cloud project to work with'
+            });
+            spinner.start();
+            await _projectController.addMember(user.token, answer.project.projectId, userModel);
+            spinner.stop(true);
+            console.log('member added to a project');
+        } catch (e) {
+            spinner.stop(true);
+            if (e && e.message) {
+                console.log(e.message);
+            } else {
+                console.log(e);
+            }
+        }
+    });
+
 program.on('command:*', function () {
     console.error('Invalid command: %s\n', program.args.join(' '));
     program.help(help => {
@@ -216,4 +316,3 @@ if (process.argv.length === 2) {
         return help.replace('bfast-cloud', 'bfast cloud');
     });
 }
-

@@ -1,7 +1,7 @@
 const axios = require('axios');
 const Utils = require('./utils');
 const LocalStorage = require('./LocalStorageController');
-const BFastJs = require("../bfast");
+const BFastJs = require("../bfast-tools");
 const _storage = new LocalStorage();
 
 class DatabaseController {
@@ -18,7 +18,7 @@ class DatabaseController {
             const user = await _storage.getUser();
             console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
             console.log(`Start switching dashboard ${mode === 0 ? 'off' : 'on'}`);
-            const response = await axios.post(`${BFastJs.clusterApiUrl()}/dashboard/${projectId}/switch/${mode}?force=${force}`,
+            const response = await axios.post(`${await BFastJs.clusterApiUrl()}/dashboard/${projectId}/switch/${mode}?force=${force}`,
                 {},
                 {
                     headers: {
@@ -53,7 +53,7 @@ class DatabaseController {
             await Utils.isBFastProject(projectDir);
             const project = await _storage.getCurrentProject(projectDir);
             console.log(`\nCurrent linked bfast project ( projectId: ${project.projectId})`);
-            const response = await axios.post(`${BFastJs.clusterApiUrl()}/database/${project.projectId}/liveQuery?force=${force}`,
+            const response = await axios.post(`${await BFastJs.clusterApiUrl()}/database/${project.projectId}/liveQuery?force=${force}`,
                 {
                     classNames: classes
                 },

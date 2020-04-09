@@ -1,5 +1,5 @@
 const axios = require('axios');
-const BFastJs = require("../bfast");
+const BFastJs = require("../bfast-tools");
 
 class ProjectController {
 
@@ -11,7 +11,7 @@ class ProjectController {
      */
     async deleteProject(projectId, token) {
         try {
-            const response = await axios.delete(`${BFastJs.clusterApiUrl()}/projects/${projectId}`, {
+            const response = await axios.delete(`${await BFastJs.clusterApiUrl()}/projects/${projectId}`, {
                 headers: {
                     'authorization': `Bearer ${token}`
                 }
@@ -46,7 +46,7 @@ class ProjectController {
      */
     async create(project, token) {
         try {
-            const response = await axios.post(`${BFastJs.clusterApiUrl()}/projects/bfast`, project, {
+            const response = await axios.post(`${await BFastJs.clusterApiUrl()}/projects/bfast`, project, {
                 headers: {
                     'authorization': `Bearer ${token}`
                 }
@@ -71,7 +71,7 @@ class ProjectController {
      */
     async getMyProjects(token, type) {
         try {
-            const response = await axios.get(`${BFastJs.clusterApiUrl()}/projects`, {
+            const response = await axios.get(`${await BFastJs.clusterApiUrl()}/projects`, {
                 headers: {
                     'authorization': `Bearer ${token}`
                 }
@@ -80,6 +80,27 @@ class ProjectController {
                 return response.data;
             }
             return response.data.filter(value => (value.type && value.type === type));
+        } catch (reason) {
+            if (reason && reason.response) {
+                throw reason.response.data;
+            } else if (reason.message) {
+                throw reason.message;
+            } else if (typeof reason === 'object') {
+                throw reason;
+            } else {
+                throw reason.toString();
+            }
+        }
+    }
+
+    async addMember(token, projectId, user) {
+        try {
+            const response = await axios.post(`${await BFastJs.clusterApiUrl()}/projects/${projectId}/members`, user, {
+                headers: {
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            return response.data;
         } catch (reason) {
             if (reason && reason.response) {
                 throw reason.response.data;

@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-const BFastJs = require('./bfast');
-const bfast = new BFastJs({
-    clusterApiUrl: 'https://api.bfast.fahamutech.com'
-});
+const BfastTools = require('./bfast-tools');
+const bfast = new BfastTools();
 bfast.cli();

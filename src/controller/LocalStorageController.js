@@ -1,7 +1,7 @@
 const NeDb = require('nedb');
 const os = require('os');
 const path = require('path');
-const storage = new NeDb({filename: path.join(os.homedir(),'/.bfastdb'), autoload: true});
+const storage = new NeDb({filename: path.join(os.homedir(), '/.bfastdb'), autoload: true});
 const ResourceController = require('./ResourceController');
 const _resource = new ResourceController();
 
@@ -10,6 +10,11 @@ class LocalStorageController {
     constructor() {
     }
 
+    /**
+     *
+     * @param user
+     * @return {Promise<unknown>}
+     */
     saveUser(user) {
         return new Promise(async (resolve, reject) => {
             try {
@@ -32,11 +37,14 @@ class LocalStorageController {
         });
     }
 
+    /**
+     *
+     * @return {Promise<unknown>}
+     */
     getUser() {
         return new Promise((resolve, reject) => {
             storage.findOne({_id: 'user'}, function (error, value) {
                 if (error) {
-                    console.log(error);
                     reject({message: 'Fail to get current user', reason: error.toString()});
                 } else if (value) {
                     resolve(value);
@@ -72,6 +80,12 @@ class LocalStorageController {
         });
     }
 
+    /**
+     *
+     * @param project
+     * @param projectDir
+     * @return {Promise<unknown>}
+     */
     saveCurrentProject(project, projectDir) {
         return new Promise(async (resolve, reject) => {
             try {
@@ -86,6 +100,11 @@ class LocalStorageController {
         })
     }
 
+    /**
+     *
+     * @return {Promise<unknown>}
+     * @private
+     */
     _deleteCurrentUser() {
         return new Promise((resolve, reject) => {
             storage.remove({_id: 'user'}, {multi: true}, function (err, numRemoved) {
@@ -97,6 +116,46 @@ class LocalStorageController {
             });
         });
     };
+
+    /**
+     * save tool settings
+     * @param settings {{
+     *     cloudUrl: string
+     * }}
+     * @return {Promise<{cloudUrl: string}>}
+     */
+    saveSettings(settings) {
+        return new Promise((resolve, reject) => {
+            settings['_id'] = '_settings';
+            storage.insert(settings, function (error, newDoc) {
+                if (error) {
+                    reject({message: 'Err when try to save settings'});
+                } else {
+                    resolve({message: 'Settings saved', doc: newDoc});
+                }
+            });
+        });
+    }
+
+    /**
+     * get current settings of a tool
+     * @return {Promise<{cloudUrl: string}>}
+     */
+    getSettings() {
+        return new Promise((resolve, reject) => {
+            storage.findOne({_id: '_settings'}, function (error, value) {
+                if (error) {
+                    reject({message: 'Fail to get current user', reason: error.toString()});
+                } else if (value) {
+                    resolve(value);
+                } else {
+                    reject({
+                        message: 'No settings records found'
+                    });
+                }
+            });
+        });
+    }
 
 }
 

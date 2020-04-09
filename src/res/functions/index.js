@@ -1,5 +1,5 @@
-// Create and Deploy Your First BFast Function
-
+// const {BFast} = require('bfastnode');
+// BFast.init({projectId: <YOUR_PROJECT_ID>, applicationId: <YOUR_APPLICATION_ID>});
 
 // exports.helloWorld = {
 //     path: '/helloWorld',

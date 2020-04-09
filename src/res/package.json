@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "description": "Cloud Functions for BFast",
   "scripts": {
+    "start": "npx bfast fs serve --port 3000",
+    "test": "echo \"no test\""
   },
   "engines": {
     "node": "10"
   },
   "dependencies": {
+    "bfastnode": "^1.1.0"
   },
   "devDependencies": {
+    "bfast-tools": "^0.4.3"
   },
   "private": true
 }

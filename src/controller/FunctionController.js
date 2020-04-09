@@ -3,7 +3,7 @@ const axios = require('axios');
 const ExpressApp = require('./ExpressAppController');
 const LocalStorage = require('./LocalStorageController');
 const ResourceFactory = require('./ResourceController');
-const BFastJs = require("../bfast");
+const BFastJs = require("../bfast-tools");
 
 const _storage = new LocalStorage();
 const _resourceFactory = new ResourceFactory();
@@ -113,7 +113,7 @@ class FunctionController {
             }
             console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
             const response = await axios.post(
-                `${BFastJs.clusterApiUrl()}/functions/${projectId}?force=${force}`,
+                `${await BFastJs.clusterApiUrl()}/functions/${projectId}?force=${force}`,
                 {},
                 {
                     headers: {
@@ -153,7 +153,7 @@ class FunctionController {
                 console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
                 console.log('start add cloud functions environment(s)');
                 const response = await axios.post(
-                    `${BFastJs.clusterApiUrl()}/functions/${projectId}/env?force=${force}`,
+                    `${await BFastJs.clusterApiUrl()}/functions/${projectId}/env?force=${force}`,
                     {
                         envs: envs
                     },
@@ -195,7 +195,7 @@ class FunctionController {
                 console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
                 console.log('start removing cloud functions environment(s)');
                 const response = await axios.delete(
-                    `${BFastJs.clusterApiUrl()}/functions/${projectId}/env?force=${force}`,
+                    `${await BFastJs.clusterApiUrl()}/functions/${projectId}/env?force=${force}`,
                     {
                         headers: {
                             'content-type': 'application/json',
@@ -236,7 +236,7 @@ class FunctionController {
             console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
             console.log(`start switching ${mode === 1 ? 'on' : 'off'}`);
             const response = await axios.post(
-                `${BFastJs.clusterApiUrl()}/functions/${projectId}/switch/${mode}?force=${force}`,
+                `${await BFastJs.clusterApiUrl()}/functions/${projectId}/switch/${mode}?force=${force}`,
                 {},
                 {
                     headers: {
@@ -265,7 +265,7 @@ class FunctionController {
             console.log(`\nCurrent linked bfast project ( projectId: ${projectId})`);
             console.log(`start adding custom domain`);
             const response = await axios.post(
-                `${BFastJs.clusterApiUrl()}/functions/${projectId}/domain?force=${force}`,
+                `${await BFastJs.clusterApiUrl()}/functions/${projectId}/domain?force=${force}`,
                 {
                     domain: domain
                 },
@@ -296,7 +296,7 @@ class FunctionController {
             console.log(`\nCurrent linked bfast project ( projectId: ${projectId} )`);
             console.log(`start clear all custom domain(s)`);
             const response = await axios.delete(
-                `${BFastJs.clusterApiUrl()}/functions/${projectId}/domain?force=${force}`,
+                `${await BFastJs.clusterApiUrl()}/functions/${projectId}/domain?force=${force}`,
                 {
                     headers: {
                         'content-type': 'application/json',
