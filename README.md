@@ -1,18 +1,78 @@
 # bfast-tools
-CLI tools for manage your project(s) in [BFast::Cloud](https://cloud.bfast.fahamutech.com).
-
-## Get stated
-Install package from npm by `npm i -g bfast-tools`
+CLI tools for manage your project ( s ) in [BFast::Cloud](https://bfast.fahamutech.com).
 
 ## Pre request
-* See [CHANGELOG](CHANGELOG.md) to see whats changed depend on version
-* Download and install [NodeJs](https://nodejs.org/en/download/) in your local PC. If you have it your good to go
+
+* Download and install [NodeJs](https://nodejs.org/en/download/) in your local PC. If you have it your good to go.
+
+## Get stated
+Install package from npm by run for linux: `sudo npm install -g bfast-tools`. For windows run: `npm install -g bfast-tools`
+
+## BFast::Cloud Projects
+
+You use this sub command to manage your remote bfast projects. `bfast cloud` for more commands.
+
+### Create a new project
+
+Run the following command to create a new project
+```shell script
+josh@xps:~/Desktop$ bfast cloud create
+```
+
+### List all projects
+
+Run the following command to list all projects exist to your bfast cloud account
+```shell script
+josh@xps:~/Desktop$ bfast cloud list
+```
+
+### Delete project
+
+Run the following command to delete exist project to your bfast cloud account
+```shell script
+josh@xps:~/Desktop$ bfast cloud delete
+```
+
+### Add a member to you project
+
+Run the following command to add exist user of bfast to your bfast cloud account
+```shell script
+josh@xps:~/Desktop$ bfast cloud add-member
+```
+
+## BFast::Cloud Database
+
+You can manage your database instance using this sub command `bfast database`.
+
+### Switch dashboard on
+
+You can switch a dashboard on for data browser.
+```shell script
+josh@xps:~/Desktop$ bfast database dashboard-on
+```
+
+### Switch dashboard off
+
+You can switch a dashboard off for data browser.
+```shell script
+josh@xps:~/Desktop$ bfast database dashboard-off
+```
+
+### Add a collection to a realtime engine
+
+You must add manually a specif collection/table/domain to a realtime engine to subscribe to its events.
+```shell script
+josh@xps:~/Desktop$ bfast database realtime  col1 col2 col3 ...
+```
 
 ## BFast::Cloud Functions
 
+Write your system functions with zero effort. Sub command to manage your functions is `bfast functions` 
+or `bfast fs` or `bfast fn`
+
 ### Create a workspace
 
-run `bfast functions create <projectName>`. For example 
+run `bfast functions create <projectName>`. For example. 
 ```shell script
 josh@xps:~/Desktop$ bfast functions create bfastDemoFaas
 ```
@@ -21,6 +81,11 @@ after that navigate inside your project directory.
 ```shell script
 josh@xps:~/Desktop$ cd bfastDemoFaas
 josh@xps:~/Desktop/bfastDemoFaas$ 
+```
+
+after that install dependencies 
+```shell script
+josh@xps:~/Desktop/bfastDemoFaas$ npm install
 ```
 
 Inside your workspace folder you will find a following folder structure
@@ -34,9 +99,9 @@ Inside your workspace folder you will find a following folder structure
 |__ bfast.json
 ```
 
-Open `index.js` in your favorite text editor. You will see a function example.
+Open `index.js` in your favorite text editor. You will see a commented  example.
 
-File `bfast.json` contain information of your BFast::Cloud project, leave it for now.
+File `bfast.json` contain information of your BFast::Cloud project.
 
 ### Write your custom functions
 
@@ -117,7 +182,7 @@ exports.functionNameUsingExpressApp = {
 ```
 
 **NOTE**
-'path' property is optional when used must start with '/' if not used your functon 
+'path' property is optional when used must start with '/' if not used your function 
 will be available as `<hostname>/functions/<functionNameExported>`
 
 ### Serve functions locally
@@ -126,15 +191,21 @@ In your current project folder, run following script
 
 * Start a dev server ( auto restart when you change or edit a function )
 ```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ bfast functions serve --port 3000
+josh@xps:~/Desktop/bfastDemoFaas$ npx bfast functions serve --port 3000
+```
+
+Or
+
+```shell script
+josh@xps:~/Desktop/bfastDemoFaas$ npm start
 ```
 
 * Start a static server which do not auto restart when you change or edit files in working directory
 ```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ bfast functions serve --port 3000 --static
+josh@xps:~/Desktop/bfastDemoFaas$ npx bfast functions serve --port 3000 --static
 ```
 
-Default port is 3000 but you can change it by change a value of `port` option.
+Default port is 3000, but you can change it by change a value of `port` option.
 
 When everything is ok, you will see `FaaS Engine Listening on 3000` or any port number you specify.
 
@@ -168,20 +239,20 @@ After open account now you create your new project and you go to next step
 #### Login from your computer
 Login from your computer by run.
 ```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ bfast user login --username <PUT_EMAIL_YOU_USE_TO_OPEN_BFAST_ACCOUNT>
+josh@xps:~/Desktop/bfastDemoFaas$ bfast user login
 ```
 
 #### Link your local project to remote bfast project
-Run thr following in your bfast local project folder
+Run their following in your bfast local project folder
 ```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ bfast project link
+josh@xps:~/Desktop/bfastDemoFaas$ bfast cloud link
 ```
 
 #### Set git environments
 
-We use git to deploy your functions to bfast cloud function instance(s). Run thr following to set up git environments
+We use git to deploy your functions to bfast cloud function instance(s). Run thr following to set up git environments.
 ```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ bfast functions env-add GIT_USERNAME=yourUsername GIT_TOKEN=personalAccessToken GIT_CLONE_URL=repositoryUrlForYourProject
+josh@xps:~/Desktop/bfastDemoFaas$ bfast functions config
 ```
 
 #### To publish your functions
@@ -190,6 +261,8 @@ josh@xps:~/Desktop/bfastDemoFaas$ bfast functions env-add GIT_USERNAME=yourUsern
 ```shell script
 josh@xps:~/Desktop/bfastDemoFaas$ bfast functions deploy
 ```
+
+*NOTE* You must push your project to a git repository you specify. BFast will look from master branch for functions.
 
 #### Continuous Integration
 

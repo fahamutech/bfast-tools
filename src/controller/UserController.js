@@ -5,8 +5,7 @@ class UserController {
 
     async login(email, password) {
         try {
-            console.log(BFastJs);
-            const response = await axios.post(`${BFastJs.clusterApiUrl()}/users/login`, {
+            const response = await axios.post(`${await BFastJs.clusterApiUrl()}/users/login`, {
                 email: email,
                 password: password
             }, {
@@ -16,7 +15,6 @@ class UserController {
             });
             return response.data;
         } catch (e) {
-            console.log(e);
             if (e.response) {
                 throw e.response.data
             } else {

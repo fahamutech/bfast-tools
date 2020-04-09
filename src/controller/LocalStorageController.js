@@ -116,6 +116,17 @@ class LocalStorageController {
             });
         });
     };
+    _deleteCurrentSettings() {
+        return new Promise((resolve, reject) => {
+            storage.remove({_id: '_settings'}, {multi: true}, function (err, numRemoved) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(numRemoved);
+                }
+            });
+        });
+    };
 
     /**
      * save tool settings
@@ -125,15 +136,21 @@ class LocalStorageController {
      * @return {Promise<{cloudUrl: string}>}
      */
     saveSettings(settings) {
-        return new Promise((resolve, reject) => {
-            settings['_id'] = '_settings';
-            storage.insert(settings, function (error, newDoc) {
-                if (error) {
-                    reject({message: 'Err when try to save settings'});
-                } else {
-                    resolve({message: 'Settings saved', doc: newDoc});
-                }
-            });
+        return new Promise(async (resolve, reject) => {
+            try{
+                await this._deleteCurrentSettings();
+                settings['_id'] = '_settings';
+                storage.insert(settings, function (error, newDoc) {
+                    if (error) {
+                        console.log(error);
+                        reject({message: 'Err when try to save settings'});
+                    } else {
+                        resolve({message: 'Settings saved', doc: newDoc});
+                    }
+                });
+            }catch (e) {
+                throw e;
+            }
         });
     }
 
