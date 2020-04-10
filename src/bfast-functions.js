@@ -96,23 +96,28 @@ program
             console.log(e);
         }
     });
-
 program
     .command('serve')
     .option('-f, --force', "force update of cloud function immediately")
     .option('-p, --port <port>', "port to serve cloud functions local", 3000)
+    .option('-d, --mongodb-url <mongodb-url>', "path to local mongodb", 'no')
     .option('--static', 'start in static mode without auto restart when files changes')
     .description('host functions local for test and development')
     .action((cmd) => {
+        // process.env.MONGOMS_DEBUG = 1;
+        process.env.DEV_WORK_DIR = process.cwd();
+        process.env.DEV_PORT = cmd.port;
+        process.env.MONGO_URL = cmd["mongodbUrl"];
+        process.env.APPLICATION_ID = 'bfast_debug_appId';
+        process.env.MASTER_KEY = 'bfast_debug_masterKey';
+        process.env.DEV_ENV = 'true';
         if (cmd.static) {
             functionController.serve(process.cwd(), cmd.port);
         } else {
-            process.env.DEV_WORK_DIR = process.cwd();
-            process.env.DEV_PORT = cmd.port;
             nodemon({
                 script: `${__dirname}/controller/devServer`,
                 ext: 'js json',
-                cwd: process.cwd()
+                cwd: process.cwd() + '/functions'
             });
             nodemon.on('start', function () {
                 console.log('auto restart dev server has started');

@@ -11,6 +11,7 @@ const _resourceFactory = new ResourceFactory();
 class FunctionController {
 
     constructor() {
+
         this._getFunctions = (projectDir) => {
             let bfastJSON = require(`${projectDir}/bfast.json`);
             const bfastStringfied = JSON.stringify(bfastJSON);
@@ -31,8 +32,9 @@ class FunctionController {
             });
             return functions;
         };
+
         this._serveFunctions = (functions, port) => {
-            new ExpressApp({functions, port}).start();
+            new ExpressApp({functions, port}).start().catch(console.log);
         };
 
         /**

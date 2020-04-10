@@ -57,11 +57,9 @@ class BfastJs {
         program
             .command('functions', 'manage bfast cloud functions', {executableFile: 'bfast-functions'})
             .alias('fs')
-            .alias('fn');
         program
             .command('user', 'manage user account', {executableFile: 'bfast-user'})
             .alias('me')
-            .alias('account');
         program
             .command('database', 'manage bfast::cloud database instance(s)', {executableFile: 'bfast-database'})
             .alias('db');
