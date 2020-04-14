@@ -55,7 +55,7 @@ program
                 {
                     type: 'text',
                     validate: (value) => {
-                        if (value && value.toString().length >= 8) {
+                        if (value && value.toString().length >= 6) {
                             return true;
                         } else {
                             return 'Application Id required and must be at least 8 characters'
