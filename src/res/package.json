@@ -9,7 +9,7 @@
     "node": "10"
   },
   "dependencies": {
-    "bfastnode": "^1.2.0"
+    "bfastnode": "^1.2.3"
   },
   "devDependencies": {
   },

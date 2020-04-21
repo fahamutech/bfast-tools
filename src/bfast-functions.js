@@ -5,6 +5,7 @@ const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');
 const inquirer = require('inquirer');
+const {Utils} = require('./utlis/utils');
 
 const functionController = new FunctionController();
 
@@ -96,22 +97,30 @@ program
             console.log(e);
         }
     });
+
 program
     .command('serve')
-    .option('-f, --force', "force update of cloud function immediately")
     .option('-p, --port <port>', "port to serve cloud functions local", 3000)
     .option('-d, --mongodb-url <mongodb-url>', "path to local mongodb", 'no')
     .option('--static', 'start in static mode without auto restart when files changes')
+    .option('--appId', 'Application Id')
+    .option('--masterKey', 'Application master key')
     .description('host functions local for test and development')
     .action((cmd) => {
         // process.env.MONGOMS_DEBUG = 1;
         process.env.DEV_WORK_DIR = process.cwd();
         process.env.DEV_PORT = cmd.port;
+        // for bfast-node sdk
+        process.env.IS_BFAST = 'true'
         process.env.MONGO_URL = cmd["mongodbUrl"];
-        process.env.APPLICATION_ID = 'bfast_debug_appId';
-        process.env.MASTER_KEY = 'bfast_debug_masterKey';
-        process.env.DEV_ENV = 'true';
+        process.env.APPLICATION_ID = cmd.appId ? cmd.appId : Utils.randomString(8);
+        process.env.MASTER_KEY = cmd.masterKey ? cmd.masterKey : Utils.randomString(12);
+        cmd.static ? process.env.PRODUCTION = "1" : process.env.PRODUCTION = "0";
         if (cmd.static) {
+            if (cmd['mongodbUrl'] === 'no') {
+                console.log('mongodb url required, try with --mongodb-url option');
+                return;
+            }
             functionController.serve(process.cwd(), cmd.port);
         } else {
             nodemon({
