@@ -9,9 +9,10 @@
     "node": "10"
   },
   "dependencies": {
-    "bfastnode": "^1.2.3"
+    "bfastnode": "^1.3.0"
   },
   "devDependencies": {
+    "@types/parse": "^2.12.0"
   },
   "private": true
 }

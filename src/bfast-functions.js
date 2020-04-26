@@ -111,7 +111,7 @@ program
         process.env.DEV_WORK_DIR = process.cwd();
         process.env.DEV_PORT = cmd.port;
         // for bfast-node sdk
-        process.env.IS_BFAST = 'true'
+        process.env.IS_LOCAL_BFAST = 'true'
         process.env.MONGO_URL = cmd["mongodbUrl"];
         process.env.APPLICATION_ID = cmd.appId ? cmd.appId : Utils.randomString(8);
         process.env.MASTER_KEY = cmd.masterKey ? cmd.masterKey : Utils.randomString(12);

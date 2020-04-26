@@ -1,5 +1,5 @@
 // const {BFast} = require('bfastnode');
-// BFast.init({projectId: 'YOUR_PROJECT_ID', applicationId: 'YOUR_APPLICATION_ID'});
+// BFast.init({});
 //
 // exports.helloWorld = BFast.functions.onHttpRequest('/helloWorld', (request, response) => {
 //     response.send("Hello from BFast!");
