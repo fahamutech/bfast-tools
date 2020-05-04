@@ -41,12 +41,13 @@ class ProjectController {
      *         masterKey: string
      *     }
      * }}
+     * @param type {string} project type
      * @param token {token} login user token
      * @returns {Promise}
      */
-    async create(project, token) {
+    async create(project, type, token) {
         try {
-            const response = await axios.post(`${await BFastJs.clusterApiUrl()}/projects/bfast`, project, {
+            const response = await axios.post(`${await BFastJs.clusterApiUrl()}/projects/${type}`, project, {
                 headers: {
                     'authorization': `Bearer ${token}`
                 }

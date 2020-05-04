@@ -13,6 +13,7 @@ const _storage = new Database();
 program
     .command('create')
     .alias('new')
+    .option('-t,--type <type>', 'specify project type e.g bfast', 'bfast')
     .description('Create a new bfast cloud project')
     .action(async (cmd) => {
         try {
@@ -55,10 +56,10 @@ program
                 {
                     type: 'text',
                     validate: (value) => {
-                        if (value && value.toString().length >= 6) {
+                        if (value && value.toString().length >= 3) {
                             return true;
                         } else {
-                            return 'Application Id required and must be at least 8 characters'
+                            return 'Application Id required and must be at least 3 characters'
                         }
                     },
                     name: 'appId',
@@ -67,11 +68,11 @@ program
                 {
                     type: 'password',
                     validate: (value) => {
-                        if (value && value.toString().length >= 8) {
+                        if (value && value.toString().length >= 3) {
                             lastMasterKey = value;
                             return true;
                         } else {
-                            return 'Application password required and must be at least 8 characters'
+                            return 'Application password required and must be at least 3 characters'
                         }
                     },
                     mask: '*',
@@ -79,17 +80,19 @@ program
                     message: 'Enter application password :'
                 },
                 {
-                    type: 'password', validate: (value) => {
-                        if (value && value.toString().length >= 8) {
+                    type: 'password',
+                    validate: (value) => {
+                        if (value && value.toString().length >= 3) {
                             if (value !== lastMasterKey) {
                                 return 'Application password does not match';
                             } else {
                                 return true;
                             }
                         } else {
-                            return 'Application password required and must be at least 8 characters'
+                            return 'Application password required and must be at least 3 characters'
                         }
-                    }, mask: '*', name: 'masterKey', message: 'Enter application password again :'
+                    },
+                    mask: '*', name: 'masterKeyConfirm', message: 'Enter application password again :'
                 },
             ]);
             if (answer) {
@@ -103,7 +106,7 @@ program
                         appId: answer.appId,
                         masterKey: answer.masterKey
                     }
-                }, user.token);
+                }, cmd.type, user.token);
                 spinner.stop(true);
                 console.log("Project created.");
                 answer = undefined;
