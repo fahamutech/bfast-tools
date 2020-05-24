@@ -18,8 +18,6 @@ class FaaSController {
          * @return {Promise}
          */
         this._startServer = async () => {
-            console.log(this._functionsDirPath);
-            console.log(this._bfastJsonPath);
             _faasServer = new FaaS({
                 projectId: process.env.PROJECT_ID,
                 port: this._port,
