@@ -5,7 +5,7 @@ const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');
 const inquirer = require('inquirer');
-const {Utils} = require('./utlis/utils');
+const {Utils} = require('./utils/utils');
 
 const functionController = new FunctionController();
 
@@ -101,7 +101,7 @@ program
 program
     .command('serve')
     .option('-p, --port <port>', "port to serve cloud functions local", 3000)
-    .option('-d, --mongodb-url <mongodb-url>', "path to local mongodb", 'no')
+    .option('-db, --mongodb-url <mongodb-url>', "path to local mongodb", 'no')
     .option('--static', 'start in static mode without auto restart when files changes')
     .option('--appId', 'Application Id')
     .option('--masterKey', 'Application master key')
@@ -115,14 +115,15 @@ program
         process.env.MONGO_URL = cmd["mongodbUrl"];
         process.env.APPLICATION_ID = cmd.appId ? cmd.appId : Utils.randomString(8);
         process.env.MASTER_KEY = cmd.masterKey ? cmd.masterKey : Utils.randomString(12);
-        cmd.static ? process.env.PRODUCTION = "1" : process.env.PRODUCTION = "0";
         if (cmd.static) {
+            process.env.PRODUCTION = "1"
             if (cmd['mongodbUrl'] === 'no') {
                 console.log('mongodb url required, try with --mongodb-url option');
                 return;
             }
             functionController.serve(process.cwd(), cmd.port);
         } else {
+            process.env.PRODUCTION = "0";
             nodemon({
                 script: `${__dirname}/controller/devServer`,
                 ext: 'js json',
@@ -220,7 +221,7 @@ program
     });
 
 program
-    .command('domain-clear')
+    .command('domain-rm')
     .option('-f, --force', "force update of cloud function immediately")
     .description('remove all custom domain(s) to bfast cloud function instance(s) on')
     .action(async (cmd) => {

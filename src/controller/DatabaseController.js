@@ -3,6 +3,7 @@ const Utils = require('./utils');
 const LocalStorage = require('./LocalStorageController');
 const BFastJs = require("../bfast-tools");
 const _storage = new LocalStorage();
+const staticServer = require('http-server');
 
 class DatabaseController {
 
@@ -12,6 +13,7 @@ class DatabaseController {
      * @param mode {number}
      * @param force {boolean}
      * @returns {Promise<>}
+     * @deprecated
      */
     async switchDashboard(projectId, mode, force = false) {
         try {
@@ -37,12 +39,20 @@ class DatabaseController {
         }
     }
 
+    async openUi(port) {
+        staticServer.createServer({
+            root: __dirname + '/../database-ui'
+        }).listen(port);
+        return 'BFast::Database playground listen on : ' + port + '\nOpen http://localhost:' + port + " In your browser";
+    }
+
     /**
      * update liveQuery classes to listen to
      * @param projectDir {string}
      * @param classes {string[]}
      * @param force {boolean}
      * @returns {Promise<>}
+     * @deprecated
      */
     async addClassesToLiveQuery(projectDir, classes, force) {
         try {
