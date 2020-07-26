@@ -1,5 +1,5 @@
 const axios = require('axios');
-const ExpressApp = require('./faas.controller');
+const {FaasController} = require('./faas.controller');
 const LocalStorage = require('./local-storage.controller');
 const ResourceFactory = require('./workspace.controller');
 const BFastJs = require("../bfast.cli");
@@ -20,7 +20,7 @@ class FunctionsController {
         this._serveFunctions = (projectDir, port) => {
             const bfastJsonPath = `${projectDir}/bfast.json`;
             const functionsDirPath = `${projectDir}/functions`;
-            new ExpressApp({functionsDirPath, bfastJsonPath, port})
+            new FaasController({functionsDirPath, bfastJsonPath, port})
                 .start()
                 .catch(console.log);
         };

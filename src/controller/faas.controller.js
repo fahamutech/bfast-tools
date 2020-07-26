@@ -36,4 +36,4 @@ class FaasController {
     }
 }
 
-module.exports = FaasController;
+module.exports = {FaasController};

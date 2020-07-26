@@ -121,14 +121,14 @@ program
         if (cmd.static) {
             process.env.PRODUCTION = "1"
             if (cmd['mongodbUrl'] === 'no') {
-                console.log('mongodb url required, try with --mongodb-url option');
+                console.log('mongodb url required, try with --mongodb-url <your-mongo-db-url>');
                 return;
             }
             _functionController.serve(process.cwd(), cmd.port);
         } else {
             process.env.PRODUCTION = "0";
             nodemon({
-                script: `${__dirname}/controller/devServer`,
+                script: `${__dirname}/controller/dev-server.controller`,
                 ext: 'js json',
                 cwd: process.cwd() + '/functions'
             });
