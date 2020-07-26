@@ -1,5 +1,5 @@
 const program = require('commander');
-const DatabaseController = require('./controller/DatabaseController');
+const DatabaseController = require('./controller/database.controller');
 const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');

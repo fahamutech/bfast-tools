@@ -1,13 +1,13 @@
 const axios = require('axios');
-const ExpressApp = require('./FaaSController');
-const LocalStorage = require('./LocalStorageController');
-const ResourceFactory = require('./ResourceController');
-const BFastJs = require("../bfast-tools");
+const ExpressApp = require('./faas.controller');
+const LocalStorage = require('./local-storage.controller');
+const ResourceFactory = require('./workspace.controller');
+const BFastJs = require("../bfast.cli");
 
 const _storage = new LocalStorage();
 const _resourceFactory = new ResourceFactory();
 
-class FunctionController {
+class FunctionsController {
 
     constructor() {
 
@@ -55,9 +55,10 @@ class FunctionController {
     /**
      * create a bootstrap project for bfast cloud functions
      * @param projectDir {string} absolute path to create a workspace
+     * @return {Promise}
      */
-    initiateFunctionsFolder(projectDir) {
-        return _resourceFactory.createProjectFolder(projectDir)
+    async initiateFunctionsFolder(projectDir) {
+        return _resourceFactory.prepareWorkspaceFolder(projectDir);
     }
 
     /**
@@ -304,4 +305,4 @@ class FunctionController {
     }
 }
 
-module.exports = FunctionController;
+module.exports = {FunctionsController};

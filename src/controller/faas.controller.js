@@ -2,7 +2,7 @@ const {FaaS} = require('bfast-faas');
 
 let _faasServer;
 
-class FaaSController {
+class FaasController {
     /**
      * @param functionsDirPath {string}
      * @param bfastJsonPath {string}
@@ -36,4 +36,4 @@ class FaaSController {
     }
 }
 
-module.exports = FaaSController;
+module.exports = FaasController;

@@ -1,15 +1,12 @@
 const program = require('commander');
-const LocalStorageController = require('./controller/LocalStorageController');
+const LocalStorageController = require('./controller/local-storage.controller');
 const _storage = new LocalStorageController();
 const inquirer = require('inquirer');
 const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');
 
-class BfastJs {
-
-    constructor() {
-    }
+class BfastCli {
 
     static async clusterApiUrl() {
         const _cloudUrl = 'https://api.bfast.fahamutech.com';
@@ -25,12 +22,12 @@ class BfastJs {
         }
     };
 
-    cli() {
+    start() {
         program
             .version(require('../package').version);
         program
             .command('config')
-            .description('Configure settings for bfast tools')
+            .description('Configure bfast tools')
             .action(async (cmd) => {
                 try {
                     const answer = await inquirer.prompt([{
@@ -55,16 +52,16 @@ class BfastJs {
                 }
             });
         program
-            .command('functions', 'manage bfast cloud functions', {executableFile: 'bfast-functions'})
+            .command('functions', 'manage bfast cloud functions', {executableFile: 'functions.cli'})
             .alias('fs')
         program
-            .command('user', 'manage user account', {executableFile: 'bfast-user'})
+            .command('user', 'manage user account', {executableFile: 'user.cli'})
             .alias('me')
         program
-            .command('database', 'manage bfast::cloud database instance(s)', {executableFile: 'bfast-database'})
+            .command('database', 'manage bfast::cloud database instance(s)', {executableFile: 'database.cli'})
             .alias('db');
         program
-            .command('cloud', 'manage your bfast::cloud projects', {executableFile: 'bfast-cloud'});
+            .command('cloud', 'manage your bfast::cloud projects', {executableFile: 'cloud.cli'});
 
         program.on('command:*', function () {
             const cmd = program.args[0];
@@ -89,4 +86,4 @@ class BfastJs {
     }
 }
 
-module.exports = BfastJs;
+module.exports = BfastCli;

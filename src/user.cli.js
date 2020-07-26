@@ -1,6 +1,6 @@
 const program = require('commander');
-const UserController = require('./controller/UserController');
-const DatabaseController = require('./controller/LocalStorageController');
+const UserController = require('./controller/user.controller');
+const DatabaseController = require('./controller/local-storage.controller');
 const inquirer = require('inquirer');
 const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');

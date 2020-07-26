@@ -1,5 +1,6 @@
 const program = require('commander');
-const FunctionController = require('./controller/FunctionController');
+const {FunctionsController} = require('./controller/functions.controller');
+const {CliFunctionsController} = require('./controller/functions.cli.controller');
 const nodemon = require("nodemon");
 const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');
@@ -7,21 +8,23 @@ spinner.setSpinnerString('|/-\\');
 const inquirer = require('inquirer');
 const {Utils} = require('./utils/utils');
 
-const functionController = new FunctionController();
+const _functionController = new FunctionsController();
+const _cliFunctionsController = new CliFunctionsController({
+    functionController: _functionController
+});
 
 program
     .command('create <name>')
-    .description('create new cloud functions workspace')
-    .action((name, cdm) => {
-        if (name && name !== '' && name !== '.' && !name.startsWith('.')) {
+    .description('create new cloud::functions workspace')
+    .action(async (name, cdm) => {
+        try {
             spinner.start();
-            const folder = `${process.cwd()}/${name}`;
-            const response = functionController.initiateFunctionsFolder(folder);
-            spinner.stop(true);
+            const response = await _cliFunctionsController.createAWorkspace(name);
             console.log(response);
-        } else {
-            console.log('\nname format error');
-            spinner.stop();
+            spinner.stop(true);
+        } catch (e) {
+            console.log(e);
+            spinner.stop(true);
         }
     });
 
@@ -68,7 +71,7 @@ program
             spinner.start();
             const envs = [];
             envs.push(`GIT_USERNAME=${answer.username}`, answer.token ? `GIT_TOKEN=${answer.token}` : '', `GIT_CLONE_URL=${answer.url}`);
-            const response = await functionController.addEnv(process.cwd(), envs, !!cmd.force);
+            const response = await _functionController.addEnv(process.cwd(), envs, !!cmd.force);
             spinner.stop(true);
             console.log(response);
         } catch (e) {
@@ -86,7 +89,7 @@ program
     .action(async (cmd) => {
         try {
             spinner.start();
-            const response = await functionController.deploy(process.cwd(), !!cmd.force, {
+            const response = await _functionController.deploy(process.cwd(), !!cmd.force, {
                 token: cmd.token,
                 projectId: cmd.projectId
             });
@@ -121,7 +124,7 @@ program
                 console.log('mongodb url required, try with --mongodb-url option');
                 return;
             }
-            functionController.serve(process.cwd(), cmd.port);
+            _functionController.serve(process.cwd(), cmd.port);
         } else {
             process.env.PRODUCTION = "0";
             nodemon({
@@ -147,7 +150,7 @@ program
     .action(async (env, cmd) => {
         try {
             spinner.start();
-            const response = await functionController.addEnv(process.cwd(), env, !!cmd.force);
+            const response = await _functionController.addEnv(process.cwd(), env, !!cmd.force);
             spinner.stop(true);
             console.log(response);
         } catch (e) {
@@ -163,7 +166,7 @@ program
     .action(async (env, cmd) => {
         try {
             spinner.start();
-            const response = await functionController.removeEnv(process.cwd(), env, !!cmd.force);
+            const response = await _functionController.removeEnv(process.cwd(), env, !!cmd.force);
             spinner.stop(true);
             console.log(response);
         } catch (e) {
@@ -179,7 +182,7 @@ program
     .action(async (cmd) => {
         try {
             spinner.start();
-            const response = await functionController.switch(process.cwd(), 0, !!cmd.force);
+            const response = await _functionController.switch(process.cwd(), 0, !!cmd.force);
             spinner.stop(true);
             console.log(response);
         } catch (e) {
@@ -195,7 +198,7 @@ program
     .action(async (cmd) => {
         try {
             spinner.start();
-            const response = await functionController.switch(process.cwd(), 1, !!cmd.force);
+            const response = await _functionController.switch(process.cwd(), 1, !!cmd.force);
             spinner.stop(true);
             console.log(response);
         } catch (e) {
@@ -211,7 +214,7 @@ program
     .action(async (domain, cmd) => {
         try {
             spinner.start();
-            const response = await functionController.addDomain(process.cwd(), domain, !!cmd.force);
+            const response = await _functionController.addDomain(process.cwd(), domain, !!cmd.force);
             spinner.stop(true);
             console.log(response);
         } catch (e) {
@@ -227,7 +230,7 @@ program
     .action(async (cmd) => {
         try {
             spinner.start();
-            await functionController.clearCustomDomain(process.cwd(), !!cmd.force);
+            await _functionController.clearCustomDomain(process.cwd(), !!cmd.force);
             spinner.stop(true);
             console.log({message: 'Domain(s) removed'});
         } catch (e) {

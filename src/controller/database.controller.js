@@ -1,7 +1,7 @@
 const axios = require('axios');
 const Utils = require('./utils');
-const LocalStorage = require('./LocalStorageController');
-const BFastJs = require("../bfast-tools");
+const LocalStorage = require('./local-storage.controller');
+const BFastJs = require("../bfast.cli");
 const _storage = new LocalStorage();
 const staticServer = require('http-server');
 

@@ -2,7 +2,7 @@ const NeDb = require('nedb');
 const os = require('os');
 const path = require('path');
 const storage = new NeDb({filename: path.join(os.homedir(), '/bfast-tools/.bfast-kvdb'), autoload: true});
-const ResourceController = require('./ResourceController');
+const ResourceController = require('./workspace.controller');
 const _resource = new ResourceController();
 
 class LocalStorageController {

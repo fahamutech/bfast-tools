@@ -1,5 +1,5 @@
 const axios = require('axios');
-const BFastJs = require("../bfast-tools");
+const BFastJs = require("../bfast.cli");
 
 class UserController {
 
