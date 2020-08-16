@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const os = require('os');
 const file = require('fs-extra');
-const BfastTools = require('./bfast-tools');
+const BfastTools = require('./bfast.cli');
 const bfast = new BfastTools();
 (function () {
     const path = `${os.homedir()}/bfast-tools`;
@@ -10,4 +10,4 @@ const bfast = new BfastTools();
     }
     file.mkdirsSync(path);
 })();
-bfast.cli();
+bfast.start();

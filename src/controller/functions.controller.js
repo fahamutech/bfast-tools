@@ -1,40 +1,28 @@
-const glob = require('glob');
 const axios = require('axios');
-const ExpressApp = require('./ExpressAppController');
-const LocalStorage = require('./LocalStorageController');
-const ResourceFactory = require('./ResourceController');
-const BFastJs = require("../bfast-tools");
+const {FaasController} = require('./faas.controller');
+const LocalStorage = require('./local-storage.controller');
+const ResourceFactory = require('./workspace.controller');
+const BFastJs = require("../bfast.cli");
 
 const _storage = new LocalStorage();
 const _resourceFactory = new ResourceFactory();
 
-class FunctionController {
+class FunctionsController {
 
     constructor() {
 
-        this._getFunctions = (projectDir) => {
-            let bfastJSON = require(`${projectDir}/bfast.json`);
-            const bfastStringfied = JSON.stringify(bfastJSON);
-            bfastJSON = JSON.parse(bfastStringfied);
-            const files = glob.sync(`${projectDir}/**/*.js`, {
-                absolute: true,
-                ignore: bfastJSON.ignore
-            });
-            let functions = {
-                _init: {}
-            };
-            files.forEach(file => {
-                const fileModule = require(file);
-                const functionNames = Object.keys(fileModule);
-                functionNames.forEach(name => {
-                    functions[name] = fileModule[name];
-                });
-            });
-            return functions;
-        };
-
-        this._serveFunctions = (functions, port) => {
-            new ExpressApp({functions, port}).start().catch(console.log);
+        /**
+         *
+         * @param projectDir {string} path of bfast::functions
+         * @param port
+         * @private
+         */
+        this._serveFunctions = (projectDir, port) => {
+            const bfastJsonPath = `${projectDir}/bfast.json`;
+            const functionsDirPath = `${projectDir}/functions`;
+            new FaasController({functionsDirPath, bfastJsonPath, port})
+                .start()
+                .catch(console.log);
         };
 
         /**
@@ -67,9 +55,10 @@ class FunctionController {
     /**
      * create a bootstrap project for bfast cloud functions
      * @param projectDir {string} absolute path to create a workspace
+     * @return {Promise}
      */
-    initiateFunctionsFolder(projectDir) {
-        return _resourceFactory.createProjectFolder(projectDir)
+    async initiateFunctionsFolder(projectDir) {
+        return _resourceFactory.prepareWorkspaceFolder(projectDir);
     }
 
     /**
@@ -82,8 +71,7 @@ class FunctionController {
         try {
             const bfastFile = require(`${projectDir}/bfast.json`);
             if (bfastFile && bfastFile.ignore) {
-                const functions = this._getFunctions(projectDir);
-                this._serveFunctions(functions, port);
+                this._serveFunctions(projectDir, port);
             } else {
                 console.log('not in project folder or project file is invalid');
             }
@@ -317,4 +305,4 @@ class FunctionController {
     }
 }
 
-module.exports = FunctionController;
+module.exports = {FunctionsController};

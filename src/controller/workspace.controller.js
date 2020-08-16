@@ -1,8 +1,12 @@
 /**
  * manage initiation or project structure
  */
+const GitController = require('./git.controller');
+let gitController = new GitController();
+const ShellController = require('./shell.controller');
+let shellController = new ShellController();
 
-class ResourceController {
+class WorkspaceController {
     constructor() {
         this._fse = require('fs-extra');
         this._fs = require('fs');
@@ -12,9 +16,14 @@ class ResourceController {
         }
     }
 
-    createProjectFolder(projectDir) {
-        if (this._checkIfFileExist(projectDir)) throw Error('project folder already exist at: ' + projectDir);
+    async prepareWorkspaceFolder(projectDir) {
+        if (this._checkIfFileExist(projectDir)){
+            throw Error('project folder already exist at: ' + projectDir);
+        }
         this._fse.copySync(this._path.join(__dirname, `/../res`), projectDir);
+        await gitController.init(projectDir);
+        // await gitController.add(projectDir);
+        // await gitController.commit('initial commit', projectDir);
         return `done create project folder, now "cd ${projectDir}" to start hacking`;
     }
 
@@ -46,4 +55,4 @@ class ResourceController {
 
 }
 
-module.exports = ResourceController;
+module.exports = WorkspaceController;
