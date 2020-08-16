@@ -1,4 +1,4 @@
-const {FaaS} = require('bfast-faas');
+const {BfastFunctions} = require('bfast-faas');
 
 let _faasServer;
 
@@ -18,7 +18,7 @@ class FaasController {
          * @return {Promise}
          */
         this._startServer = async () => {
-            _faasServer = new FaaS({
+            _faasServer = new BfastFunctions({
                 projectId: process.env.PROJECT_ID,
                 port: this._port,
                 appId: process.env.APPLICATION_ID,

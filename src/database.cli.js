@@ -12,7 +12,6 @@ program
     .description('open a database playground to your browser')
     .action(async (cmd) => {
         try {
-            console.log(cmd.port)
             spinner.start();
             const response = await _database.openUi(cmd.port);
             spinner.stop(true);

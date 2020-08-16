@@ -207,7 +207,7 @@ josh@xps:~/Desktop/bfastDemoFaas$ npx bfast functions serve --port 3000 --static
 
 Default port is 3000, but you can change it by change a value of `port` option.
 
-When everything is ok, you will see `FaaS Engine Listening on 3000` or any port number you specify.
+When everything is ok, you will see `BfastFunctions Engine Listening on 3000` or any port number you specify.
 
 ### Use functions you write
 
