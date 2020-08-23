@@ -1,7 +1,11 @@
 const NeDb = require('nedb');
 const os = require('os');
 const path = require('path');
-const storage = new NeDb({filename: path.join(os.homedir(), '/bfast-tools/.bfast-kvdb'), autoload: true});
+const _package = require('../../package.json')
+const storage = new NeDb({
+    filename: path.join(os.homedir(), `/bfast-tools/${_package.version}/.bfast-tools.db`),
+    autoload: true
+});
 const ResourceController = require('./workspace.controller');
 const _resource = new ResourceController();
 
@@ -18,7 +22,7 @@ class LocalStorageController {
     saveUser(user) {
         return new Promise(async (resolve, reject) => {
             try {
-                await this._deleteCurrentUser();
+                await this.deleteCurrentUser();
                 user['_id'] = 'user';
                 if (user) {
                     storage.insert(user, function (error, newDoc) {
@@ -103,9 +107,8 @@ class LocalStorageController {
     /**
      *
      * @return {Promise<unknown>}
-     * @private
      */
-    _deleteCurrentUser() {
+    deleteCurrentUser() {
         return new Promise((resolve, reject) => {
             storage.remove({_id: 'user'}, {multi: true}, function (err, numRemoved) {
                 if (err) {
@@ -116,7 +119,8 @@ class LocalStorageController {
             });
         });
     };
-    _deleteCurrentSettings() {
+
+    deleteCurrentSettings() {
         return new Promise((resolve, reject) => {
             storage.remove({_id: '_settings'}, {multi: true}, function (err, numRemoved) {
                 if (err) {
@@ -137,8 +141,8 @@ class LocalStorageController {
      */
     saveSettings(settings) {
         return new Promise(async (resolve, reject) => {
-            try{
-                await this._deleteCurrentSettings();
+            try {
+                await this.deleteCurrentSettings();
                 settings['_id'] = '_settings';
                 storage.insert(settings, function (error, newDoc) {
                     if (error) {
@@ -148,7 +152,7 @@ class LocalStorageController {
                         resolve({message: 'Settings saved', doc: newDoc});
                     }
                 });
-            }catch (e) {
+            } catch (e) {
                 throw e;
             }
         });

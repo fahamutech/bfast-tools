@@ -64,12 +64,12 @@ program
             spinner.start();
             const user = await _database.getUser();
             const response = await _userController.logout(user);
-            await _database._deleteCurrentUser();
+            await _database.deleteCurrentUser();
             spinner.stop(true);
             console.log(response.message ? response.message : response);
             console.log('logout successful');
         } catch (e) {
-            await _database._deleteCurrentUser();
+            await _database.deleteCurrentUser();
             spinner.stop(true);
             console.log('logout successful');
         }

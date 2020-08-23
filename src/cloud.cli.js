@@ -3,12 +3,16 @@ const ProjectController = require('./controller/ProjectController');
 const Database = require('./controller/local-storage.controller');
 const Utils = require('./controller/utils');
 const inquirer = require('inquirer');
-const Spinner = require('cli-spinner').Spinner;
+const {Spinner} = require('cli-spinner');
+const Table = require('cli-table');
 const spinner = new Spinner('processing.. %s');
-spinner.setSpinnerString('|/-\\');
+const projectController = new ProjectController();
+const localStorageController = new Database();
 
-const _projectController = new ProjectController();
-const _storage = new Database();
+(function init() {
+    spinner.setSpinnerString('|/-\\');
+})();
+
 
 program
     .command('create')
@@ -18,7 +22,7 @@ program
     .action(async (cmd) => {
         try {
             let lastMasterKey = '';
-            const user = await _storage.getUser();
+            const user = await localStorageController.getUser();
             let answer = await inquirer.prompt([
                 {
                     type: 'text',
@@ -98,7 +102,7 @@ program
             if (answer) {
                 lastMasterKey = undefined;
                 spinner.start();
-                await _projectController.create({
+                await projectController.create({
                     name: answer.name,
                     description: answer.description,
                     projectId: answer.projectId,
@@ -131,8 +135,8 @@ program
         try {
             spinner.start();
             await Utils.isBFastProject(process.cwd());
-            const user = await _storage.getUser();
-            const projects = await _projectController.getMyProjects(user.token, 'bfast');
+            const user = await localStorageController.getUser();
+            const projects = await projectController.getMyProjects(user.token, 'bfast');
             let _projects = [];
             projects.forEach(project => {
                 const _p = {};
@@ -155,7 +159,7 @@ program
                 console.log("Please run 'bfast cloud create'");
                 return;
             }
-            await _storage.saveCurrentProject(answer.project, process.cwd());
+            await localStorageController.saveCurrentProject(answer.project, process.cwd());
             console.log('Project linked, happy coding.');
         } catch (e) {
             spinner.stop(true);
@@ -175,8 +179,8 @@ program
     .action(async (cdm) => {
         try {
             spinner.start();
-            const user = await _storage.getUser();
-            const projects = await _projectController.getMyProjects(user.token, cdm.type);
+            const user = await localStorageController.getUser();
+            const projects = await projectController.getMyProjects(user.token, cdm.type);
             let _projects = [];
             projects.forEach(project => {
                 const _p = {};
@@ -191,7 +195,21 @@ program
                 name: 'project',
                 message: 'Choose your bfast cloud project to work with'
             });
-            console.log(answer.project);
+            const project = answer.project;
+            const heads = Object.keys(answer.project);
+            const table = new Table({
+                head: ['ID', 'Name', 'Description', 'ApplicationId', 'ProjectId', 'MasterKey'],
+                // colWidths: [100, 200]
+            });
+            table.push([
+                project._id,
+                project.name,
+                project.description,
+                project.parse.appId,
+                project.projectId,
+                project.parse.masterKey
+            ]);
+            console.log(table.toString());
         } catch (e) {
             spinner.stop(true);
             if (e && e.message) {
@@ -209,9 +227,9 @@ program
     .option('-t,--type <type>', 'specify project type either "bfast" or "ssm"')
     .action(async (cdm) => {
         try {
-            const user = await _storage.getUser();
+            const user = await localStorageController.getUser();
             spinner.start();
-            const projects = await _projectController.getMyProjects(user.token, cdm.type ? cdm.type : null);
+            const projects = await projectController.getMyProjects(user.token, cdm.type ? cdm.type : null);
             let _projects = [];
             projects.forEach(project => {
                 const _p = {};
@@ -227,7 +245,7 @@ program
                 message: 'Choose your bfast::cloud project'
             });
             spinner.start();
-            const response = await _projectController.deleteProject(answer.project.projectId, user.token);
+            const response = await projectController.deleteProject(answer.project.projectId, user.token);
             spinner.stop(true);
             console.log(response);
 
@@ -246,7 +264,7 @@ program
     .description('add member to your cloud project')
     .action(async (cdm) => {
         try {
-            const user = await _storage.getUser();
+            const user = await localStorageController.getUser();
             let userModel = await inquirer.prompt([
                 {
                     type: 'text',
@@ -276,7 +294,7 @@ program
                 },
             ]);
             spinner.start();
-            const projects = await _projectController.getMyProjects(user.token, null);
+            const projects = await projectController.getMyProjects(user.token, null);
             let _projects = [];
             projects.forEach(project => {
                 const _p = {};
@@ -292,7 +310,7 @@ program
                 message: 'Choose your bfast cloud project to work with'
             });
             spinner.start();
-            await _projectController.addMember(user.token, answer.project.projectId, userModel);
+            await projectController.addMember(user.token, answer.project.projectId, userModel);
             spinner.stop(true);
             console.log('member added to a project');
         } catch (e) {

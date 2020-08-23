@@ -3,7 +3,7 @@ const Utils = require('./utils');
 const LocalStorage = require('./local-storage.controller');
 const BFastJs = require("../bfast.cli");
 const _storage = new LocalStorage();
-const staticServer = require('http-server');
+const {open} = require('out-url');
 
 class DatabaseController {
 
@@ -40,10 +40,18 @@ class DatabaseController {
     }
 
     async openUi(port) {
-        staticServer.createServer({
-            root: __dirname + '/../database-ui'
-        }).listen(port);
-        return 'BFast::Database playground listen on : ' + port + '\nOpen http://localhost:' + port + " In your browser";
+        const url = 'https://bfast-playground.web.app/';
+        await open(url);
+        return 'BFast::Database playground listening at ' + url + ' in your browser';
+    }
+
+    /**
+     *
+     * @param {string} name - docker image to be used
+     * @return {Promise}
+     */
+    async image(name){
+
     }
 
     /**
@@ -85,4 +93,4 @@ class DatabaseController {
     }
 }
 
-module.exports = DatabaseController;
+module.exports = {DatabaseController};

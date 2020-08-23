@@ -58,11 +58,11 @@ You can switch a dashboard off for data browser.
 josh@xps:~/Desktop$ bfast database dashboard-off
 ```
 
-### Add a collection to a realtime engine
+### Open Database Playground
 
 You must add manually a specif collection/table/domain to a realtime engine to subscribe to its events.
 ```shell script
-josh@xps:~/Desktop$ bfast database realtime  col1 col2 col3 ...
+josh@xps:~/Desktop$ bfast database playground
 ```
 
 ## BFast::Cloud Functions
@@ -105,25 +105,27 @@ File `bfast.json` contain information of your BFast::Cloud project.
 
 ### Write your custom functions
 
+You use `bfastnod` package from npm to write your functions 
+
 Choose text editor of your choice like VSCode or WebStorm. You can write your function is different ways. 
 
 Single callback function
 
 ```javascript
-exports.mySingleFunctionName = {
-    path: '/mySingleFunctionName', /*set path of this function its optional property*/
-    onRequest: (request, response)=>{
+const {BFast} = require('bfastnode');
+
+exports.mySingleFunctionName = BFast.functions().onHttpRequest('/mySingleFunctionName',(request, response)=>{
         // your business logic
         response.send('your response');
     }
-}
+);
 ```
 
 Many callback in array. Good if your apply a middleware before execute finally logic. Refer to ExpressJS Middlware
 ```javascript
-exports.myArrayFunctionName = {
-    path: '/myArrayFunctionName', /*set path of this function its optional property*/
-    onRequest: [
+const {BFast} = require('bfastnode');
+
+exports.myArrayFunctionName = BFast.funtion().onHttpRequest('/myArrayFunctionName', [
         (request, response, next)=>{
             // middleware logic
             request.query.from1 =  'query added in first callback';
@@ -134,14 +136,15 @@ exports.myArrayFunctionName = {
             response.send(request.query.from1);
         }
     ]
-}
+);
 ```
 
 Mount express router. Your can use Express Router to manage complex routing. First run `npm install express` inside functions folder to add express module
 
 ```javascript
-var express = require('express')
-var router = express.Router()
+const express = require('express');
+const router = express.Router();
+const {BFast} = require('bfastnode');
 
 router.get('/', function (request, response) {
     // your logic
@@ -153,17 +156,15 @@ router.post('/user', function (request, response) {
     response.send('User saved');
 })
 
-exports.functionNameUsingRouter = {
-    path: '/functionNameUsingRouter', /*set path of this function its optional property*/
-    onRequest: router
-}
+exports.functionNameUsingRouter = BFast.function().onHttpRequest('/functionNameUsingRouter',router);
 ```
 
 You can mount an express app too!. First run `npm install express` inside functions folder to add express module
 
 ```javascript
-var express = require('express');
-var app = new express();
+const express = require('express');
+const app = new express();
+const {BFast} = require('bfastnode');
 
 app.get('/', function (request, response) {
     // your logic
@@ -175,15 +176,8 @@ app.post('/user', function (request, response) {
     response.send('User saved');
 })
 
-exports.functionNameUsingExpressApp = {
-    path: '/functionNameUsingExpressApp', /*set path of this function its optional property*/
-    onRequest: app
-}
+exports.functionNameUsingExpressApp = BFast.function().onHttpRequest('/functionNameUsingExpressApp', onRequest);
 ```
-
-**NOTE**
-'path' property is optional when used must start with '/' if not used your function 
-will be available as `<hostname>/functions/<functionNameExported>`
 
 ### Serve functions locally
 
@@ -191,7 +185,7 @@ In your current project folder, run following script
 
 * Start a dev server ( auto restart when you change or edit a function )
 ```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ npx bfast functions serve --port 3000
+josh@xps:~/Desktop/bfastDemoFaas$ bfast functions serve --port 3000
 ```
 
 Or
@@ -202,7 +196,7 @@ josh@xps:~/Desktop/bfastDemoFaas$ npm start
 
 * Start a static server which do not auto restart when you change or edit files in working directory
 ```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ npx bfast functions serve --port 3000 --static
+josh@xps:~/Desktop/bfastDemoFaas$ bfast functions serve --port 3000 --static
 ```
 
 Default port is 3000, but you can change it by change a value of `port` option.

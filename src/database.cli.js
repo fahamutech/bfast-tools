@@ -1,26 +1,39 @@
 const program = require('commander');
-const DatabaseController = require('./controller/database.controller');
-const Spinner = require('cli-spinner').Spinner;
+const {DatabaseController} = require('./controller/database.controller');
+const {Spinner} = require('cli-spinner');
 const spinner = new Spinner('processing.. %s');
-spinner.setSpinnerString('|/-\\');
-const _database = new DatabaseController();
+const databaseController = new DatabaseController();
 
-program
-    .command('playground')
-    .alias('ui')
-    .option('-p, --port [port]','port to open a database playground',3002)
-    .description('open a database playground to your browser')
-    .action(async (cmd) => {
-        try {
-            spinner.start();
-            const response = await _database.openUi(cmd.port);
-            spinner.stop(true);
-            console.log(response);
-        } catch (e) {
-            spinner.stop(true);
-            console.log(e);
-        }
-    });
+(function init() {
+    spinner.setSpinnerString('|/-\\');
+}());
+
+(function registerCommands() {
+    program
+        .command('playground')
+        .alias('ui')
+        .description('open a database playground to your browser')
+        .action(async (cmd) => {
+            try {
+                spinner.start();
+                const response = await databaseController.openUi(cmd.port);
+                spinner.stop(true);
+                console.log(response);
+            } catch (e) {
+                spinner.stop(true);
+                console.log(e);
+            }
+        });
+
+    // program
+    //     .command('engine <name>')
+    //     .alias('image')
+    //     .alias('runtime')
+    //     .description('Update runtime image to database instance')
+    //     .action(async (name,cmd) => {
+    //         databaseController.
+    //     })
+}());
 
 program.on('command:*', function () {
     console.error('Invalid command: %s\n', program.args.join(' '));
