@@ -1,5 +1,5 @@
 # bfast-tools
-CLI tools for manage your project ( s ) in [BFast::Cloud](https://bfast.fahamutech.com).
+CLI tools for manage your project ( s ) in [BFast Cloud](https://bfast.fahamutech.com).
 
 ## Pre request
 
@@ -68,7 +68,7 @@ josh@xps:~/Desktop$ bfast database playground
 ## BFast::Cloud Functions
 
 Write your system functions with zero effort. Sub command to manage your functions is `bfast functions` 
-or `bfast fs` or `bfast fn`
+or `bfast fs` 
 
 ### Create a workspace
 
@@ -105,7 +105,7 @@ File `bfast.json` contain information of your BFast::Cloud project.
 
 ### Write your custom functions
 
-You use `bfastnod` package from npm to write your functions 
+You use [bfastnode](https://www.npmjs.com/package/bfastnode) package from npm to write your functions 
 
 Choose text editor of your choice like VSCode or WebStorm. You can write your function is different ways. 
 
@@ -176,7 +176,7 @@ app.post('/user', function (request, response) {
     response.send('User saved');
 })
 
-exports.functionNameUsingExpressApp = BFast.function().onHttpRequest('/functionNameUsingExpressApp', onRequest);
+exports.functionNameUsingExpressApp = BFast.function().onHttpRequest('/functionNameUsingExpressApp', app);
 ```
 
 ### Serve functions locally
