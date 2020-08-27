@@ -116,4 +116,4 @@ class ProjectController {
     }
 }
 
-module.exports = ProjectController;
+module.exports = {ProjectController};

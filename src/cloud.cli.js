@@ -1,5 +1,5 @@
 const program = require('commander');
-const ProjectController = require('./controller/ProjectController');
+const {ProjectController} = require('./controller/project.controller');
 const Database = require('./controller/local-storage.controller');
 const Utils = require('./controller/utils');
 const inquirer = require('inquirer');
