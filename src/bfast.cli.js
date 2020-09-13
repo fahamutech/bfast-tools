@@ -43,7 +43,7 @@ class BfastCli {
                             }
                         },
                         name: 'cloudUrl',
-                        message: 'Enter bfast cloud remote url'
+                        message: 'Enter bfast cloud server url'
                     }]);
                     await _storage.saveSettings({cloudUrl: answer.cloudUrl.trim()});
                     console.log('Settings updated');

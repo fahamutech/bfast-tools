@@ -6,9 +6,10 @@ const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');
 const inquirer = require('inquirer');
+const {RestController} = require("./controller/rest.controller");
 const {Utils} = require('./utils/utils');
 
-const _functionController = new FunctionsController();
+const _functionController = new FunctionsController(new RestController());
 const _cliFunctionsController = new CliFunctionsController({
     functionController: _functionController
 });
@@ -207,37 +208,37 @@ program
         }
     });
 
-program
-    .command('domain-add <domain>')
-    .option('-f, --force', "force update of cloud function immediately")
-    .description('add custom domain to bfast cloud function instance(s) on')
-    .action(async (domain, cmd) => {
-        try {
-            spinner.start();
-            const response = await _functionController.addDomain(process.cwd(), domain, !!cmd.force);
-            spinner.stop(true);
-            console.log(response);
-        } catch (e) {
-            spinner.stop(true);
-            console.log(e);
-        }
-    });
-
-program
-    .command('domain-rm')
-    .option('-f, --force', "force update of cloud function immediately")
-    .description('remove all custom domain(s) to bfast cloud function instance(s) on')
-    .action(async (cmd) => {
-        try {
-            spinner.start();
-            await _functionController.clearCustomDomain(process.cwd(), !!cmd.force);
-            spinner.stop(true);
-            console.log({message: 'Domain(s) removed'});
-        } catch (e) {
-            spinner.stop(true);
-            console.log(e);
-        }
-    });
+// program
+//     .command('domain-add <domain>')
+//     .option('-f, --force', "force update of cloud function immediately")
+//     .description('add custom domain to bfast cloud function instance(s) on')
+//     .action(async (domain, cmd) => {
+//         try {
+//             spinner.start();
+//             const response = await _functionController.addDomain(process.cwd(), domain, !!cmd.force);
+//             spinner.stop(true);
+//             console.log(response);
+//         } catch (e) {
+//             spinner.stop(true);
+//             console.log(e);
+//         }
+//     });
+//
+// program
+//     .command('domain-rm')
+//     .option('-f, --force', "force update of cloud function immediately")
+//     .description('remove all custom domain(s) to bfast cloud function instance(s) on')
+//     .action(async (cmd) => {
+//         try {
+//             spinner.start();
+//             await _functionController.clearCustomDomain(process.cwd(), !!cmd.force);
+//             spinner.stop(true);
+//             console.log({message: 'Domain(s) removed'});
+//         } catch (e) {
+//             spinner.stop(true);
+//             console.log(e);
+//         }
+//     });
 
 program.on('command:*', function () {
     console.error('Invalid command: %s\n', program.args.join(' ')); // See --help" for a list of available commands.

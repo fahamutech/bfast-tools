@@ -16,15 +16,25 @@ class WorkspaceController {
         }
     }
 
-    async prepareWorkspaceFolder(projectDir) {
-        if (this._checkIfFileExist(projectDir)){
-            throw Error('project folder already exist at: ' + projectDir);
+    /**
+     *
+     * @param projectDir {string}
+     * @param progress {function(arg: string)}
+     * @return {Promise<string>}
+     */
+    async prepareWorkspaceFolder(projectDir, progress = console.log) {
+        if (this._checkIfFileExist(projectDir)) {
+            progress('\nproject folder already exist at: ' + projectDir);
+            // process.exit(0);
         }
         this._fse.copySync(this._path.join(__dirname, `/../res`), projectDir);
         await gitController.init(projectDir);
         // await gitController.add(projectDir);
         // await gitController.commit('initial commit', projectDir);
-        return `done create project folder, now "cd ${projectDir}" to start hacking`;
+        progress('\nInstall dependencies');
+        await shellController.exec(`cd ${projectDir} && npm install`);
+        // await gitController.add(projectDir);
+        return `done create project folder, run "cd ${projectDir}" to navigate to your project folder`;
     }
 
     async getProjectIdFromBfastFJSON(projectDir) {

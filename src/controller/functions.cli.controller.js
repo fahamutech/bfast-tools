@@ -1,13 +1,12 @@
 const {FunctionsController} = require('./functions.controller');
-let _functionController;
 
-class CliFunctionsController {
+class FunctionsCliController {
     /**
      *
      * @param functionController {FunctionsController}
      */
     constructor({functionController}) {
-        _functionController = functionController
+        this._functionController = functionController
     }
 
     /**
@@ -18,7 +17,7 @@ class CliFunctionsController {
     async createAWorkspace(name) {
         if (name && name !== '' && name !== '.' && !name.startsWith('.')) {
             const folder = `${process.cwd()}/${name}`;
-            return  await _functionController.initiateFunctionsFolder(folder);
+            return await this._functionController.initiateFunctionsFolder(folder);
         } else {
             return 'name format error';
         }
@@ -26,5 +25,5 @@ class CliFunctionsController {
 }
 
 module.exports = {
-    CliFunctionsController
+    CliFunctionsController: FunctionsCliController
 }

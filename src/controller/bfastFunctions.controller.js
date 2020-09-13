@@ -1,8 +1,6 @@
 const {BfastFunctions} = require('bfast-faas');
 
-let _faasServer;
-
-class FaasController {
+class BfastFunctionsController {
     /**
      * @param functionsDirPath {string}
      * @param bfastJsonPath {string}
@@ -18,7 +16,7 @@ class FaasController {
          * @return {Promise}
          */
         this._startServer = async () => {
-            _faasServer = new BfastFunctions({
+            let _faasServer = new BfastFunctions({
                 projectId: process.env.PROJECT_ID,
                 port: this._port,
                 appId: process.env.APPLICATION_ID,
@@ -36,4 +34,4 @@ class FaasController {
     }
 }
 
-module.exports = {FaasController};
+module.exports = {FaasController: BfastFunctionsController};

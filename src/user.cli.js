@@ -1,12 +1,13 @@
 const program = require('commander');
 const UserController = require('./controller/user.controller');
 const DatabaseController = require('./controller/local-storage.controller');
+const {RestController} = require('./controller/rest.controller');
 const inquirer = require('inquirer');
 const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');
 const _database = new DatabaseController();
-const _userController = new UserController();
+const _userController = new UserController(new RestController());
 
 program
     .command('login')

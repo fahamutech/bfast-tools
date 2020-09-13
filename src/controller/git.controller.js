@@ -23,7 +23,7 @@ class GitController {
         });
     }
 
-    async commit(message, functionsDir, {ref}={}) {
+    async commit(message, functionsDir, {ref} = {}) {
         return git.commit({
             fs: fs,
             dir: functionsDir,
@@ -32,7 +32,7 @@ class GitController {
                 email: 'you@example.com',
             },
             noUpdateBranch: true,
-            ref: ref!==undefined?ref:'master',
+            ref: ref !== undefined ? ref : 'master',
             gitdir: functionsDir,
             message,
         });
