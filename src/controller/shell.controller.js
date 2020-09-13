@@ -1,16 +1,23 @@
 const childProcess = require('child_process');
 
 class ShellController {
-    async exec(command, {cwd}) {
+    /**
+     *
+     * @param command
+     * @param options {{cwd: string}}
+     * @param progress {function(arg: string)}
+     * @return {Promise<unknown>}
+     */
+    async exec(command, options = {}, progress = console.log) {
         return new Promise((resolve, reject) => {
-            const processingEvent = childProcess.exec(command, {cwd});
+            const processingEvent = childProcess.exec(command, {cwd: options.cwd});
 
             processingEvent.on("error", err => {
                 reject(err);
             });
 
             processingEvent.stdout.on('data', (data) => {
-                console.log(data);
+                progress(`${data}`);
             });
 
             processingEvent.stderr.on('data', (data) => {

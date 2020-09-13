@@ -1,7 +1,14 @@
-const axios = require('axios');
 const BFastJs = require("../bfast.cli");
 
 class ProjectController {
+
+    /**
+     *
+     * @param restController {RestController}
+     */
+    constructor(restController) {
+        this.restController = restController
+    }
 
     /**
      *
@@ -10,24 +17,11 @@ class ProjectController {
      * @returns {Promise}
      */
     async deleteProject(projectId, token) {
-        try {
-            const response = await axios.delete(`${await BFastJs.clusterApiUrl()}/projects/${projectId}`, {
-                headers: {
-                    'authorization': `Bearer ${token}`
-                }
-            });
-            return response.data;
-        } catch (reason) {
-            if (reason && reason.response) {
-                throw reason.response.data;
-            } else if (reason.message) {
-                throw reason.message;
-            } else if (typeof reason === 'object') {
-                throw reason;
-            } else {
-                throw reason.toString();
+        return await this.restController.delete(`${await BFastJs.clusterApiUrl()}/projects/${projectId}`, {
+            headers: {
+                'authorization': `Bearer ${token}`
             }
-        }
+        });
     }
 
     /**
@@ -46,24 +40,11 @@ class ProjectController {
      * @returns {Promise}
      */
     async create(project, type, token) {
-        try {
-            const response = await axios.post(`${await BFastJs.clusterApiUrl()}/projects/${type}`, project, {
-                headers: {
-                    'authorization': `Bearer ${token}`
-                }
-            });
-            return response.data;
-        } catch (reason) {
-            if (reason && reason.response) {
-                throw reason.response.data;
-            } else if (reason.message) {
-                throw reason.message;
-            } else if (typeof reason === 'object') {
-                throw reason;
-            } else {
-                throw reason.toString();
+        return await this.restController.post(`${await BFastJs.clusterApiUrl()}/projects/${type}`, project, {
+            headers: {
+                'authorization': `Bearer ${token}`
             }
-        }
+        });
     }
 
     /**
@@ -71,48 +52,23 @@ class ProjectController {
      * @param type {'ssm' | 'bfast' | null}
      */
     async getMyProjects(token, type) {
-        try {
-            const response = await axios.get(`${await BFastJs.clusterApiUrl()}/projects`, {
-                headers: {
-                    'authorization': `Bearer ${token}`
-                }
-            });
-            if (!type) {
-                return response.data;
+        const response = await this.restController.get(`${await BFastJs.clusterApiUrl()}/projects`, {
+            headers: {
+                'authorization': `Bearer ${token}`
             }
-            return response.data.filter(value => (value.type && value.type === type));
-        } catch (reason) {
-            if (reason && reason.response) {
-                throw reason.response.data;
-            } else if (reason.message) {
-                throw reason.message;
-            } else if (typeof reason === 'object') {
-                throw reason;
-            } else {
-                throw reason.toString();
-            }
+        });
+        if (!type) {
+            return response;
         }
+        return response.filter(value => (value.type && value.type === type));
     }
 
     async addMember(token, projectId, user) {
-        try {
-            const response = await axios.post(`${await BFastJs.clusterApiUrl()}/projects/${projectId}/members`, user, {
-                headers: {
-                    'authorization': `Bearer ${token}`
-                }
-            });
-            return response.data;
-        } catch (reason) {
-            if (reason && reason.response) {
-                throw reason.response.data;
-            } else if (reason.message) {
-                throw reason.message;
-            } else if (typeof reason === 'object') {
-                throw reason;
-            } else {
-                throw reason.toString();
+        return await this.restController.post(`${await BFastJs.clusterApiUrl()}/projects/${projectId}/members`, user, {
+            headers: {
+                'authorization': `Bearer ${token}`
             }
-        }
+        });
     }
 }
 

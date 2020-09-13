@@ -1,12 +1,13 @@
 const program = require('commander');
 const {ProjectController} = require('./controller/project.controller');
+const {RestController} = require('./controller/rest.controller');
 const Database = require('./controller/local-storage.controller');
 const Utils = require('./controller/utils');
 const inquirer = require('inquirer');
 const {Spinner} = require('cli-spinner');
 const Table = require('cli-table');
 const spinner = new Spinner('processing.. %s');
-const projectController = new ProjectController();
+const projectController = new ProjectController(new RestController());
 const localStorageController = new Database();
 
 (function init() {
@@ -47,7 +48,7 @@ program
                 {
                     type: 'text', validate: (value) => {
                         if (value && value.toString().length >= 6) {
-                            const response = value.toString().search(new RegExp('^[0-9A-Za-z]+$'));
+                            const response = value.toString().search(new RegExp('^[0-9A-Za-z-]+$'));
                             if (response === -1) {
                                 return 'Project Id must be at least 6 characters and must be alphanumeric';
                             }
@@ -198,17 +199,15 @@ program
             const project = answer.project;
             const heads = Object.keys(answer.project);
             const table = new Table({
-                head: ['ID', 'Name', 'Description', 'ApplicationId', 'ProjectId', 'MasterKey'],
+                //head: ['ID', 'Name', 'Description', 'ApplicationId', 'ProjectId', 'MasterKey'],
                 // colWidths: [100, 200]
             });
-            table.push([
-                project._id,
-                project.name,
-                project.description,
-                project.parse.appId,
-                project.projectId,
-                project.parse.masterKey
-            ]);
+            table.push({"ID": project._id});
+            table.push({"Name": project.name});
+            table.push({"Description": project.description});
+            table.push({"ApplicationId": project.parse.appId});
+            table.push({"ProjectId": project.projectId});
+            table.push({"MasterKey": project.parse.masterKey});
             console.log(table.toString());
         } catch (e) {
             spinner.stop(true);
