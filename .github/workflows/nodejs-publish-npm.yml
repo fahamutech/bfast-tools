@@ -1,4 +1,4 @@
-name: Node CI
+name: Npm Publish CI
 
 on:
   push:
@@ -19,10 +19,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: publish package
         run: |
-          npm install -g yarn
-         # yarn run build --if-present
-          yarn test
-          yarn run  publish:npm
+          npm install
+          npm test
+          npm run  publish:npm
         env:
           CI: true
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
