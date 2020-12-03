@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \\\"no test\\\"",
-    "publish:npm": "npm publish --registry \"https://registry.npmjs.org/:_authToken=${NPM_TOKEN}\""
+    "publish:npm": "npm publish"
   },
   "repository": {
     "type": "git",
