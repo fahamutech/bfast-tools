@@ -1,4 +1,4 @@
-const {BfastFunctions} = require('bfast-faas');
+const {BfastFunctions} = require('bfast-function');
 
 class BfastFunctionsController {
     /**
