@@ -24,6 +24,7 @@ jobs:
           npm test
         env:
           CI: true
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: test create working space
         run: |
           npm install -g ./
@@ -53,4 +54,5 @@ jobs:
           bfast functions create demoWorkSpace
         env:
           CI: true
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
