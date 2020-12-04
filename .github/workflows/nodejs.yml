@@ -31,28 +31,28 @@ jobs:
           bfast functions create demoWorkSpace
         env:
           CI: true
-  build-on-window:
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        node-version: [10.x]
-    steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm install, build and test
-        run: |
-          npm install
-          npm test
-        env:
-          CI: true
-      - name: test create working space
-        run: |
-          npm install -g ./
-          bfast functions create demoWorkSpace
-        env:
-          CI: true
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+#  build-on-window:
+#    runs-on: windows-latest
+#    strategy:
+#      matrix:
+#        node-version: [10.x]
+#    steps:
+#      - uses: actions/checkout@v1
+#      - name: Use Node.js ${{ matrix.node-version }}
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#      - name: npm install, build and test
+#        run: |
+#          npm install
+#          npm test
+#        env:
+#          CI: true
+#      - name: test create working space
+#        run: |
+#          npm install -g ./
+#          bfast functions create demoWorkSpace
+#        env:
+#          CI: true
+#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
