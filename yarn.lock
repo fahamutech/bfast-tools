@@ -361,10 +361,10 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-bfast-function@^1.10.6:
-  version "1.10.6"
-  resolved "https://registry.yarnpkg.com/bfast-function/-/bfast-function-1.10.6.tgz#9bc4c87f6cd77884fb25de0965d9207035ce973a"
-  integrity sha512-6aPQl90gauDWTiOj5WyBVN40BMsOsKrwnCcjLC+eoyBafvRGPFzHCwIWHffxdjwpU8ZU0A5QNOu1OiuTqcKfSA==
+bfast-function@^1.10.7:
+  version "1.10.7"
+  resolved "https://registry.yarnpkg.com/bfast-function/-/bfast-function-1.10.7.tgz#3b2782b8312f4f404bb170e6782fd5ba3a538a2e"
+  integrity sha512-HjNeEWGywUWVpRjK1YL+ZpiLShN58WCA9siSOnZoU5tEJOpA8apYgjZT02HI38ftkSk4m1cWAnrwVi4gBfRLAg==
   dependencies:
     cookie-parser "^1.4.5"
     cors "^2.8.5"
