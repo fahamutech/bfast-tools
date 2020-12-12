@@ -361,10 +361,10 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-bfast-function@^1.10.7:
-  version "1.10.7"
-  resolved "https://registry.yarnpkg.com/bfast-function/-/bfast-function-1.10.7.tgz#3b2782b8312f4f404bb170e6782fd5ba3a538a2e"
-  integrity sha512-HjNeEWGywUWVpRjK1YL+ZpiLShN58WCA9siSOnZoU5tEJOpA8apYgjZT02HI38ftkSk4m1cWAnrwVi4gBfRLAg==
+bfast-function@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/bfast-function/-/bfast-function-1.11.0.tgz#667b914b8971f7de4256af852a1bd3a059b47916"
+  integrity sha512-LCi4qyEIUApZW54P6Mc421ZL40GywYqnE1VXktcIzilMskFZ1liv97xSdsDy9vM8sX61UVAeEV8kT3dU4VUC4w==
   dependencies:
     cookie-parser "^1.4.5"
     cors "^2.8.5"
@@ -374,7 +374,7 @@ bfast-function@^1.10.7:
     isomorphic-git "^1.8.0"
     morgan "^1.10.0"
     node-schedule "^1.3.2"
-    socket.io "^3.0.3"
+    socket.io "^3.0.4"
 
 bin-links@^1.1.2, bin-links@^1.1.8:
   version "1.1.8"
@@ -4149,10 +4149,10 @@ socket.io-parser@~4.0.1:
     component-emitter "~1.3.0"
     debug "~4.1.0"
 
-socket.io@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/socket.io/-/socket.io-3.0.3.tgz#f296e95b14077d30e77e695849621514191a59f5"
-  integrity sha512-TC1GnSXhDVmd3bHji5aG7AgWB8UL7E6quACbKra8uFXBqlMwEDbrJFK+tjuIY5Pe9N0L+MAPPDv3pycnn0000A==
+socket.io@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/socket.io/-/socket.io-3.0.4.tgz#20130a80b57e48dadb671f22e3776047cc7f9d53"
+  integrity sha512-Vj1jUoO75WGc9txWd311ZJJqS9Dr8QtNJJ7gk2r7dcM/yGe9sit7qOijQl3GAwhpBOz/W8CwkD7R6yob07nLbA==
   dependencies:
     "@types/cookie" "^0.4.0"
     "@types/cors" "^2.8.8"

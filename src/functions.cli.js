@@ -105,9 +105,10 @@ program
 program
     .command('serve')
     .option('-p, --port <port>', "port to serve cloud functions local", 3000)
-    .option('-db, --mongodb-url <mongodb-url>', "path to local mongodb", 'no')
+    .option('-db, --mongodb-url <mongodb-url>', "path to local mongodb")
     .option('--static', 'start in static mode without auto restart when files changes')
     .option('--appId', 'Application Id')
+    .option('--projectId', 'Project Id')
     .option('--masterKey', 'Application master key')
     .description('host functions local for test and development')
     .action((cmd) => {
@@ -116,18 +117,45 @@ program
         process.env.DEV_PORT = cmd.port;
         // for bfast-node sdk
         process.env.IS_LOCAL_BFAST = 'true'
-        process.env.MONGO_URL = cmd["mongodbUrl"];
-        process.env.APPLICATION_ID = cmd.appId ? cmd.appId : Utils.randomString(8);
-        process.env.MASTER_KEY = cmd.masterKey ? cmd.masterKey : Utils.randomString(12);
+        if (cmd['mongodbUrl']) {
+            process.env.MONGO_URL = cmd["mongodbUrl"];
+        }
+        if (cmd.appId) {
+            process.env.APPLICATION_ID = cmd.appId;
+        } else if (!process.env.APPLICATION_ID) {
+            process.env.APPLICATION_ID = Utils.randomString(8);
+        }
+
+        if (cmd.projectId) {
+            process.env.PROJECT_ID = cmd.projectId;
+        } else if (!process.env.PROJECT_ID) {
+            process.env.APPLICATION_ID = Utils.randomString(12);
+            console.log("===========================================");
+            console.log("GENERATED PROJECT_ID :: " + process.env.APPLICATION_ID);
+            console.log("===========================================");
+        }
+
+        if (cmd.masterKey) {
+            process.env.MASTER_KEY = cmd.masterKey;
+        } else if (!process.env.MASTER_KEY) {
+            process.env.MASTER_KEY = Utils.randomString(12);
+            console.log("===========================================");
+            console.log("GENERATED MASTER_KEY :: " + process.env.MASTER_KEY);
+            console.log("===========================================");
+        }
+
+
         if (cmd.static) {
             process.env.PRODUCTION = "1"
-            if (cmd['mongodbUrl'] === 'no') {
+            if (!cmd['mongodbUrl']) {
                 console.log('mongodb url required, try with --mongodb-url <your-mongo-db-url>');
                 return;
             }
             _functionController.serve(process.cwd(), cmd.port);
         } else {
-            process.env.PRODUCTION = "0";
+            if (!process.env.PRODUCTION) {
+                process.env.PRODUCTION = "0";
+            }
             nodemon({
                 script: `${__dirname}/controller/dev-server.controller`,
                 ext: 'js json',
