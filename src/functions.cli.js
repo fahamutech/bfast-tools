@@ -124,14 +124,17 @@ program
             process.env.APPLICATION_ID = cmd.appId;
         } else if (!process.env.APPLICATION_ID) {
             process.env.APPLICATION_ID = Utils.randomString(8);
+            console.log("===========================================");
+            console.log("GENERATED APPLICATION_ID :: " + process.env.APPLICATION_ID);
+            console.log("===========================================");
         }
 
         if (cmd.projectId) {
             process.env.PROJECT_ID = cmd.projectId;
         } else if (!process.env.PROJECT_ID) {
-            process.env.APPLICATION_ID = Utils.randomString(12);
+            process.env.PROJECT_ID = Utils.randomString(12);
             console.log("===========================================");
-            console.log("GENERATED PROJECT_ID :: " + process.env.APPLICATION_ID);
+            console.log("GENERATED PROJECT_ID :: " + process.env.PROJECT_ID);
             console.log("===========================================");
         }
 
