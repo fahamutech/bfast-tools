@@ -8,12 +8,7 @@ const _resourceFactory = new ResourceFactory();
 
 class FunctionsController {
 
-    /**
-     *
-     * @param restController {RestController}
-     */
-    constructor(restController) {
-        this.restController = restController;
+    constructor() {
         /**
          *
          * @param projectDir {string} path of bfast::functions
@@ -76,7 +71,7 @@ class FunctionsController {
             if (bfastFile && bfastFile.ignore) {
                 this._serveFunctions(projectDir, port);
             } else {
-                console.log('not in project folder or project file is invalid');
+                console.log('not in project folder or bfast.json is invalid');
             }
         } catch (e) {
             console.log(e);

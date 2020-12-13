@@ -161,7 +161,7 @@ program
             }
             nodemon({
                 script: `${__dirname}/controller/dev-server.controller`,
-                ext: 'js json',
+                ext: 'js json mjs cjs',
                 cwd: process.cwd() + '/functions'
             });
             nodemon.on('start', function () {
