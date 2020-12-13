@@ -161,8 +161,9 @@ program
             }
             nodemon({
                 script: `${__dirname}/controller/dev-server.controller`,
-                ext: 'js json mjs cjs',
-                cwd: process.cwd() + '/functions'
+                ignore: ["*.test.js", "**/node_modules/**"],
+                ext: '.js,.json,.mjs,.cjs',
+                cwd: process.cwd()
             });
             nodemon.on('start', function () {
                 console.log('auto restart dev server has started');
