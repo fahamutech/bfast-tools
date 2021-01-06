@@ -3,7 +3,7 @@
  */
 const GitController = require('./git.controller');
 let gitController = new GitController();
-const ShellController = require('./shell.controller');
+const {ShellController} = require('./shell.controller');
 let shellController = new ShellController();
 
 class WorkspaceController {

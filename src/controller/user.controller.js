@@ -21,6 +21,24 @@ class UserController {
         });
     }
 
+    /**
+     *
+     * @param user {{
+     *     displayName: string,
+     *     email: string,
+     *     password: string,
+     *     phoneNumber: string
+     * }}
+     * @return {Promise<*>}
+     */
+    async register(user) {
+        return await this.restController.post(`${await BFastJs.clusterApiUrl()}/users`, user, {
+            headers: {
+                'content-type': 'application/json'
+            }
+        });
+    }
+
     async logout(token) {
         return await this.restController.post(`${await BFastJs.clusterApiUrl()}/users/logout`, {
             token: token

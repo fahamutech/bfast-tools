@@ -24,7 +24,7 @@ program
             console.log(response);
             spinner.stop(true);
         } catch (e) {
-            console.log(e);
+            console.log(e && e.message ? e.message : e.toString());
             spinner.stop(true);
         }
     });
@@ -77,7 +77,7 @@ program
             console.log(response);
         } catch (e) {
             spinner.stop(true);
-            console.log(e);
+            console.log(e && e.message ? e.message : e.toString());
         }
     });
 
@@ -98,7 +98,7 @@ program
             console.log(response);
         } catch (e) {
             spinner.stop(true);
-            console.log(e);
+            console.log(e && e.message ? e.message : e.toString());
         }
     });
 
@@ -188,7 +188,7 @@ program
             console.log(response);
         } catch (e) {
             spinner.stop(true);
-            console.log(e);
+            console.log(e && e.message ? e.message : e.toString());
         }
     });
 
@@ -204,7 +204,7 @@ program
             console.log(response);
         } catch (e) {
             spinner.stop(true);
-            console.log(e);
+            console.log(e && e.message ? e.message : e.toString());
         }
     });
 
@@ -220,7 +220,7 @@ program
             console.log(response);
         } catch (e) {
             spinner.stop(true);
-            console.log(e);
+            console.log(e && e.message?e.message: e.toString());
         }
     });
 
@@ -236,7 +236,7 @@ program
             console.log(response);
         } catch (e) {
             spinner.stop(true);
-            console.log(e);
+            console.log(e && e.message?e.message: e.toString());
         }
     });
 

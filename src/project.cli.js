@@ -100,24 +100,20 @@ program
                     mask: '*', name: 'masterKeyConfirm', message: 'Enter application password again :'
                 },
             ]);
-            if (answer) {
-                lastMasterKey = undefined;
-                spinner.start();
-                await projectController.create({
-                    name: answer.name,
-                    description: answer.description,
-                    projectId: answer.projectId,
-                    parse: {
-                        appId: answer.appId,
-                        masterKey: answer.masterKey
-                    }
-                }, cmd.type, user.token);
-                spinner.stop(true);
-                console.log("Project created.");
-                answer = undefined;
-            } else {
-                console.log('General failure, i can find your answers');
-            }
+            lastMasterKey = undefined;
+            spinner.start();
+            await projectController.create({
+                name: answer.name,
+                description: answer.description,
+                projectId: answer.projectId,
+                hostDomain: 'fahamutech.com',
+                parse: {
+                    appId: answer.appId,
+                    masterKey: answer.masterKey
+                }
+            }, cmd.type, user.token);
+            spinner.stop(true);
+            answer = undefined;
         } catch (e) {
             spinner.stop(true);
             if (e && e.message) {
@@ -137,7 +133,7 @@ program
             spinner.start();
             await Utils.isBFastProject(process.cwd());
             const user = await localStorageController.getUser();
-            const projects = await projectController.getMyProjects(user.token, 'bfast');
+            const projects = await projectController.getMyProjects(user.token, null);
             let _projects = [];
             projects.forEach(project => {
                 const _p = {};
@@ -167,7 +163,7 @@ program
             if (e && e.message) {
                 console.log(e.message);
             } else {
-                console.log(e);
+                console.log(e.toString());
             }
         }
     });
@@ -197,7 +193,7 @@ program
                 message: 'Choose your bfast cloud project to work with'
             });
             const project = answer.project;
-            const heads = Object.keys(answer.project);
+            // const heads = Object.keys(answer.project);
             const table = new Table({
                 //head: ['ID', 'Name', 'Description', 'ApplicationId', 'ProjectId', 'MasterKey'],
                 // colWidths: [100, 200]
@@ -208,6 +204,7 @@ program
             table.push({"ApplicationId": project.parse.appId});
             table.push({"ProjectId": project.projectId});
             table.push({"MasterKey": project.parse.masterKey});
+            table.push({"Members": project.members.map(x => x.displayName + '(' + x.email + ')').join(',')});
             console.log(table.toString());
         } catch (e) {
             spinner.stop(true);
@@ -325,7 +322,7 @@ program
 program.on('command:*', function () {
     console.error('Invalid command: %s\n', program.args.join(' '));
     program.help(help => {
-        return help.replace('bfast-cloud', 'bfast cloud');
+        return help.replace('bfast-project', 'bfast project');
     });
 });
 
@@ -333,6 +330,6 @@ program.parse(process.argv);
 
 if (process.argv.length === 2) {
     program.help(help => {
-        return help.replace('bfast-cloud', 'bfast cloud');
+        return help.replace('bfast-project', 'bfast project');
     });
 }

@@ -13,10 +13,10 @@ class DatabaseController {
         this.restController = restController;
     }
 
-    async openUi(_) {
-        const url = 'https://bfast-playground.web.app/';
+    async openUi(projectId) {
+        const url = 'https://bfast-playground.web.app?projectId=' + encodeURIComponent(projectId);
         await open(url);
-        return 'BFast::Database playground listening at ' + url + ' in your browser';
+        return 'BFast::Database playground listening at \"' + url + '\" in your browser';
     }
 
     /**
@@ -30,7 +30,7 @@ class DatabaseController {
     async image(projectId, name, force = false, progress = console.log) {
         const user = await _storage.getUser();
         progress(`\nCurrent bfast project ( projectId: ${projectId})`);
-        return await this.restController.post(`${await BFastJs.clusterApiUrl()}/database/${projectId}/image?force=${force}`,
+        return await this.restController.post(`${await BFastJs.clusterApiUrl()}/projects/${projectId}/database/image?force=${force}`,
             {
                 image: name
             },
@@ -61,7 +61,7 @@ class DatabaseController {
             progress(`\nCurrent linked bfast project ( projectId: ${projectId})`);
             progress('start add bfast database environment(s)');
             return await this.restController.post(
-                `${await BFastJs.clusterApiUrl()}/database/${projectId}/env?force=${force}`,
+                `${await BFastJs.clusterApiUrl()}/projects/${projectId}/database/env?force=${force}`,
                 {
                     envs: envs
                 },
@@ -95,7 +95,7 @@ class DatabaseController {
             progress(`\nCurrent linked bfast project ( projectId: ${projectId})`);
             progress('start removing bfast database environment(s)');
             return await this.restController.delete(
-                `${await BFastJs.clusterApiUrl()}/database/${projectId}/env?force=${force}`,
+                `${await BFastJs.clusterApiUrl()}/projects/${projectId}/database/env?force=${force}`,
                 {
                     headers: {
                         'content-type': 'application/json',

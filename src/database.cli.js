@@ -41,17 +41,18 @@ async function projectToWorkWith() {
 (function registerCommands() {
     program
         .command('playground')
+        .option('-p, --projectId', 'project id to open database playground', '')
         .alias('ui')
         .description('open a database playground to your browser')
-        .action(async (cmd) => {
+        .action(async (cmd, p) => {
             try {
                 spinner.start();
-                const response = await databaseController.openUi(cmd.port);
+                const response = await databaseController.openUi(cmd.projectId ? p[0] : '');
                 spinner.stop(true);
                 console.log(response);
             } catch (e) {
                 spinner.stop(true);
-                console.log(e);
+                console.log(e && e.message?e.message: e.toString());
             }
         });
 
@@ -69,7 +70,7 @@ async function projectToWorkWith() {
                 console.log(response);
             } catch (e) {
                 spinner.stop(true);
-                console.log(e);
+                console.log(e && e.message?e.message: e.toString());
             }
         });
 
@@ -87,7 +88,7 @@ async function projectToWorkWith() {
                 console.log(response);
             } catch (e) {
                 spinner.stop(true);
-                console.log(e);
+                console.log(e && e.message?e.message: e.toString());
             }
         });
 
@@ -103,11 +104,11 @@ async function projectToWorkWith() {
                 spinner.start();
                 const project = await projectToWorkWith();
                 let imageName;
-                if (name.toString().trim().includes('/')) {
-                    imageName = name
-                } else {
-                    imageName = `joshuamshana/bfast-ce-daas:${name}`;
-                }
+                // if (name.toString().trim().includes('/')) {
+                //     imageName = name
+                // } else {
+                imageName = `joshuamshana/bfastfunction:${name ? name.toString().replace('/', '') : 'latest'}`;
+                // }
                 spinner.start();
                 const response = await databaseController.image(project.projectId, imageName, cmd.force !== undefined)
                 spinner.stop(true);
@@ -117,8 +118,8 @@ async function projectToWorkWith() {
                 if (e && e.message) {
                     console.log(e.message);
                 } else {
-                    console.log(e);
-                    console.log('Fails to update database instance image');
+                    console.log(e.toString());
+                    // console.log('Fails to update database instance image');
                 }
             }
         })

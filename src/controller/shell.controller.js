@@ -10,33 +10,17 @@ class ShellController {
      */
     async exec(command, options = {}, progress = console.log) {
         return new Promise((resolve, reject) => {
-            const processingEvent = childProcess.exec(command, {cwd: options.cwd});
-
-            processingEvent.on("error", err => {
-                reject(err);
+            childProcess.exec(command, {cwd: options.cwd}, (error, stdout, stderr) => {
+                if (error) {
+                    reject(stderr.toString());
+                } else {
+                    resolve(stdout.toString());
+                }
             });
-
-            processingEvent.stdout.on('data', (data) => {
-                progress(`${data}`);
-            });
-
-            processingEvent.stderr.on('data', (data) => {
-                reject(data);
-            });
-
-            processingEvent.on("exit", code => {
-                resolve(code);
-            });
-
-            processingEvent.on("close", code => {
-                resolve(code);
-            });
-            processingEvent.on("disconnect", () => {
-                resolve('')
-            });
-
         });
     }
 }
 
-module.exports = ShellController;
+module.exports = {
+    ShellController: ShellController
+};

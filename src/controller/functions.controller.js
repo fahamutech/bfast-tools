@@ -1,7 +1,10 @@
 const {FaasController} = require('./bfastFunctions.controller');
+const {RestController} = require("./rest.controller");
+const {ShellController} = require("./shell.controller");
 const LocalStorage = require('./local-storage.controller');
 const ResourceFactory = require('./workspace.controller');
 const BFastJs = require("../bfast.cli");
+const fs = require('fs');
 
 const _storage = new LocalStorage();
 const _resourceFactory = new ResourceFactory();
@@ -9,6 +12,8 @@ const _resourceFactory = new ResourceFactory();
 class FunctionsController {
 
     constructor() {
+        this.restController = new RestController();
+        this.shell = new ShellController()
         /**
          *
          * @param projectDir {string} path of bfast::functions
@@ -74,7 +79,7 @@ class FunctionsController {
                 console.log('not in project folder or bfast.json is invalid');
             }
         } catch (e) {
-            console.log(e);
+            console.log(e && e.message ? e.message : e.toString());
         }
     }
 
@@ -99,9 +104,10 @@ class FunctionsController {
             projectId = project.projectId;
             token = user.token;
         }
+        await this._prepareTar(projectDir, projectId);
         progress(`\nCurrent linked bfast project ( projectId: ${projectId})`);
         return await this.restController.post(
-            `${await BFastJs.clusterApiUrl()}/functions/${projectId}?force=${force}`,
+            `${await BFastJs.clusterApiUrl()}/projects/${projectId}/functions?force=${force}`,
             {},
             {
                 headers: {
@@ -129,7 +135,7 @@ class FunctionsController {
             progress(`\nCurrent linked bfast project ( projectId: ${projectId})`);
             progress('start add cloud functions environment(s)');
             return await this.restController.post(
-                `${await BFastJs.clusterApiUrl()}/functions/${projectId}/env?force=${force}`,
+                `${await BFastJs.clusterApiUrl()}/projects/${projectId}/functions/env?force=${force}`,
                 {
                     envs: envs
                 },
@@ -162,8 +168,8 @@ class FunctionsController {
             const token = user.token;
             progress(`\nCurrent linked bfast project ( projectId: ${projectId})`);
             progress('start removing cloud functions environment(s)');
-            return await axios.delete(
-                `${await BFastJs.clusterApiUrl()}/functions/${projectId}/env?force=${force}`,
+            return await this.restController.delete(
+                `${await BFastJs.clusterApiUrl()}/projects/${projectId}/functions/env?force=${force}`,
                 {
                     headers: {
                         'content-type': 'application/json',
@@ -196,7 +202,7 @@ class FunctionsController {
         progress(`\nCurrent linked bfast project ( projectId: ${projectId})`);
         progress(`start switching ${mode === 1 ? 'on' : 'off'}`);
         return await this.restController.post(
-            `${await BFastJs.clusterApiUrl()}/functions/${projectId}/switch/${mode}?force=${force}`,
+            `${await BFastJs.clusterApiUrl()}/projects/${projectId}/functions/switch/${mode}?force=${force}`,
             {},
             {
                 headers: {
@@ -273,6 +279,21 @@ class FunctionsController {
     //         }
     //     }
     // }
+
+    async _prepareTar(projectDir, projectId) {
+        const packageFilePath = `${projectDir}/package.json`;
+        const packageFile = require(packageFilePath);
+        const bundledDependencies = [];
+        Object.keys(packageFile.dependencies ? packageFile.dependencies : {}).forEach(value => {
+            bundledDependencies.push(value);
+        });
+        packageFile.bundledDependencies = bundledDependencies;
+        packageFile.name = `${projectId}-${packageFile.name}`;
+        fs.writeFileSync(packageFilePath, JSON.stringify(packageFile));
+        await this.shell.exec(`npm pack`, {
+            cwd: projectDir
+        });
+    }
 }
 
 module.exports = {FunctionsController};

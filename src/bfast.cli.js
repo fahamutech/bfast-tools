@@ -48,7 +48,7 @@ class BfastCli {
                     await _storage.saveSettings({cloudUrl: answer.cloudUrl.trim()});
                     console.log('Settings updated');
                 } catch (e) {
-                    console.log(e);
+                    console.log(e && e.message?e.message: e.toString());
                 }
             });
         program
@@ -61,7 +61,8 @@ class BfastCli {
             .command('database', 'manage bfast::cloud database instance(s)', {executableFile: 'database.cli'})
             .alias('db');
         program
-            .command('cloud', 'manage your bfast::cloud projects', {executableFile: 'cloud.cli'});
+            .command('project', 'manage your bfast cloud projects', {executableFile: 'project.cli'})
+            .alias('cloud');
 
         program.on('command:*', function () {
             const cmd = program.args[0];

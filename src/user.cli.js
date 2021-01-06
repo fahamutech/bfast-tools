@@ -10,6 +10,89 @@ const _database = new DatabaseController();
 const _userController = new UserController(new RestController());
 
 program
+    .command('register')
+    .description('create your bfast account')
+    .action(async (cdm) => {
+        try {
+            let lastPassword;
+            const answer = await inquirer.prompt([
+                {
+                    name: "displayName",
+                    type: 'text',
+                    validate: (fullname) => {
+                        if (fullname && fullname.length >= 3) {
+                            return true;
+                        } else {
+                            return 'your full name required and must be at least 3 alphabet characters'
+                        }
+                    },
+                    message: 'Please enter full name',
+                },
+                {
+                    name: "email",
+                    type: 'text',
+                    validate: (email) => {
+                        if (email && email.toString().search(new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,5}$', 'gi')) !== -1) {
+                            return true;
+                        } else {
+                            return 'email required and must be valid'
+                        }
+                    },
+                    message: 'Please enter your email',
+                },
+                {
+                    name: "phoneNumber",
+                    validate: (mobile) => {
+                        if (mobile && mobile.toString().length >= 9 && !isNaN(mobile)) {
+                            return true;
+                        } else {
+                            return 'mobile number required and must be valid'
+                        }
+                    },
+                    type: 'text',
+                    message: 'Please enter your valid mobile number',
+                },
+                {
+                    name: "password",
+                    type: 'password',
+                    validate: (password) => {
+                        if (password && password.toString().length >= 8) {
+                            lastPassword = password;
+                            return true;
+                        } else {
+                            return 'password required an must be at least 8 characters'
+                        }
+                    },
+                    message: 'Please enter your password',
+                    mask: '*'
+                },
+                {
+                    name: "rPassword",
+                    type: 'password',
+                    validate: (password) => {
+                        if (password && password.toString().length >= 8 && password === lastPassword) {
+                            lastPassword = undefined;
+                            return true;
+                        } else {
+                            return 'password required an must be at least 8 characters and match previous one'
+                        }
+                    },
+                    message: 'Please enter your password again',
+                    mask: '*'
+                },
+            ]);
+            spinner.start();
+            delete answer.rPassword;
+            await _database.saveUser(await _userController.register(answer));
+            spinner.stop(true);
+            console.log('\nSuccessful Registered\n');
+        } catch (e) {
+            console.log(e && e.message ? e.message : e.toString());
+            spinner.stop();
+        }
+    });
+
+program
     .command('login')
     .option('-u, --username',
         'Username you used open bfast cloud account, possible the email you use')
@@ -27,7 +110,7 @@ program
                 spinner.stop();
             } catch (e) {
                 console.log('\nLogin fails');
-                console.log(e);
+                console.log(e && e.message ? e.message : e.toString());
                 spinner.stop();
             }
         } else {
@@ -51,7 +134,7 @@ program
                 spinner.stop();
             } catch (e) {
                 console.log('\nLogin fails');
-                console.log(e);
+                console.log(e && e.message ? e.message : e.toString());
                 spinner.stop();
             }
         }
@@ -97,7 +180,6 @@ program
                 console.log(`\n\t${user.token}\n`)
             } catch (e) {
                 console.log('\nLogin fails');
-                console.log(e);
                 spinner.stop();
             }
         } else {
@@ -123,8 +205,7 @@ program
                 console.log(`\n\t${user.token}\n`);
                 spinner.stop();
             } catch (e) {
-                console.log('\nLogin fails');
-                console.log(e);
+                console.log(e && e.message ? e.message : e.toString());
                 spinner.stop();
             }
         }

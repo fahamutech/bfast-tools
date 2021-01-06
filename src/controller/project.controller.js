@@ -50,6 +50,7 @@ class ProjectController {
     /**
      * @param token {string}
      * @param type {'ssm' | 'bfast' | null}
+     * @return {Promise<Array<*>>}
      */
     async getMyProjects(token, type) {
         const response = await this.restController.get(`${await BFastJs.clusterApiUrl()}/projects`, {
@@ -63,6 +64,13 @@ class ProjectController {
         return response.filter(value => (value.type && value.type === type));
     }
 
+    /**
+     *
+     * @param token {string}
+     * @param projectId {string}
+     * @param user {object}
+     * @return {Promise<*>}
+     */
     async addMember(token, projectId, user) {
         return await this.restController.post(`${await BFastJs.clusterApiUrl()}/projects/${projectId}/members`, user, {
             headers: {
