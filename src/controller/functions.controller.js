@@ -104,7 +104,7 @@ class FunctionsController {
             projectId = project.projectId;
             token = user.token;
         }
-        await this._prepareTar(projectDir, projectId);
+        // await this._prepareTar(projectDir, projectId);
         progress(`\nCurrent linked bfast project ( projectId: ${projectId})`);
         return await this.restController.post(
             `${await BFastJs.clusterApiUrl()}/projects/${projectId}/functions?force=${force}`,
