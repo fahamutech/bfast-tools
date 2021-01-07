@@ -21,6 +21,16 @@ class UserController {
         });
     }
 
+    async reset(email) {
+        return await this.restController.post(`${await BFastJs.clusterApiUrl()}/users/password/request`, {
+            email: email
+        }, {
+            headers: {
+                'content-type': 'application/json'
+            }
+        });
+    }
+
     /**
      *
      * @param user {{

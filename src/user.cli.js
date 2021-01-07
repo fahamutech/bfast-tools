@@ -141,6 +141,54 @@ program
     });
 
 program
+    .command('reset')
+    .option('-u, --username',
+        'Username you used open bfast cloud account, possible the email you use')
+    .description('reset password of your remote bfast cloud account')
+    .action(async (cdm) => {
+        if (cdm.username && cdm.username !== '') {
+            try {
+                const answer = await inquirer.prompt([
+                    {name: "password", type: 'password', message: 'Please enter your password', mask: '*'}
+                ]);
+                spinner.start();
+                await _database.saveUser(await _userController.login(cdm.username, answer.password));
+                console.log('\nSuccessful login');
+                spinner.stop();
+            } catch (e) {
+                console.log('\nLogin fails');
+                console.log(e && e.message ? e.message : e.toString());
+                spinner.stop();
+            }
+        } else {
+            try {
+                const answer = await inquirer.prompt([
+                    {
+                        name: "username",
+                        type: 'text',
+                        validate: function (email){
+                            if (email && email.toString().search(new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,5}$', 'gi')) !== -1) {
+                                return true;
+                            } else {
+                                return 'email required and must be valid'
+                            }
+                        },
+                        message: 'Please enter your email used to open account',
+                    }
+                ]);
+                spinner.start();
+                await _database.saveUser(await _userController.reset(answer.username));
+                console.log('\nSuccessful sent instruction to your email');
+                spinner.stop();
+            } catch (e) {
+                console.log('\nPassword reset fails');
+                console.log(e && e.message ? e.message : e.toString());
+                spinner.stop();
+            }
+        }
+    });
+
+program
     .command('logout')
     .description('logout from local device')
     .action(async cmd => {
