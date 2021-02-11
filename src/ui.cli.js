@@ -19,8 +19,12 @@ program
     .option('-t, --type <type>', 'project type, only supported angular for now', 'angular')
     .description('create new cloud::functions workspace')
     .action(async (name, cdm) => {
-        if (cdm.type && cdm.type === 'angular') {
+        const badIn = name.toString().match(new RegExp('([^A-Za-z])', 'ig'));
+        if (badIn && Array.isArray(badIn) && badIn.length > 0) {
+            console.log('INFO:  project name must be alphabet only, remove numbers and other symbols');
+        } else if (cdm.type && cdm.type === 'angular' && name && name !== '') {
             try {
+                name = name.toString().replace(new RegExp('([^A-Za-z])', 'ig'), '').trim();
                 spinner.start();
                 const response = await _cliFunctionsController.createFrontedWorkspace(name, cdm.type);
                 console.log(response);
@@ -36,7 +40,7 @@ program
 
 program
     .command('serve')
-    .option('-a, --all','start at project choose page', false)
+    .option('-a, --all', 'start at project choose page', false)
     .description('host web ide for development')
     .action(async (cmd) => {
         try {
