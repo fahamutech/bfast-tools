@@ -1,7 +1,11 @@
 /**
  * manage initiation or project structure
  */
+const {readFile, writeFile} = require('fs');
+const {promisify} = require('util');
+const {join} = require('path');
 const GitController = require('./git.controller');
+const {Utils} = require("../utils/utils");
 let gitController = new GitController();
 const {ShellController} = require('./shell.controller');
 let shellController = new ShellController();
@@ -24,17 +28,139 @@ class WorkspaceController {
      */
     async prepareWorkspaceFolder(projectDir, progress = console.log) {
         if (this._checkIfFileExist(projectDir)) {
-            progress('\nproject folder already exist at: ' + projectDir);
-            // process.exit(0);
+            return '\nfolder already exist at: ' + projectDir;
+        }else{
+            this._fse.copySync(this._path.join(__dirname, `/../res/backend`), projectDir);
+            await gitController.init(projectDir);
+            progress('\nInstall dependencies');
+            await shellController.exec(`cd ${projectDir} && npm install`);
+            return `done create project folder, run "cd ${projectDir}" to navigate to your project folder`;
         }
-        this._fse.copySync(this._path.join(__dirname, `/../res`), projectDir);
-        await gitController.init(projectDir);
-        // await gitController.add(projectDir);
-        // await gitController.commit('initial commit', projectDir);
-        progress('\nInstall dependencies');
-        await shellController.exec(`cd ${projectDir} && npm install`);
-        // await gitController.add(projectDir);
-        return `done create project folder, run "cd ${projectDir}" to navigate to your project folder`;
+    }
+
+    /**
+     *
+     * @param projectDir {string}
+     * @param name {string} project name
+     * @param progress {function(arg: string)}
+     * @param type {string}
+     * @return {Promise<string>}
+     */
+    async prepareFrontendWorkspaceFolder(projectDir, name, type = 'angular', progress = console.log,) {
+        if (this._checkIfFileExist(projectDir)) {
+            return '\nfolder already exist at: ' + projectDir;
+        } else {
+            this._fse.copySync(this._path.join(__dirname, `/../res/frontend`, type), projectDir);
+            await gitController.init(projectDir);
+            await this._updatePackageName(projectDir, name);
+            await this._updateAngularJson(projectDir, name);
+            await this._updateIndexHtml(projectDir, name);
+            await this._writeAngularMainModule(projectDir, name);
+            progress('\nInstall dependencies');
+            await shellController.exec(`cd ${projectDir} && npm install`);
+            return `done create project folder, run "cd ${projectDir}" to navigate to your project folder`;
+        }
+    }
+
+    /**
+     *
+     * @param projectDir {string} project dir
+     * @param name {string} project name
+     * @return {Promise<*>}
+     * @private
+     */
+    async _writeAngularMainModule(projectDir, name) {
+        const filePath = join(projectDir, 'src', 'app', `${name}.module.ts`);
+        const fileMainPath = join(projectDir, 'src', `main.ts`);
+        const mainModuleContent = `import {bfast} from 'bfastjs';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {AppComponent} from './app.component';
+import {RouterModule, Routes} from '@angular/router';
+
+const routes: Routes = [
+];
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes),
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class ${Utils.kebalCaseToCamelCase(name)}Module {
+  constructor() {
+  }// end
+}
+
+        `;
+        const main = `import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { ${Utils.kebalCaseToCamelCase(name)}Module } from './app/${Utils.camelCaseToKebal(name)}.module';
+import { environment } from './environments/environment';
+
+if (environment.production) {
+  enableProdMode();
+}
+
+platformBrowserDynamic().bootstrapModule(${Utils.kebalCaseToCamelCase(name)}Module)
+  .catch(err => console.error(err));
+
+        `;
+        await promisify(writeFile)(filePath, mainModuleContent);
+        await promisify(writeFile)(fileMainPath, main);
+        return 'done';
+    }
+
+    /**
+     *
+     * @param projectDir {string} project dir
+     * @param name {string} project name
+     * @return {Promise<*>}
+     * @private
+     */
+    async _updatePackageName(projectDir, name) {
+        const filePath = join(projectDir, 'package.json');
+        const packageJsonFile = await promisify(readFile)(filePath);
+        const updatePackageJson = packageJsonFile.toString()
+            .replace(new RegExp('(bfast-ui-app)', 'ig'), name)
+            .trim();
+        return promisify(writeFile)(filePath, updatePackageJson);
+    }
+
+    /**
+     *
+     * @param projectDir {string} project dir
+     * @param name {string} project name
+     * @return {Promise<*>}
+     * @private
+     */
+    async _updateAngularJson(projectDir, name) {
+        const filePath = join(projectDir, 'angular.json');
+        const packageJsonFile = await promisify(readFile)(filePath);
+        const updatedAngularJson = packageJsonFile.toString()
+            .replace(new RegExp('(bfast-ui-app)', 'ig'), name)
+            .trim();
+        return promisify(writeFile)(filePath, updatedAngularJson);
+    }
+
+    /**
+     *
+     * @param projectDir {string} project dir
+     * @param name {string} project name
+     * @return {Promise<*>}
+     * @private
+     */
+    async _updateIndexHtml(projectDir, name) {
+        const filePath = join(projectDir, 'src', 'index.html');
+        const indexInString = await promisify(readFile)(filePath);
+        const updatedIndexHtml = indexInString.toString()
+            .replace(new RegExp('(bfast-ui-app)', 'ig'), name)
+            .trim();
+        return promisify(writeFile)(filePath, updatedIndexHtml);
     }
 
     async getProjectIdFromBfastFJSON(projectDir) {

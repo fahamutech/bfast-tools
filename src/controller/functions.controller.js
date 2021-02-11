@@ -65,6 +65,17 @@ class FunctionsController {
     }
 
     /**
+     * create a bootstrap project for bfast cloud functions
+     * @param projectDir {string} absolute path to create a workspace
+     * @param name {string} project name
+     * @param type {string}
+     * @return {Promise}
+     */
+    async initiateFrontendFolder(projectDir, name, type = 'angular') {
+        return _resourceFactory.prepareFrontendWorkspaceFolder(projectDir, name, type);
+    }
+
+    /**
      * start development server locally to host your cloud functions
      * @param projectDir {string} absolute path to your functions
      * @param port
