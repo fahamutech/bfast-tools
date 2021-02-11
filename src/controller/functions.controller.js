@@ -49,10 +49,6 @@ class FunctionsController {
                 }
             });
         }
-
-        // this._checkProjectIsClean = () => {
-        //
-        // }
     }
 
     /**

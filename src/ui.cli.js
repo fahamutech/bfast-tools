@@ -1,13 +1,10 @@
 const program = require('commander');
 const {FunctionsController} = require('./controller/functions.controller');
 const {CliFunctionsController} = require('./controller/functions.cli.controller');
-const nodemon = require("nodemon");
 const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');
-const inquirer = require('inquirer');
 const {RestController} = require("./controller/rest.controller");
-const {Utils} = require('./utils/utils');
 
 const _functionController = new FunctionsController(new RestController());
 const _cliFunctionsController = new CliFunctionsController({
@@ -17,7 +14,7 @@ const _cliFunctionsController = new CliFunctionsController({
 program
     .command('create <name>')
     .option('-t, --type <type>', 'project type, only supported angular for now', 'angular')
-    .description('create new cloud::functions workspace')
+    .description('create frontend workspace')
     .action(async (name, cdm) => {
         const badIn = name.toString().match(new RegExp('([^A-Za-z])', 'ig'));
         if (badIn && Array.isArray(badIn) && badIn.length > 0) {
@@ -40,6 +37,7 @@ program
 
 program
     .command('serve')
+    .alias('ide')
     .option('-a, --all', 'start at project choose page', false)
     .description('host web ide for development')
     .action(async (cmd) => {
@@ -66,6 +64,6 @@ program.parse(process.argv);
 
 if (process.argv.length === 2) {
     program.help(help => {
-        return help.replace('bfast-functions', 'bfast functions');
+        return help.replace('bfast-ui', 'bfast ui');
     });
 }
