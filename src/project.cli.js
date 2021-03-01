@@ -216,6 +216,52 @@ program
         }
     });
 
+// program
+//     .command('sync')
+//     .description('sync  project in database with running services in orchestration')
+//     .action(async (cdm) => {
+//         try {
+//             spinner.start();
+//             const user = await localStorageController.getUser();
+//             const projects = await projectController.getMyProjects(user.token, cdm.type);
+//             let _projects = [];
+//             projects.forEach(project => {
+//                 const _p = {};
+//                 _p.name = `${project.name} ( projectId: ${project.projectId} )`;
+//                 _p.value = project;
+//                 _projects.push(_p);
+//             });
+//             spinner.stop(true);
+//             const answer = await inquirer.prompt({
+//                 type: 'list',
+//                 choices: _projects,
+//                 name: 'project',
+//                 message: 'Choose your bfast cloud project to work with'
+//             });
+//             const project = answer.project;
+//             // const heads = Object.keys(answer.project);
+//             const table = new Table({
+//                 //head: ['ID', 'Name', 'Description', 'ApplicationId', 'ProjectId', 'MasterKey'],
+//                 // colWidths: [100, 200]
+//             });
+//             table.push({"ID": project._id});
+//             table.push({"Name": project.name});
+//             table.push({"Description": project.description});
+//             table.push({"ApplicationId": project.parse.appId});
+//             table.push({"ProjectId": project.projectId});
+//             table.push({"MasterKey": project.parse.masterKey});
+//             table.push({"Members": project.members.map(x => x.displayName + '(' + x.email + ')').join(',')});
+//             console.log(table.toString());
+//         } catch (e) {
+//             spinner.stop(true);
+//             if (e && e.message) {
+//                 console.log(e.message);
+//             } else {
+//                 console.log(e);
+//             }
+//         }
+//     });
+
 program
     .command('delete')
     .alias('rm')

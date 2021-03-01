@@ -40,33 +40,36 @@ class FunctionsCliController {
         }
     }
 
-    async openFrontendIDE(projectDir, all = false) {
+    async openFrontendIDE(projectDir, autoOpen = false, all = false) {
         const bfastUi = await new BfastUiAngular().init();
         await bfastUi.ide.start();
-        async function openStart() {
-            const url = `http://localhost:${bfastUi.port}`;
-            await open(url);
+
+        async function openStart(url) {
+            if (autoOpen === true) {
+                await open(`\"${url}\"`);
+            }
             return 'bfast ui ide running at \"' + url + '\"';
         }
+
         if (all === true) {
-            await openStart();
+            return await openStart(`http://localhost:${bfastUi.port}`);
         } else {
             try {
                 const projectDirContents = await promisify(readdir)(join(projectDir, 'src', 'app'));
-                const moduleName = projectDirContents.filter(x=>x.includes('.module.ts'))
-                    .map(y=>y.replace('.module.ts', '').trim())
+                const moduleName = projectDirContents.filter(x => x.includes('.module.ts'))
+                    .map(y => y.replace('.module.ts', '').trim())
                     .join('');
                 const projectDirectoryName = basename(projectDir).toString()
                     .replace(new RegExp('[\\s]', 'ig'), '').trim();
                 const path = encodeURIComponent(join(projectDir, 'src', 'app'));
                 const module = encodeURIComponent(Utils.camelCaseToKebal(moduleName));
                 const projectName = encodeURIComponent(Utils.kebalCaseToCamelCase(projectDirectoryName));
-                const url = `\"http://localhost:${bfastUi.port}/project?path=${path}&module=${module}&name=${projectName}\"`;
-                await open(url);
-                return 'bfast ui ide running at \"' + url + '\"';
+                const url = `http://localhost:${bfastUi.port}/project?path=${path}&module=${module}&name=${projectName}`;
+                return await openStart(url);
+                // return 'bfast ui ide running at \"' + url + '\"';
             } catch (e) {
-                await openStart();
-
+                console.log(e.toString());
+                return await openStart(`http://localhost:${bfastUi.port}`);
             }
         }
     }

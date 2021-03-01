@@ -39,13 +39,16 @@ program
     .command('serve')
     .alias('ide')
     .option('-a, --all', 'start at project choose page', false)
+    .option('-o, --open', 'open ide in browser', false)
     .description('host web ide for development')
     .action(async (cmd) => {
         try {
             spinner.start();
-            const response = await _cliFunctionsController.openFrontendIDE(process.cwd(), cmd.all);
+            const response = await _cliFunctionsController.openFrontendIDE(process.cwd(), cmd.open, cmd.all);
             spinner.stop(true);
-            console.log(response);
+            if (response) {
+                console.log(response);
+            }
         } catch (e) {
             spinner.stop(true);
             console.log(e && e.message ? e.message : e.toString());
