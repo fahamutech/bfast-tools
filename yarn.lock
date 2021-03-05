@@ -287,10 +287,10 @@ bfast-function@^1.11.5:
     node-schedule "^1.3.3"
     socket.io "^3.1.1"
 
-bfast-ui-ng@~0.0.1-alpha.8:
-  version "0.0.1-alpha.8"
-  resolved "https://registry.npmjs.org/bfast-ui-ng/-/bfast-ui-ng-0.0.1-alpha.8.tgz"
-  integrity sha512-j4Im/NpUvK/+2flm7w7jHbiZGTiPhiT+w6/dha/8sHjTn6cEx+KB7XDRTNYk/va0SJm+HSwWjewM8ua8L5MztQ==
+bfast-ui-ng@~0.0.1-alpha.9:
+  version "0.0.1-alpha.9"
+  resolved "https://registry.yarnpkg.com/bfast-ui-ng/-/bfast-ui-ng-0.0.1-alpha.9.tgz#74780a379080dd1da821ea29d2db8d1d6c999be0"
+  integrity sha512-Zec2S3aE/lBBwvXrlVWDEOhTwH9G+5qQ7Uu4BGAFhZ0QEkQ7dS8Bs3yDEfUpBMysbED2kLABJdTkTL0ZAm0eWw==
   dependencies:
     bfast-function "^1.11.5"
     bfastnode "^4.1.1"
