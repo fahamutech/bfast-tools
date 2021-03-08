@@ -272,21 +272,6 @@ basic-auth@~2.0.1:
   dependencies:
     safe-buffer "5.1.2"
 
-bfast-function@^1.11.5:
-  version "1.11.5"
-  resolved "https://registry.npmjs.org/bfast-function/-/bfast-function-1.11.5.tgz"
-  integrity sha512-Wd+u08M7cAIKtpEOs6va8np0ThA3sPvBKrgJIihqZmelHgSoCa3AQMLzCQkYdXEkzPRa+IEwPz/XGxjlhQpT5w==
-  dependencies:
-    cookie-parser "^1.4.5"
-    cors "^2.8.5"
-    debug "^4.3.1"
-    express "^4.17.1"
-    glob "^7.1.6"
-    isomorphic-git "^1.8.0"
-    morgan "^1.10.0"
-    node-schedule "^1.3.3"
-    socket.io "^3.1.1"
-
 bfast-function@^1.12.0:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/bfast-function/-/bfast-function-1.12.0.tgz#e5b044ca87b779d6ec339011678f33d4b1c5af71"
@@ -302,21 +287,21 @@ bfast-function@^1.12.0:
     node-schedule "^1.3.3"
     socket.io "^3.1.1"
 
-bfast-ui-ng@~0.0.1-alpha.10:
-  version "0.0.1-alpha.10"
-  resolved "https://registry.yarnpkg.com/bfast-ui-ng/-/bfast-ui-ng-0.0.1-alpha.10.tgz#4e7433a26c3b068c582888a03b38f58400291285"
-  integrity sha512-0UKO2EBhBJf8/ORk4DYWkNtJsfXXQPDTInoQ8IS7KtzDzT+wlKRGwnefGee1z3UlKxSHlYVC8xNWiTjD9HAz/g==
+bfast-ui-ng@~0.0.1-alpha.11:
+  version "0.0.1-alpha.11"
+  resolved "https://registry.yarnpkg.com/bfast-ui-ng/-/bfast-ui-ng-0.0.1-alpha.11.tgz#a5a4902f923eb71792a447f4a957595b8586d2b5"
+  integrity sha512-qD2WklyHUcneJuzAdGcj1D4xVtL0lY5YL60n1BEfs+MWYoSQwzWiAJsV+6sUE92MOvBWfuYFOq0Fj1qXIuwgOw==
   dependencies:
-    bfast-function "^1.11.5"
-    bfastnode "^4.1.1"
+    bfast-function "^1.12.0"
+    bfastnode "^4.2.0"
     get-port "^5.1.1"
     nconf "^0.11.2"
     node-pty-prebuilt-multiarch "^0.10.0"
 
-bfastnode@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.npmjs.org/bfastnode/-/bfastnode-4.1.1.tgz"
-  integrity sha512-h6emPwQxQOE6nuQ2o5otAVlutPd/wp57IQub7KMjSv1gF1HVZrZmHqGeT0V6a8M6dq6MrE+iTvbn1VIDyCeRVg==
+bfastnode@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/bfastnode/-/bfastnode-4.2.0.tgz#2ba7bb2285ed50f7ec8d9c6ad167d632f3404324"
+  integrity sha512-EVhgB6ssRGdjsoDjXRK5OPSfgHhlAVifR2HYReA9eaakw9hfZ5AiX1ngH19GN2gls8xp57+FSbC5XqT9g7BJcg==
 
 binary-extensions@^2.0.0:
   version "2.0.0"
