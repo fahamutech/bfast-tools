@@ -1,6 +1,6 @@
 {
   "name": "bfast-tools",
-  "version": "0.9.1-beta.9",
+  "version": "0.9.1-beta.10",
   "description": "Tools to manage bfast cloud projects",
   "private": false,
   "preferGlobal": true,
@@ -29,7 +29,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "bfast-function": "^1.12.0",
-    "bfast-ui-ng": "~0.0.1-alpha.13",
+    "bfast-ui-ng": "~0.0.1-alpha.14",
     "cli-spinner": "^0.2.10",
     "cli-table": "^0.3.5",
     "commander": "^7.1.0",
