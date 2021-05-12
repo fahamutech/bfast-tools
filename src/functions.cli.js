@@ -107,9 +107,9 @@ program
     .option('-p, --port <port>', "port to serve cloud functions local", 3000)
     .option('-db, --mongodb-url <mongodb-url>', "path to local mongodb")
     .option('--static', 'start in static mode without auto restart when files changes')
-    .option('--appId', 'Application Id')
-    .option('--projectId', 'Project Id')
-    .option('--masterKey', 'Application master key')
+    .option('--appId <appId>', 'Application Id')
+    .option('--projectId <projectId>', 'Project Id')
+    .option('--masterKey <masterKey>', 'Application master key')
     .description('host functions local for test and development')
     .action((cmd) => {
         // process.env.MONGOMS_DEBUG = 1;
