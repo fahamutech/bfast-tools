@@ -46,7 +46,7 @@ class FunctionsCliController {
 
         async function openStart(url) {
             if (autoOpen === true) {
-                await open(`\"${url}\"`);
+                await open(url);
             }
             return 'bfast ui ide running at \"' + url + '\"';
         }
@@ -61,12 +61,11 @@ class FunctionsCliController {
                     .join('');
                 const projectDirectoryName = basename(projectDir).toString()
                     .replace(new RegExp('[\\s]', 'ig'), '').trim();
-                const path = encodeURIComponent(join(projectDir, 'src', 'app'));
-                const module = encodeURIComponent(Utils.camelCaseToKebal(moduleName));
-                const projectName = encodeURIComponent(Utils.kebalCaseToCamelCase(projectDirectoryName));
+                const path = join(projectDir, 'src', 'app');
+                const module = Utils.camelCaseToKebal(moduleName);
+                const projectName = Utils.kebalCaseToCamelCase(projectDirectoryName);
                 const url = `http://localhost:${bfastUi.port}/project?path=${path}&module=${module}&name=${projectName}`;
                 return await openStart(url);
-                // return 'bfast ui ide running at \"' + url + '\"';
             } catch (e) {
                 console.log(e.toString());
                 return await openStart(`http://localhost:${bfastUi.port}`);

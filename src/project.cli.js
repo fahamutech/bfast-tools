@@ -114,6 +114,7 @@ program
             }, cmd.type, user.token);
             spinner.stop(true);
             answer = undefined;
+            console.log('Project created.');
         } catch (e) {
             spinner.stop(true);
             if (e && e.message) {
