@@ -1,6 +1,6 @@
 {
   "name": "bfast-tools",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "Tools to manage bfast cloud projects",
   "private": false,
   "preferGlobal": true,
@@ -27,24 +27,22 @@
   },
   "homepage": "https://github.com/fahamutech/bfast-tools#readme",
   "dependencies": {
-    "axios": "~0.21.1",
-    "bfast-function": "~1.12.0",
+    "axios": "^0.21.1",
+    "bfast-function": "~1.13.0",
     "bfast-ui-ng": "~0.1.0-alpha.2",
     "cli-spinner": "~0.2.10",
     "cli-table": "~0.3.6",
-    "commander": "~7.2.0",
-    "formdata": "~0.10.4",
-    "fs-extra": "~10.0.0",
+    "commander": "~8.1.0",
+    "fs-extra": "^10.0.0",
     "global": "~4.4.0",
-    "inquirer": "~8.1.0",
-    "isomorphic-git": "~1.8.2",
+    "inquirer": "~8.1.2",
+    "isomorphic-git": "~1.10.0",
     "nedb": "~1.8.0",
-    "nodemon": "~2.0.7",
-    "out-url": "~1.1.3",
-    "update-notifier": "~5.1.0"
+    "nodemon": "~2.0.12",
+    "out-url": "~1.1.3"
   },
   "devDependencies": {
     "chai": "~4.3.4",
-    "mocha": "~8.4.0"
+    "mocha": "~9.1.0"
   }
 }

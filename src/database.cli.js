@@ -1,9 +1,10 @@
-const program = require('commander');
+const {program} = require('commander');
 const {DatabaseController} = require('./controller/database.controller');
 const {ProjectController} = require('./controller/project.controller');
 const {RestController} = require('./controller/rest.controller');
 const Database = require('./controller/local-storage.controller');
 const {Spinner} = require('cli-spinner');
+
 const spinner = new Spinner('processing.. %s');
 const inquirer = require('inquirer');
 const databaseController = new DatabaseController(new RestController());
@@ -122,20 +123,21 @@ async function projectToWorkWith() {
                     // console.log('Fails to update database instance image');
                 }
             }
-        })
+        });
+
+    program
+        .command('migrate <db>')
+        .alias('web3')
+        .description('migrate data to tree based')
+        .action(async (name, cmd) => {
+            try{
+                await databaseController.toWeb3()
+            }catch (e){
+
+            }
+        });
+
 }());
 
-program.on('command:*', function () {
-    console.error('Invalid command: %s\n', program.args.join(' '));
-    program.help(help => {
-        return help.replace('bfast-database', 'bfast database');
-    });
-});
-
+program.showHelpAfterError();
 program.parse(process.argv);
-
-if (process.argv.length === 2) {
-    program.help(help => {
-        return help.replace('bfast-database', 'bfast database');
-    });
-}

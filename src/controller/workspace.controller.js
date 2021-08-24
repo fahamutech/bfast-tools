@@ -33,7 +33,7 @@ class WorkspaceController {
             this._fse.copySync(this._path.join(__dirname, `/../res/backend`), projectDir);
             await gitController.init(projectDir);
             progress('\nInstall dependencies');
-            await shellController.exec(`cd ${projectDir} && npm install`);
+            await shellController.exec(`cd ${projectDir} && npm install bfast`);
             return `done create project folder, run "cd ${projectDir}" to navigate to your project folder`;
         }
     }
@@ -52,6 +52,7 @@ class WorkspaceController {
         } else {
             this._fse.copySync(join(__dirname, `/../res/frontend`, type), projectDir);
             await gitController.init(projectDir);
+            // await gitController.add(projectDir);
             await this._updatePackageName(projectDir, name);
             await this._updateAngularJson(projectDir, name);
             await this._updateIndexHtml(projectDir, name);
@@ -201,7 +202,7 @@ platformBrowserDynamic().bootstrapModule(${Utils.kebalCaseToCamelCase(name)}Modu
         try {
             const gitIgnorePath = join(__dirname, `/../res/frontend`, type, '/.gitignore');
             const gitignore = await promisify(readFile)(gitIgnorePath);
-            this._fs.writeFileSync(join(projectDir, '/.gitignore'), gitignore);
+            this._fse.writeFileSync(join(projectDir, '/.gitignore'), gitignore);
             return 'Ok';
         } catch (e) {
             return 'Fails to update gitignore file';

@@ -110,7 +110,6 @@ class DatabaseController {
             throw 'Please specify env(s) to remove';
         }
     }
-
 }
 
 module.exports = {DatabaseController};
