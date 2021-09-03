@@ -124,19 +124,6 @@ async function projectToWorkWith() {
                 }
             }
         });
-
-    program
-        .command('migrate <db>')
-        .alias('web3')
-        .description('migrate data to tree based')
-        .action(async (name, cmd) => {
-            try{
-                await databaseController.toWeb3()
-            }catch (e){
-
-            }
-        });
-
 }());
 
 program.showHelpAfterError();
