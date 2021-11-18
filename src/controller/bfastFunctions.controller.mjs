@@ -1,6 +1,7 @@
-const {BfastFunctions} = require('bfast-function');
+import {start} from "bfast-function";
 
-class BfastFunctionsController {
+
+export class FaasController {
     /**
      * @param functionsDirPath {string}
      * @param bfastJsonPath {string}
@@ -16,7 +17,7 @@ class BfastFunctionsController {
          * @return {Promise}
          */
         this._startServer = async () => {
-            let _faasServer = new BfastFunctions({
+            return start({
                 projectId: process.env.PROJECT_ID,
                 port: this._port,
                 appId: process.env.APPLICATION_ID,
@@ -25,7 +26,6 @@ class BfastFunctionsController {
                     functionsDirPath: this._functionsDirPath
                 }
             });
-            return _faasServer.start();
         }
     }
 
@@ -33,5 +33,3 @@ class BfastFunctionsController {
         return this._startServer();
     }
 }
-
-module.exports = {FaasController: BfastFunctionsController};

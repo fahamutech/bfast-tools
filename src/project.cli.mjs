@@ -1,14 +1,15 @@
-const program = require('commander');
-const {ProjectController} = require('./controller/project.controller');
-const {RestController} = require('./controller/rest.controller');
-const Database = require('./controller/local-storage.controller');
-const Utils = require('./controller/utils');
-const inquirer = require('inquirer');
-const {Spinner} = require('cli-spinner');
-const Table = require('cli-table');
+import {program} from "commander";
+import {ProjectController} from "./controller/project.controller.mjs";
+import {RestController} from "./controller/rest.controller.mjs";
+import {LocalStorageController} from "./controller/local-storage.controller.mjs";
+import {Utils} from "./controller/utils.mjs";
+import inquirer from "inquirer";
+import {Spinner} from "cli-spinner";
+import Table from "cli-table";
+
 const spinner = new Spinner('processing.. %s');
 const projectController = new ProjectController(new RestController());
-const localStorageController = new Database();
+const localStorageController = new LocalStorageController();
 
 (function init() {
     spinner.setSpinnerString('|/-\\');
@@ -48,7 +49,7 @@ program
                 {
                     type: 'text', validate: (value) => {
                         if (value && value.toString().length >= 6) {
-                            const response = value.toString().search(new RegExp('^[0-9A-Za-z-]+$'));
+                            const response = value.toString().search(new RegExp('^[0-9A-Za-z-_]+$'));
                             if (response === -1) {
                                 return 'Project Id must be at least 6 characters and must be alphanumeric';
                             }

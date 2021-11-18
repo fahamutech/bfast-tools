@@ -1,4 +1,6 @@
-class RestController {
+import axios from "axios";
+
+export class RestController {
 
     /**
      *
@@ -14,7 +16,7 @@ class RestController {
         if (httpClientFactory) {
             this._http = httpClientFactory
         } else {
-            this._http = require('axios').default;
+            this._http = axios;
         }
     }
 
@@ -93,8 +95,4 @@ class RestController {
             throw this._handleError(e);
         }
     }
-}
-
-module.exports = {
-    RestController
 }

@@ -1,12 +1,13 @@
-const program = require('commander');
-const UserController = require('./controller/user.controller');
-const DatabaseController = require('./controller/local-storage.controller');
-const {RestController} = require('./controller/rest.controller');
-const inquirer = require('inquirer');
-const Spinner = require('cli-spinner').Spinner;
+import {program} from "commander";
+import {UserController} from "./controller/user.controller.mjs";
+import {LocalStorageController} from "./controller/local-storage.controller.mjs";
+import {RestController} from "./controller/rest.controller.mjs";
+import inquirer from "inquirer";
+import {Spinner} from "cli-spinner";
+
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');
-const _database = new DatabaseController();
+const _database = new LocalStorageController();
 const _userController = new UserController(new RestController());
 
 program

@@ -1,4 +1,4 @@
-module.exports.Utils = {
+export const Utils = {
     randomString: (length) => {
         let result = '';
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

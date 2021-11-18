@@ -1,13 +1,14 @@
-const program = require('commander');
-const {FunctionsController} = require('./controller/functions.controller');
-const {CliFunctionsController} = require('./controller/functions.cli.controller');
-const Spinner = require('cli-spinner').Spinner;
+import {program} from "commander";
+import {FunctionsController} from "./controller/functions.controller.mjs";
+import {FunctionsCliController} from "./controller/functions.cli.controller.mjs";
+import {Spinner} from "cli-spinner";
+import {RestController} from "./controller/rest.controller.mjs";
+
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');
-const {RestController} = require("./controller/rest.controller");
 
 const _functionController = new FunctionsController(new RestController());
-const _cliFunctionsController = new CliFunctionsController({
+const _cliFunctionsController = new FunctionsCliController({
     functionController: _functionController
 });
 

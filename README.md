@@ -94,12 +94,12 @@ Inside your workspace folder you will find a following folder structure
 .
 |__ functions
 |   |__ .ignore
-|   |__ index.js
+|   |__ index.mjs
 |   |__ package.json
 |__ bfast.json
 ```
 
-Open `index.js` in your favorite text editor. You will see a commented  example.
+Open `index.mjs` in your favorite text editor. You will see a commented  example.
 
 File `bfast.json` contain information of your BFast::Cloud project.
 

@@ -1,20 +1,26 @@
 /**
  * manage initiation or project structure
  */
-const {readFile, writeFile} = require('fs');
-const {promisify} = require('util');
-const {join} = require('path');
-const GitController = require('./git.controller');
-const {Utils} = require("../utils/utils");
+import {readFile, writeFile} from "fs";
+import {promisify} from "util";
+import {join} from "path";
+import {ShellController} from "./shell.controller.mjs";
+import {Utils} from "../utils/utils.mjs";
+import {GitController} from "./git.controller.mjs";
+import fs_extra from "fs-extra";
+import fs from "fs";
+import path from "path";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
 let gitController = new GitController();
-const {ShellController} = require('./shell.controller');
 let shellController = new ShellController();
 
-class WorkspaceController {
+export class WorkspaceController {
     constructor() {
-        this._fse = require('fs-extra');
-        this._fs = require('fs');
-        this._path = require('path');
+        this._fse = fs_extra;
+        this._fs = fs;
+        this._path = path;
         this._checkIfFileExist = (projectDir) => {
             return this._fs.existsSync(projectDir);
         }
@@ -209,5 +215,3 @@ platformBrowserDynamic().bootstrapModule(${Utils.kebalCaseToCamelCase(name)}Modu
         }
     }
 }
-
-module.exports = WorkspaceController;

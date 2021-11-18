@@ -1,9 +1,11 @@
-const LocalStorage = require('./local-storage.controller');
-const BFastJs = require("../bfast.cli");
-const _storage = new LocalStorage();
-const {open} = require('out-url');
+import {LocalStorageController} from "./local-storage.controller.mjs";
+import {BFastJs} from "../bfast.cli.mjs";
+import {open} from "out-url";
 
-class DatabaseController {
+const _storage = new LocalStorageController();
+
+
+export class DatabaseController {
 
     /**
      *
@@ -111,5 +113,3 @@ class DatabaseController {
         }
     }
 }
-
-module.exports = {DatabaseController};

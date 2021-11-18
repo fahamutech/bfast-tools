@@ -1,12 +1,15 @@
-const program = require('commander');
-const LocalStorageController = require('./controller/local-storage.controller');
+import {program} from "commander";
+import {LocalStorageController} from "./controller/local-storage.controller.mjs";
+import inquirer from "inquirer";
+import {Spinner} from "cli-spinner";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 const _storage = new LocalStorageController();
-const inquirer = require('inquirer');
-const Spinner = require('cli-spinner').Spinner;
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');
 
-class BfastCli {
+export class BFastJs {
 
     static async clusterApiUrl() {
         const _cloudUrl = 'https://api.bfast.fahamutech.com';
@@ -88,5 +91,3 @@ class BfastCli {
         program.parse(process.argv);
     }
 }
-
-module.exports = BfastCli;

@@ -1,6 +1,6 @@
-const childProcess = require('child_process');
+import childProcess from "child_process";
 
-class ShellController {
+export class ShellController {
     /**
      *
      * @param command
@@ -20,7 +20,3 @@ class ShellController {
         });
     }
 }
-
-module.exports = {
-    ShellController: ShellController
-};

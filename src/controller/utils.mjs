@@ -1,4 +1,6 @@
-module.exports = class Utils {
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+export class Utils {
      static async isBFastProject(projectDir) {
         try {
             const projectInfo = require(`${projectDir}/bfast.json`);
@@ -7,4 +9,4 @@ module.exports = class Utils {
             throw {message: 'Not in bfast project folder'};
         }
     }
-};
+}

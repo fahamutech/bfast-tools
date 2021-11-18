@@ -1,6 +1,6 @@
-const BFastJs = require("../bfast.cli");
+import {BFastJs} from "../bfast.cli.mjs";
 
-class UserController {
+export class UserController {
 
     /**
      *
@@ -60,5 +60,3 @@ class UserController {
         });
     }
 }
-
-module.exports = UserController;

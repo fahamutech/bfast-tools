@@ -4,7 +4,9 @@
   "scripts": {
     "test": "echo \"no test\""
   },
-  "dependencies": {},
+  "dependencies": {
+    "bfast": "latest"
+  },
   "devDependencies": {},
   "private": true
 }

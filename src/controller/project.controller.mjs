@@ -1,6 +1,5 @@
-const BFastJs = require("../bfast.cli");
-
-class ProjectController {
+import {BFastJs} from "../bfast.cli.mjs";
+export class ProjectController {
 
     /**
      *
@@ -79,5 +78,3 @@ class ProjectController {
         });
     }
 }
-
-module.exports = {ProjectController};

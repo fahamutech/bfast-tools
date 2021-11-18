@@ -1,16 +1,22 @@
-const program = require('commander');
-const {FunctionsController} = require('./controller/functions.controller');
-const {CliFunctionsController} = require('./controller/functions.cli.controller');
-const nodemon = require("nodemon");
-const Spinner = require('cli-spinner').Spinner;
+import {program} from "commander";
+import {FunctionsController} from "./controller/functions.controller.mjs";
+import nodemon from "nodemon";
+import {Spinner} from "cli-spinner";
+import inquirer from "inquirer";
+import {RestController} from "./controller/rest.controller.mjs";
+import {Utils} from "./utils/utils.mjs";
+import {FunctionsCliController} from "./controller/functions.cli.controller.mjs";
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const spinner = new Spinner('processing.. %s');
 spinner.setSpinnerString('|/-\\');
-const inquirer = require('inquirer');
-const {RestController} = require("./controller/rest.controller");
-const {Utils} = require('./utils/utils');
+
+
 
 const _functionController = new FunctionsController(new RestController());
-const _cliFunctionsController = new CliFunctionsController({
+const _cliFunctionsController = new FunctionsCliController({
     functionController: _functionController
 });
 
@@ -160,7 +166,7 @@ program
                 process.env.PRODUCTION = "0";
             }
             nodemon({
-                script: `${__dirname}/controller/dev-server.controller`,
+                script: `${__dirname}/controller/dev-server.controller.mjs`,
                 ignore: ["*.test.js", "**/node_modules/**"],
                 ext: '.js,.json,.mjs,.cjs',
                 cwd: process.cwd()

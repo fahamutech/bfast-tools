@@ -1,15 +1,15 @@
-const {program} = require('commander');
-const {DatabaseController} = require('./controller/database.controller');
-const {ProjectController} = require('./controller/project.controller');
-const {RestController} = require('./controller/rest.controller');
-const Database = require('./controller/local-storage.controller');
-const {Spinner} = require('cli-spinner');
+import {program} from "commander";
+import {DatabaseController} from "./controller/database.controller.mjs";
+import {ProjectController} from "./controller/project.controller.mjs";
+import {RestController} from "./controller/rest.controller.mjs";
+import {LocalStorageController} from "./controller/local-storage.controller.mjs";
+import {Spinner} from "cli-spinner";
+import inquirer from "inquirer";
 
 const spinner = new Spinner('processing.. %s');
-const inquirer = require('inquirer');
 const databaseController = new DatabaseController(new RestController());
 const projectController = new ProjectController(new RestController());
-const localStorageController = new Database();
+const localStorageController = new LocalStorageController();
 
 (function init() {
     spinner.setSpinnerString('|/-\\');
@@ -125,17 +125,17 @@ async function projectToWorkWith() {
             }
         });
 
-    program
-        .command('migrate <db>')
-        .alias('web3')
-        .description('migrate data to tree based')
-        .action(async (name, cmd) => {
-            try{
-                await databaseController.toWeb3()
-            }catch (e){
-
-            }
-        });
+    // program
+    //     .command('migrate <db>')
+    //     .alias('web3')
+    //     .description('migrate data to tree based')
+    //     .action(async (name, cmd) => {
+    //         try{
+    //             await databaseController.toWeb3()
+    //         }catch (e){
+    //
+    //         }
+    //     });
 
 }());
 

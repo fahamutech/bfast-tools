@@ -1,15 +1,14 @@
-const NeDb = require('nedb');
-const os = require('os');
-const path = require('path');
-const _package = require('../../package.json')
+import NeDb from "nedb";
+import os from "os";
+import path from "path";
+import {WorkspaceController} from "./workspace.controller.mjs";
 const storage = new NeDb({
-    filename: path.join(os.homedir(), `/bfast-tools/${_package.version}/.bfast-tools.db`),
+    filename: path.join(os.homedir(), `/bfast-tools/.bfast-tools.db`),
     autoload: true
 });
-const ResourceController = require('./workspace.controller');
-const _resource = new ResourceController();
+const _resource = new WorkspaceController();
 
-class LocalStorageController {
+export class LocalStorageController {
 
     constructor() {
     }
@@ -179,5 +178,3 @@ class LocalStorageController {
     }
 
 }
-
-module.exports = LocalStorageController;

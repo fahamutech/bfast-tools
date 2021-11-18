@@ -1,12 +1,13 @@
-const {BfastUiAngular} = require("bfast-ui-ng");
-const {Utils} = require("../utils/utils");
-const {FunctionsController} = require('./functions.controller');
-const {join, basename} = require('path');
-const {promisify} = require('util');
-const {readdir} = require('fs');
-const {open} = require('out-url');
+import {BfastUiAngular} from "bfast-ui-ng";
+import {Utils} from "../utils/utils.mjs";
+import {FunctionsController} from "./functions.controller.mjs";
+import {basename, join} from "path";
+import {promisify} from "util";
+import {readdir} from "fs";
+import {open} from "out-url";
 
-class FunctionsCliController {
+
+export class FunctionsCliController {
 
     /**
      *
@@ -72,8 +73,4 @@ class FunctionsCliController {
             }
         }
     }
-}
-
-module.exports = {
-    CliFunctionsController: FunctionsCliController
 }

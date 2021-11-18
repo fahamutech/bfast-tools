@@ -1,12 +1,9 @@
-const path = require('path');
-const git = require('isomorphic-git');
-const http = require('isomorphic-git/http/node');
-const fs = require('fs');
+import {init, add, commit, push} from "isomorphic-git";
+import fs from "fs";
 
-
-class GitController {
+export class GitController {
     async init(functionsDir) {
-        return git.init({
+        return init({
             fs: fs,
             defaultBranch: 'master',
             bare: false,
@@ -15,7 +12,7 @@ class GitController {
     }
 
     async add(functionsDir) {
-        return git.add({
+        return add({
             fs: fs,
             gitdir: functionsDir,
             dir: functionsDir,
@@ -24,7 +21,7 @@ class GitController {
     }
 
     async commit(message, functionsDir, {ref} = {}) {
-        return git.commit({
+        return commit({
             fs: fs,
             dir: functionsDir,
             author: {
@@ -39,7 +36,7 @@ class GitController {
     }
 
     async push(functionsDir) {
-        return git.push({
+        return push({
             fs,
             gitdir: functionsDir,
             onProgress: progress => {
@@ -48,5 +45,3 @@ class GitController {
         });
     }
 }
-
-module.exports = GitController;

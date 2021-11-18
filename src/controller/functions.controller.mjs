@@ -1,15 +1,17 @@
-const {FaasController} = require('./bfastFunctions.controller');
-const {RestController} = require("./rest.controller");
-const {ShellController} = require("./shell.controller");
-const LocalStorage = require('./local-storage.controller');
-const ResourceFactory = require('./workspace.controller');
-const BFastJs = require("../bfast.cli");
-const fs = require('fs');
+import {FaasController} from "./bfastFunctions.controller.mjs";
+import {RestController} from "./rest.controller.mjs";
+import {ShellController} from "./shell.controller.mjs";
+import {LocalStorageController} from "./local-storage.controller.mjs";
+import {WorkspaceController} from "./workspace.controller.mjs";
+import {BFastJs} from "../bfast.cli.mjs";
+import fs from "fs";
+import { createRequire } from "module";
 
-const _storage = new LocalStorage();
-const _resourceFactory = new ResourceFactory();
+const require = createRequire(import.meta.url);
+const _storage = new LocalStorageController();
+const _resourceFactory = new WorkspaceController();
 
-class FunctionsController {
+export class FunctionsController {
 
     constructor() {
         this.restController = new RestController();
@@ -302,5 +304,3 @@ class FunctionsController {
         });
     }
 }
-
-module.exports = {FunctionsController};
