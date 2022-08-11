@@ -6,6 +6,10 @@ import {WorkspaceController} from "./workspace.controller.mjs";
 import {BFastJs} from "../bfast.cli.mjs";
 import fs from "fs";
 import { createRequire } from "module";
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const require = createRequire(import.meta.url);
 const _storage = new LocalStorageController();
