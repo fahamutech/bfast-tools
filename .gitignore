@@ -4,3 +4,4 @@ logs
 leveldb
 /leveldb
 /nedb
+yarn-error.log

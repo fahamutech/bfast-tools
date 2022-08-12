@@ -57,8 +57,8 @@ export class BFastJs {
         program
             .command('functions', 'manage bfast cloud functions', {executableFile: 'functions.cli'})
             .alias('fs');
-        program
-            .command('ui', 'manage frontend projects', {executableFile: 'ui.cli'});
+        // program
+        //     .command('ui', 'manage frontend projects', {executableFile: 'ui.cli'});
         program
             .command('user', 'manage user account', {executableFile: 'user.cli'})
             .alias('me');

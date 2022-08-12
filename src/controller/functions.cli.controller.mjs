@@ -1,4 +1,3 @@
-import {BfastUiAngular} from "bfast-ui-ng";
 import {Utils} from "../utils/utils.mjs";
 import {FunctionsController} from "./functions.controller.mjs";
 import {basename, join} from "path";
@@ -41,36 +40,36 @@ export class FunctionsCliController {
         }
     }
 
-    async openFrontendIDE(projectDir, autoOpen = false, all = false) {
-        const bfastUi = await new BfastUiAngular().init();
-        await bfastUi.ide.start();
+    // async openFrontendIDE(projectDir, autoOpen = false, all = false) {
+    //     const bfastUi = await new BfastUiAngular().init();
+    //     await bfastUi.ide.start();
 
-        async function openStart(url) {
-            if (autoOpen === true) {
-                await open(url);
-            }
-            return 'bfast ui ide running at \"' + url + '\"';
-        }
+    //     async function openStart(url) {
+    //         if (autoOpen === true) {
+    //             await open(url);
+    //         }
+    //         return 'bfast ui ide running at \"' + url + '\"';
+    //     }
 
-        if (all === true) {
-            return await openStart(`http://localhost:${bfastUi.port}`);
-        } else {
-            try {
-                const projectDirContents = await promisify(readdir)(join(projectDir, 'src', 'app'));
-                const moduleName = projectDirContents.filter(x => x.includes('.module.ts'))
-                    .map(y => y.replace('.module.ts', '').trim())
-                    .join('');
-                const projectDirectoryName = basename(projectDir).toString()
-                    .replace(new RegExp('[\\s]', 'ig'), '').trim();
-                const path = join(projectDir, 'src', 'app');
-                const module = Utils.camelCaseToKebal(moduleName);
-                const projectName = Utils.kebalCaseToCamelCase(projectDirectoryName);
-                const url = `http://localhost:${bfastUi.port}/project?path=${path}&module=${module}&name=${projectName}`;
-                return await openStart(url);
-            } catch (e) {
-                console.log(e.toString());
-                return await openStart(`http://localhost:${bfastUi.port}`);
-            }
-        }
-    }
+    //     if (all === true) {
+    //         return await openStart(`http://localhost:${bfastUi.port}`);
+    //     } else {
+    //         try {
+    //             const projectDirContents = await promisify(readdir)(join(projectDir, 'src', 'app'));
+    //             const moduleName = projectDirContents.filter(x => x.includes('.module.ts'))
+    //                 .map(y => y.replace('.module.ts', '').trim())
+    //                 .join('');
+    //             const projectDirectoryName = basename(projectDir).toString()
+    //                 .replace(new RegExp('[\\s]', 'ig'), '').trim();
+    //             const path = join(projectDir, 'src', 'app');
+    //             const module = Utils.camelCaseToKebal(moduleName);
+    //             const projectName = Utils.kebalCaseToCamelCase(projectDirectoryName);
+    //             const url = `http://localhost:${bfastUi.port}/project?path=${path}&module=${module}&name=${projectName}`;
+    //             return await openStart(url);
+    //         } catch (e) {
+    //             console.log(e.toString());
+    //             return await openStart(`http://localhost:${bfastUi.port}`);
+    //         }
+    //     }
+    // }
 }

@@ -11,6 +11,10 @@ import fs_extra from "fs-extra";
 import fs from "fs";
 import path from "path";
 import { createRequire } from "module";
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const require = createRequire(import.meta.url);
 let gitController = new GitController();
