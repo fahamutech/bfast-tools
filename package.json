@@ -1,6 +1,6 @@
 {
   "name": "bfast-tools",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Tools to manage bfast cloud projects",
   "private": false,
   "preferGlobal": true,
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/fahamutech/bfast-tools#readme",
   "dependencies": {
-    "axios": "^0.27.2",
+    "axios": "1.7.4",
     "bfast-function": "~2.0.0-alpha.9",
     "cli-spinner": "~0.2.10",
     "cli-table": "~0.3.11",

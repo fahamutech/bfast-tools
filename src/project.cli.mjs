@@ -107,7 +107,7 @@ program
                 name: answer.name,
                 description: answer.description,
                 projectId: answer.projectId,
-                hostDomain: 'fahamutech.com',
+                hostDomain: 'mraba.co.tz',
                 parse: {
                     appId: answer.appId,
                     masterKey: answer.masterKey

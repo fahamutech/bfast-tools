@@ -12,7 +12,7 @@ spinner.setSpinnerString('|/-\\');
 export class BFastJs {
 
     static async clusterApiUrl() {
-        const _cloudUrl = 'https://api.bfast.fahamutech.com';
+        const _cloudUrl = 'https://api.bfast.mraba.co.tz';
         try {
             const settings = await _storage.getSettings();
             if (settings && settings.cloudUrl) {

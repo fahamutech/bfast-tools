@@ -1,5 +1,5 @@
 # bfast-tools
-CLI tools for manage your project ( s ) in [BFast Cloud](https://bfast.fahamutech.com).
+CLI tools for manage your project ( s ) in [BFast Cloud](https://bfast.mraba.co.tz).
 
 ## Pre request
 
@@ -227,7 +227,7 @@ Replace `mySingleFunctionName` with a function name you want to call.
 You can deploy your functions to bfast cloud and host your server-less functions across our network.
 
 #### Open Account
-To publish your functions you must have a bfast cloud functions open one here [BFAST::CLOUD](http://bfast.fahamutech.com). 
+To publish your functions you must have a bfast cloud functions open one here [BFAST::CLOUD](http://bfast.mraba.co.tz). 
 After open account now you create your new project and you go to next step
 
 #### Login from your computer

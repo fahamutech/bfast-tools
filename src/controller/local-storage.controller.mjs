@@ -55,7 +55,7 @@ export class LocalStorageController {
                     reject({
                         message: 'No user records found, please login first by ' +
                             'run "bfast user login" if you do not have an account ' +
-                            'open one at http://bfast.fahamutech.com'
+                            'open one at http://bfast.mraba.co.tz'
                     });
                 }
             });
