@@ -8,64 +8,7 @@ CLI tools for manage your project ( s ) in [BFast Cloud](https://bfast.mraba.co.
 ## Get stated
 Install package from npm by run for linux: `sudo npm install -g bfast-tools`. For windows run: `npm install -g bfast-tools`
 
-## BFast::Cloud Projects
-
-You use this sub command to manage your remote bfast projects. `bfast cloud` for more commands.
-
-### Create a new project
-
-Run the following command to create a new project
-```shell script
-josh@xps:~/Desktop$ bfast cloud create
-```
-
-### List all projects
-
-Run the following command to list all projects exist to your bfast cloud account
-```shell script
-josh@xps:~/Desktop$ bfast cloud list
-```
-
-### Delete project
-
-Run the following command to delete exist project to your bfast cloud account
-```shell script
-josh@xps:~/Desktop$ bfast cloud delete
-```
-
-### Add a member to you project
-
-Run the following command to add exist user of bfast to your bfast cloud account
-```shell script
-josh@xps:~/Desktop$ bfast cloud add-member
-```
-
-## BFast::Cloud Database
-
-You can manage your database instance using this sub command `bfast database`.
-
-### Switch dashboard on
-
-You can switch a dashboard on for data browser.
-```shell script
-josh@xps:~/Desktop$ bfast database dashboard-on
-```
-
-### Switch dashboard off
-
-You can switch a dashboard off for data browser.
-```shell script
-josh@xps:~/Desktop$ bfast database dashboard-off
-```
-
-### Open Database Playground
-
-You must add manually a specif collection/table/domain to a realtime engine to subscribe to its events.
-```shell script
-josh@xps:~/Desktop$ bfast database playground
-```
-
-## BFast::Cloud Functions
+## BFast functions
 
 Write your system functions with zero effort. Sub command to manage your functions is `bfast functions` 
 or `bfast fs` 
@@ -139,46 +82,6 @@ exports.myArrayFunctionName = BFast.funtion().onHttpRequest('/myArrayFunctionNam
 );
 ```
 
-Mount express router. Your can use Express Router to manage complex routing. First run `npm install express` inside functions folder to add express module
-
-```javascript
-const express = require('express');
-const router = express.Router();
-const {BFast} = require('bfastnode');
-
-router.get('/', function (request, response) {
-    // your logic
-    response.send('get users');
-});
-
-router.post('/user', function (request, response) {
-    // your logic
-    response.send('User saved');
-})
-
-exports.functionNameUsingRouter = BFast.function().onHttpRequest('/functionNameUsingRouter',router);
-```
-
-You can mount an express app too!. First run `npm install express` inside functions folder to add express module
-
-```javascript
-const express = require('express');
-const app = new express();
-const {BFast} = require('bfastnode');
-
-app.get('/', function (request, response) {
-    // your logic
-    response.send('get users');
-});
-
-app.post('/user', function (request, response) {
-    // your logic
-    response.send('User saved');
-})
-
-exports.functionNameUsingExpressApp = BFast.function().onHttpRequest('/functionNameUsingExpressApp', app);
-```
-
 ### Serve functions locally
 
 In your current project folder, run following script
@@ -222,64 +125,11 @@ in your browser put this address http://localhost:3000/pathYouUse
 Replace `mySingleFunctionName` with a function name you want to call.
 
 
-## Cloud Functions Deployment
+## Functions deployment
 
-You can deploy your functions to bfast cloud and host your server-less functions across our network.
-
-#### Open Account
-To publish your functions you must have a bfast cloud functions open one here [BFAST::CLOUD](http://bfast.mraba.co.tz). 
-After open account now you create your new project and you go to next step
-
-#### Login from your computer
-Login from your computer by run.
-```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ bfast user login
-```
-
-#### Link your local project to remote bfast project
-Run their following in your bfast local project folder
-```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ bfast cloud link
-```
-
-#### Set git environments
-
-We use git to deploy your functions to bfast cloud function instance(s). Run thr following to set up git environments.
-```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ bfast functions config
-```
-
-#### To publish your functions
-* Make sure you push all your production functions to `master` branch
-* Then run
-```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ bfast functions deploy
-```
-
-*NOTE* You must push your project to a git repository you specify. BFast will look from master branch for functions.
-
-#### Continuous Integration
-
-* Generate token to use it for your favorite CI tool
-
-```shell script
-josh@xps:~/Desktop/bfastDemoFaas$ bfast user login:ci --username <PUT_EMAIL_YOU_USE_TO_OPEN_BFAST_ACCOUNT>
-```
-
-You can use token generated and example given to set your continuous integration 
-environment.
-
-**NOTE**
-
-In CI mode you must set projectId manually to deploy your functions your can find projectId from your project console 
-in bfast cloud account
-
-
-## Notes To Take
-
-* In this documentation we use port 3000, if you use a different port to run your functions replace 3000 with a port number you use in all examples found in this document to be relevant.
-
-* You can create a javascript file anywhere inside functions folder or even create a sub folder and put your functions as illustrated above and bfast-tools package will discover your functions
+You can deploy your functions and host your server-less functions.
+Read the docs here on how to lunch your server to host this functions
+whether on docker or on bare server. https://github.com/fahamutech/bfast-functions. The docker image can be found at 
 
 ## Help
 

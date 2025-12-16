@@ -111,7 +111,6 @@ program
 program
     .command('serve')
     .option('-p, --port <port>', "port to serve cloud functions local", 3000)
-    .option('-db, --mongodb-url <mongodb-url>', "path to local mongodb")
     .option('--static', 'start in static mode without auto restart when files changes')
     .option('--appId <appId>', 'Application Id')
     .option('--projectId <projectId>', 'Project Id')
@@ -123,9 +122,6 @@ program
         process.env.DEV_PORT = cmd.port;
         // for bfast-node sdk
         process.env.IS_LOCAL_BFAST = 'true'
-        if (cmd['mongodbUrl']) {
-            process.env.MONGO_URL = cmd["mongodbUrl"];
-        }
         if (cmd.appId) {
             process.env.APPLICATION_ID = cmd.appId;
         } else if (!process.env.APPLICATION_ID) {
@@ -156,10 +152,6 @@ program
 
         if (cmd.static) {
             process.env.PRODUCTION = "1"
-            if (!cmd['mongodbUrl']) {
-                console.log('mongodb url required, try with --mongodb-url <your-mongo-db-url>');
-                return;
-            }
             _functionController.serve(process.cwd(), cmd.port);
         } else {
             if (!process.env.PRODUCTION) {
