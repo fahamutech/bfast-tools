@@ -1,9 +1,8 @@
 {
-  "projectId": "",
   "ignore": [
     "**/node_modules/**",
     "**/specs/**",
     "**/*.specs.js",
-    "assets/**"
+    "**/*.specs.mjs"
   ]
 }
