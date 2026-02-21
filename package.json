@@ -9,7 +9,7 @@
     "bfast-functions": "src/functions.cli.mjs"
   },
   "scripts": {
-    "test": "echo \"no test\"",
+    "test": "mocha \"test/**/*.test.mjs\"",
     "publish:npm": "yarn publish"
   },
   "repository": {
