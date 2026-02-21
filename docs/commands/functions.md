@@ -20,6 +20,11 @@ Example:
 bfast fs create demo-faas
 ```
 
+Name rules:
+- allowed characters: letters, numbers, `.`, `-`, `_`
+- path separators (`/`, `\`) and traversal (`..`) are rejected
+- names starting with `.` are rejected
+
 ## serve
 
 Run local development server for your functions.
