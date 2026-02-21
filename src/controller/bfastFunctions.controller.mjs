@@ -22,9 +22,7 @@ export class FaasController {
          */
         this._startServer = async () => {
             return start({
-                projectId: process.env.PROJECT_ID,
                 port: this._port,
-                appId: process.env.APPLICATION_ID,
                 functionsConfig: {
                     bfastJsonPath: this._bfastJsonPath,
                     functionsDirPath: this._functionsDirPath
