@@ -1,6 +1,6 @@
 {
   "name": "bfast-tools",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Local FaaS tools for bfast-functions",
   "private": false,
   "preferGlobal": true,
@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/fahamutech/bfast-tools#readme",
   "dependencies": {
-    "bfast-function": "~3.0.0",
+    "bfast-function": "~3.2.3",
     "cli-spinner": "~0.2.10",
     "commander": "~14.0.3",
     "fs-extra": "^11.3.3",
